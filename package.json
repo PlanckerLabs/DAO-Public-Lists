@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.6.0"
+  },
+  "devDependencies": {
+    "sol-merger": "^4.1.1"
+  }
+}
