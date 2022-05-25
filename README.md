@@ -1,4 +1,5 @@
-# SoulBound NFT Token Contract DEMO
+# *Anyone can create a DAO here and join a DAO here*
+### SoulBound NFT Token Contract DEMO
 
 ## [`DEV`]
 
