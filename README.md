@@ -12,7 +12,8 @@
 ---
 
 ## [`后端/backend`]
-- link: [contracts/build/](contracts/build/)
+- link: [contracts/](contracts/)
+- contract/合约源码: [contracts/build/](contracts/build/)
 
 #### [`开发/DEV`]
 
