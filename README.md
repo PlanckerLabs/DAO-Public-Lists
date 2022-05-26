@@ -40,7 +40,7 @@ remixd
 
 ## [`Third-party License`]
 *We use some open source software in the project, thanks.*
-- link: (<Third-party License.md>)
+- link: (Third-party%20License.md)
    - [vue](https://github.com/vuejs/vue)
    - [solc](https://github.com/ethereum/solc-js/)
    - [truffle](https://github.com/trufflesuite/truffle/)
