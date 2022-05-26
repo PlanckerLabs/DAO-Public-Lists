@@ -31,4 +31,4 @@ remixd
 #### [`DOC`]
 [Decentralized Application interface](DAI.md)
 
-*Note:The current contract is fully composable,any contract can use the current contract as a database and a database query tool*
+*Note:The current contract is fully composable,any contract can use the current contract as a database or a query tool*
