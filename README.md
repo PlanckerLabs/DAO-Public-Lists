@@ -6,7 +6,7 @@
 ## [`前端/frontend`]
 - link:[frontend/](frontend/)
 
-#### [`演示/DEMO`]
+#### [演示/DEMO]
 - [UI演示/UI layout demo](https://static-bd1f1f21-0a04-4091-96a3-ac8c61aa60d3.bspapp.com)
 
 ---
@@ -15,7 +15,10 @@
 - link: [contracts/](contracts/)
 - contract/合约源码: [contracts/build/](contracts/build/)
 
-#### [`开发/DEV`]
+   1. [soulBoundBridge.sol](contracts/build/soulBoundBridge.sol)
+   2. [soulBoundMedal.sol](contracts/build/soulBoundMedal.sol)
+
+#### [开发/DEV]
 
 - Requirements
 ```shell
@@ -29,7 +32,7 @@ remixd
 3. remixd -s ./ --remix-ide https://remix.ethereum.org
 ```
 
-#### [`文档/DOC`]
+#### [文档/DOC]
 [Decentralized Application interface](contracts/DAI.md)
 
 *Note:The current contract is fully composable,any contract can use the current contract as a database or a query tool*
