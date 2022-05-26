@@ -23,9 +23,9 @@ contract SoulBoundMedal is ERC721, Ownable, ISoulBoundMedal {
 
     /**
      *  bytes32 :   address + medalIndex
-     *  uint8 :   status of the cliam,  0: rejected , 1: pending, 2: approved
+     *  uint8 :   status of the cliam,  1:pending,2:rejected ,>2 tokenid
      */
-    mapping(bytes32 => uint8) private _cliamStatus;
+    mapping(bytes32 => uint256) private _cliamStatus;
 
     ISoulBoundMedal.CliamRequest[] private _cliamRequestList;
 
@@ -46,6 +46,7 @@ contract SoulBoundMedal is ERC721, Ownable, ISoulBoundMedal {
         for (uint256 i = 0; i < _medalnameArr.length; i++) {
             _medalPanel.push(MedalPanel(0, 0, 0, block.timestamp));
         }
+        _tokenIdCounter.set(9);
     }
 
     function _baseURI() internal view override returns (string memory) {
@@ -167,13 +168,13 @@ contract SoulBoundMedal is ERC721, Ownable, ISoulBoundMedal {
     /**
      * @dev get cliam status by key
      * @param key key, bytes32 : request user address + medalIndex
-     * @return uint8 the cliam status, 0: rejected , 1: pending, 2: approved
+     * @return uint256 the cliam status,  1:pending,2:rejected ,>2 tokenid
      */
     function getCliamStatusByBytes32Key(bytes32 key)
         public
         view
         override
-        returns (uint8)
+        returns (uint256)
     {
         return _cliamStatus[key];
     }
@@ -254,30 +255,28 @@ contract SoulBoundMedal is ERC721, Ownable, ISoulBoundMedal {
         ISoulBoundMedal.CliamRequest memory request = _cliamRequestList[
             cliamId
         ];
+        require(request._status == 1, "cliam request is not pending");//1:pending,2:rejected ,>2 tokenid
         bytes32 k = keccak256(
             abi.encodePacked(request._address, request._medalIndex)
         );
-        uint8 cliamStatus = _cliamStatus[k];
-        require(cliamStatus == 1);
-        _cliamStatus[k] = 2;
-        _cliamRequestList[cliamId]._status = 2;
+        uint256 cliamStatus = _cliamStatus[k]; //1:pending,2:rejected ,>2 tokenid
+        require(
+            cliamStatus < 3,
+            "cliam request of the medal index is already approved before"
+        );
         _cliamRequestListApprovedIndex[request._medalIndex].push(cliamId);
         unchecked {
             _medalPanel[request._medalIndex]._approved++;
             _medalPanel[request._medalIndex]._request--;
         }
-
         _tokenIdCounter.increment();
         uint256 tokenId = _tokenIdCounter.current();
         _medalMap[tokenId] = request._medalIndex;
-        _mint(request._address, tokenId);
 
-        ISoulBoundBridge soulBoundBridge = ISoulBoundBridge(_daoBridge);
-        soulBoundBridge.medalMint(
-            request._address,
-            address(this),
-            request._medalIndex
-        );
+        _cliamStatus[k] = tokenId;
+        _cliamRequestList[cliamId]._status = tokenId; //1:pending,2:rejected ,>2 tokenid
+
+        _mint(request._address, tokenId);
     }
 
     /**
@@ -289,13 +288,15 @@ contract SoulBoundMedal is ERC721, Ownable, ISoulBoundMedal {
         ISoulBoundMedal.CliamRequest memory request = _cliamRequestList[
             cliamId
         ];
+        require(request._status == 1, "cliam request is not pending"); //1:pending,2:rejected ,>2 tokenid
         bytes32 k = keccak256(
             abi.encodePacked(request._address, request._medalIndex)
         );
-        uint8 cliamStatus = _cliamStatus[k];
-        require(cliamStatus == 1);
-        _cliamStatus[k] = 0;
-        _cliamRequestList[cliamId]._status = 0;
+        uint256 cliamStatus = _cliamStatus[k]; //1:pending,2:rejected ,>2 tokenid
+        _cliamRequestList[cliamId]._status = 2;
+        if (cliamStatus < 3) {
+            _cliamStatus[k] = 1;
+        }
         unchecked {
             _medalPanel[request._medalIndex]._rejected++;
             _medalPanel[request._medalIndex]._request--;
@@ -310,26 +311,24 @@ contract SoulBoundMedal is ERC721, Ownable, ISoulBoundMedal {
         require(medalIndex < _medalnameArr.length);
         require(msg.sender.code.length == 0, "contract address not supported");
         bytes32 k = keccak256(abi.encodePacked(msg.sender, medalIndex));
-        uint8 cliamStatus = _cliamStatus[k];
-        if (cliamStatus != 2) {
-            _cliamStatus[k] = 1;
-            _cliamRequestList.push(
-                ISoulBoundMedal.CliamRequest(
-                    msg.sender,
-                    medalIndex,
-                    block.timestamp,
-                    1
-                )
-            );
 
-            unchecked {
-                _medalPanel[medalIndex]._request++;
-            }
-            ISoulBoundBridge soulBoundBridge = ISoulBoundBridge(_daoBridge);
-            soulBoundBridge.register(msg.sender, address(this));
-        } else {
-            revert("already approved");
+        require(_cliamStatus[k] < 3, "already approved");///1:pending,2:rejected ,>2 tokenid
+
+        _cliamStatus[k] = 1;
+        _cliamRequestList.push(
+            ISoulBoundMedal.CliamRequest(
+                msg.sender,
+                medalIndex,
+                block.timestamp,
+                1
+            )
+        );
+
+        unchecked {
+            _medalPanel[medalIndex]._request++;
         }
+        ISoulBoundBridge soulBoundBridge = ISoulBoundBridge(_daoBridge);
+        soulBoundBridge.onCliamRequest(msg.sender, address(this), medalIndex);
     }
 
     /**

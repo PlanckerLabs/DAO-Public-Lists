@@ -982,15 +982,6 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
 }
 
 // _
-interface ISoulBound is IERC721 {
-    /**
-     * @dev if the token is soulbound
-     * @return true if the token is soulbound
-     */
-    function soulbound() external view returns (bool);
-}
-
-// _
 // OpenZeppelin Contracts v4.4.1 (access/Ownable.sol)
 /**
  * @dev Contract module which provides a basic access control mechanism, where
@@ -1063,155 +1054,47 @@ abstract contract Ownable is Context {
 }
 
 // _
-interface ISoulBoundMedal is ISoulBound {
-    /**
-     * @dev Add medals to current DAO
-     * @param medalsname array of medal description
-     * @param medalsuri array of medal uri
-     */
-    function addMedals(
-        string[] calldata medalsname,
-        string[] calldata medalsuri
-    ) external;
-
-    struct MedalPanel {
-        uint256 _request;
-        uint256 _approved;
-        uint256 _rejected;
-        uint256 _genesis;
+// OpenZeppelin Contracts v4.4.1 (utils/Counters.sol)
+/**
+ * @title Counters
+ * @author Matt Condon (@shrugs)
+ * @dev Provides counters that can only be incremented, decremented or reset. This can be used e.g. to track the number
+ * of elements in a mapping, issuing ERC721 ids, or counting request ids.
+ *
+ * Include with `using Counters for Counters.Counter;`
+ */
+library Counters {
+    struct Counter {
+        // This variable should never be directly accessed by users of the library: interactions must be restricted to
+        // the library's function. As of Solidity v0.5.2, this cannot be enforced, though there is a proposal to add
+        // this feature: see https://github.com/ethereum/solidity/issues/4637
+        uint256 _value; // default: 0
     }
 
-    /**
-     * @dev get medals
-     * @return array of medals
-     */
-    function getMedals()
-        external
-        view
-        returns (
-            string[] memory,
-            string[] memory,
-            MedalPanel[] memory
-        );
-
-    /**
-     * @dev get medals count
-     * @return uint256
-     */
-    function countMedals() external view returns (uint256);
-
-    /**
-     * @dev get medalIndex by tokenid
-     */
-    function getMedalIndexByTokenid(uint256 tokenid)
-        external
-        view
-        returns (uint256);
-
-    /**
-     * @dev get cliam status by key
-     */
-    function getCliamStatusByBytes32Key(bytes32 key)
-        external
-        view
-        returns (uint8);
-
-    function getCliamRequestSize() external view returns (uint256);
-
-    struct CliamRequest {
-        address _address; // request address
-        uint256 _medalIndex; // medal index
-        uint256 _timestamp; // timestamp
-        uint8 _status; // status of the cliam,  0: rejected , 1: pending, 2: approved
+    function current(Counter storage counter) internal view returns (uint256) {
+        return counter._value;
     }
 
-    function getCliamRequest(uint256 _index)
-        external
-        view
-        returns (CliamRequest memory);
+    function increment(Counter storage counter) internal {
+        unchecked {
+            counter._value += 1;
+        }
+    }
 
-    /**
-     * @dev get Cliam Request Approved count
-     * @param _medalIndex medal index
-     * @return uint256
-     */
-    function countCliamRequestApproved(uint256 _medalIndex)
-        external
-        view
-        returns (uint256);
+    function decrement(Counter storage counter) internal {
+        uint256 value = counter._value;
+        require(value > 0, "Counter: decrement overflow");
+        unchecked {
+            counter._value = value - 1;
+        }
+    }
 
-    /**
-     * @dev get Cliam Request Approved index by medal index
-     * @param _medalIndex medal index
-     * @return uint256[] CliamRequest index arrary of Cliam Request Approved
-     */
-    function listCliamRequestApproved(uint256 _medalIndex)
-        external
-        view
-        returns (uint256[] memory);
-
-    /**
-     * @dev update medal by index
-     * @param medalIndex index of medal
-     * @param name new name of medal
-     * @param uri new uri of medal
-     */
-    function updateMedal(
-        uint256 medalIndex,
-        string calldata name,
-        string calldata uri
-    ) external;
-
-    /**
-     * @dev  Approved cliam
-     * @param cliamId the index of the cliam id
-     * Emits a {Transfer} event.
-     */
-    function cliamApproved(uint256 cliamId) external;
-
-    /**
-     * @dev  Rejected cliam
-     * @param cliamId the index of the cliam id
-     */
-    function cliamRejected(uint256 cliamId) external;
-
-    /**
-     * @dev Users apply for mint medal
-     * @param medalIndex the index of the medal
-     */
-    function cliamRequest(uint256 medalIndex) external;
-}
-
-// _
-interface IDataStorage {
-    function saveString(bytes4 k, string calldata v) external;
-
-    function getString(address a, bytes4 k)
-        external
-        view
-        returns (string memory);
-
-    function saveStrings(bytes4[] calldata k, string[] calldata v) external;
-
-    function getStrings(address a, bytes4[] calldata k)
-        external
-        view
-        returns (string[] memory);
-
-    // function addToAddressArrary(bytes4 k, address v) external;
-
-    // function removeFromAddressArrary(bytes4 k, address v) external;
-
-    // function getAddressArrary(address a, bytes4 k)
-    //     external
-    //     view
-    //     returns (address[] memory);
-
-    // function getAddressArraryIndex(
-    //     address a,
-    //     bytes4 k,
-    //     address addr
-    // ) external view returns (uint256);
+    function reset(Counter storage counter) internal {
+        counter._value = 0;
+    }
+    function set(Counter storage counter,uint256 v) internal {
+        counter._value = v;
+    }
 }
 
 // _
@@ -1304,790 +1187,580 @@ library Base64 {
 }
 
 // _
-interface ISoulBoundBridge {
-    function register(address _address, address _dao) external;
+interface ISoulBound is IERC721 {
+    /**
+     * @dev if the token is soulbound
+     * @return true if the token is soulbound
+     */
+    function soulbound() external view returns (bool);
+}
 
+// _
+interface ISoulBoundMedal is ISoulBound {
+    /**
+     * @dev Add medals to current DAO
+     * @param medalsname array of medal description
+     * @param medalsuri array of medal uri
+     */
+    function addMedals(
+        string[] calldata medalsname,
+        string[] calldata medalsuri
+    ) external;
+
+    struct MedalPanel {
+        uint256 _request;
+        uint256 _approved;
+        uint256 _rejected;
+        uint256 _genesis;
+    }
+
+    /**
+     * @dev get medals
+     * @return array of medals
+     */
+    function getMedals()
+        external
+        view
+        returns (
+            string[] memory,
+            string[] memory,
+            MedalPanel[] memory
+        );
+
+    /**
+     * @dev get medals count
+     * @return uint256
+     */
+    function countMedals() external view returns (uint256);
+
+    /**
+     * @dev get medalIndex by tokenid
+     */
+    function getMedalIndexByTokenid(uint256 tokenid)
+        external
+        view
+        returns (uint256);
+ 
+    /**
+     * @dev get cliam status by key
+     * @param key key, bytes32 : request user address + medalIndex
+     * @return uint256 the cliam status,  1:pending,2:rejected ,>2 tokenid
+     */
+    function getCliamStatusByBytes32Key(bytes32 key)
+        external
+        view
+        returns (uint256);
+
+    function getCliamRequestSize() external view returns (uint256);
+
+    struct CliamRequest {
+        address _address; // request address
+        uint256 _medalIndex; // medal index
+        uint256 _timestamp; // timestamp
+        uint256 _status; // status of the cliam,  1:pending,2:rejected ,>2 tokenid
+    }
+
+    function getCliamRequest(uint256 _index)
+        external
+        view
+        returns (CliamRequest memory);
+
+    /**
+     * @dev get Cliam Request Approved count
+     * @param _medalIndex medal index
+     * @return uint256
+     */
+    function countCliamRequestApproved(uint256 _medalIndex)
+        external
+        view
+        returns (uint256);
+
+    /**
+     * @dev get Cliam Request Approved index by medal index
+     * @param _medalIndex medal index
+     * @return uint256[] CliamRequest index arrary of Cliam Request Approved
+     */
+    function listCliamRequestApproved(uint256 _medalIndex)
+        external
+        view
+        returns (uint256[] memory);
+
+    /**
+     * @dev update medal by index
+     * @param medalIndex index of medal
+     * @param name new name of medal
+     * @param uri new uri of medal
+     */
+    function updateMedal(
+        uint256 medalIndex,
+        string calldata name,
+        string calldata uri
+    ) external;
+
+    /**
+     * @dev  Approved cliam
+     * @param cliamId the index of the cliam id
+     * Emits a {Transfer} event.
+     */
+    function cliamApproved(uint256 cliamId) external;
+
+    /**
+     * @dev  Rejected cliam
+     * @param cliamId the index of the cliam id
+     */
+    function cliamRejected(uint256 cliamId) external;
+
+    /**
+     * @dev Users apply for mint medal
+     * @param medalIndex the index of the medal
+     */
+    function cliamRequest(uint256 medalIndex) external;
+}
+
+// _
+interface IDataStorage {
+    function saveString(bytes4 k, string calldata v) external;
+
+    function getString(address a, bytes4 k)
+        external
+        view
+        returns (string memory);
+
+    function saveStrings(bytes4[] calldata k, string[] calldata v) external;
+
+    function getStrings(address a, bytes4[] calldata k)
+        external
+        view
+        returns (string[] memory);
+
+    // function addToAddressArrary(bytes4 k, address v) external;
+
+    // function removeFromAddressArrary(bytes4 k, address v) external;
+
+    // function getAddressArrary(address a, bytes4 k)
+    //     external
+    //     view
+    //     returns (address[] memory);
+
+    // function getAddressArraryIndex(
+    //     address a,
+    //     bytes4 k,
+    //     address addr
+    // ) external view returns (uint256);
+}
+
+// _
+interface ISoulBoundBridge {
     function onOwnerChage(address _dao) external;
 
-    function medalMint(
+    /**
+    * @dev on user request a medal
+    * @param _address address of user
+    * @param _dao  address of dao
+    * @param _medalIndex tokenid of medal
+     */
+    function onCliamRequest(
         address _address,
         address _dao,
         uint256 _medalIndex
     ) external;
+
 }
 
 // _
-interface IOwnable {
-    /**
-     * @dev Returns the address of the current owner.
-     */
-    function owner() external view returns (address);
+contract SoulBoundMedal is ERC721, Ownable, ISoulBoundMedal {
+    using Counters for Counters.Counter;
+    Counters.Counter private _tokenIdCounter;
+    address public _daoBridge;
+    string _baseUri = "";
+    string[] private _medalnameArr;
+    string[] private _medaluriArr;
 
-    function name() external view returns (string memory);
-
-    /**
-     * @dev See {IERC721Metadata-symbol}.
-     */
-    function symbol() external view returns (string memory);
-}
-
-contract SoulBoundBridge is IDataStorage, ISoulBoundBridge {
-    // region variables
-
-    address[] public storageEnumerableUserArr;
-
-    mapping(address => uint256[]) public storageEnumerableUserMap;
-
-    mapping(bytes32 => uint8) public userDAOMapping;
-
-    mapping(address => uint256) public storageEnumerableDAOMap;
-
-    address[] public storageEnumerableDAOArr;
-
-    mapping(address => mapping(bytes4 => string)) public storageStrings;
-
-    mapping(address => uint256[]) public userDaoMedalsDaoIndexMap; // key: user address,value:index-1 is the dao in the storageEnumerableDAOArr
-    mapping(bytes32 => uint256[]) public userDaoMedalsMapIndex; // key: user address+ dao address,value:value:user climbed the index of medal
-
-    mapping(address => address[]) public contractOwnerMap; // key:user address,value: dao address array
-    mapping(bytes32 => uint256) public contractOwnerMapIndex; // key: user address+ dao address,value -1 is the index of the contractOwnerMap -> value
-
-    // endregion
-
-    constructor() {}
-
-    // region functional
+    // Mapping from token ID to medal
+    mapping(uint256 => uint256) private _medalMap;
 
     /**
-     * @dev save a string to the storage
-     * @param k key
+     *  bytes32 :   address + medalIndex
+     *  uint8 :   status of the cliam,  1:pending,2:rejected ,>2 tokenid
      */
-    function saveString(bytes4 k, string calldata v) public override {
-        storageStrings[msg.sender][k] = v;
-    }
+    mapping(bytes32 => uint256) private _cliamStatus;
 
-    /**
-     * @dev get a string from the storage
-     * @param a address
-     * @param k key
-     * @return string memory value
-     */
-    function getString(address a, bytes4 k)
-        public
-        view
-        override
-        returns (string memory)
-    {
-        return storageStrings[a][k];
-    }
+    ISoulBoundMedal.CliamRequest[] private _cliamRequestList;
 
-    /**
-     * @dev save multiple string to the storage
-     * @param k key array
-     * @param v value array
-     */
-    function saveStrings(bytes4[] calldata k, string[] calldata v)
-        public
-        override
-    {
-        for (uint256 i = 0; i < k.length; i++) {
-            storageStrings[msg.sender][k[i]] = v[i];
+    mapping(uint256 => uint256[]) private _cliamRequestListApprovedIndex; // key:medalIndex, value:index in _cliamRequestList
+
+    ISoulBoundMedal.MedalPanel[] private _medalPanel;
+
+    constructor(
+        string memory _name, // NFT Collection Name
+        string memory _symbol, // NFT Collection Symbol
+        string[] memory _medalname, // Medal Name Arrary , length must be equal to _medaluri
+        string[] memory _medaluri, // Medal Image Url Arrary , length must be equal to _medalname
+        address _daoBridgeAddress // DAO Bridge Address, used to get cliam status
+    ) ERC721(_name, _symbol) {
+        _medalnameArr = _medalname;
+        _medaluriArr = _medaluri;
+        _daoBridge = _daoBridgeAddress;
+        for (uint256 i = 0; i < _medalnameArr.length; i++) {
+            _medalPanel.push(MedalPanel(0, 0, 0, block.timestamp));
         }
+        _tokenIdCounter.set(9);
+    }
+
+    function _baseURI() internal view override returns (string memory) {
+        return _baseUri;
+    }
+
+    function setBaseURI(string memory baseUri) public onlyOwner {
+        _baseUri = baseUri;
     }
 
     /**
-     * @dev get multiple string from the storage
-     * @param a address
-     * @param k key array
-     * @return string[] memory value array
+     * @dev if the token is soulbound
+     * @return true if the token is soulbound
      */
-    function getStrings(address a, bytes4[] calldata k)
-        public
-        view
-        override
-        returns (string[] memory)
-    {
-        string[] memory result = new string[](k.length);
-        for (uint256 i = 0; i < k.length; i++) {
-            result[i] = storageStrings[a][k[i]];
-        }
-        return result;
+    function soulbound() public pure override returns (bool) {
+        return true;
     }
 
-    /**
-     * @dev get multiple address & multiple string from the storage
-     * @param a key
-     * @param k value
-     * @return string[][] memory value array
-     */
-    function getStrings(address[] calldata a, bytes4[] calldata k)
-        public
-        view
-        returns (string[][] memory)
-    {
-        string[][] memory result = new string[][](a.length);
-        for (uint256 i = 0; i < a.length; i++) {
-            result[i] = getStrings(a[i], k);
-        }
-        return result;
+    function setDAOBridge(address _daoBridgeAddress) public onlyOwner {
+        _daoBridge = _daoBridgeAddress;
     }
 
-    modifier onlySoulBoundMedalAddress(address _soulBoundMedalAddress) {
-        require(
-            _soulBoundMedalAddress.code.length > 0,
-            "given address is not a valid contract"
-        );
-        require(
-            IERC165(_soulBoundMedalAddress).supportsInterface(
-                type(ISoulBoundMedal).interfaceId
-            ),
-            "given address is not a valid soul bound medal contract"
-        );
-
+    modifier DataStorageCheck() {
+        require(_daoBridge != address(0), "dataStorage is not set");
         _;
     }
 
+    function transferOwnership(address newOwner) public override onlyOwner {
+        super.transferOwnership(newOwner);
+
+        ISoulBoundBridge soulBoundBridge = ISoulBoundBridge(_daoBridge);
+        try soulBoundBridge.onOwnerChage(address(this)) {} catch {}
+    }
+
     /**
-     * @dev  call on DAO owner change
-     * @param _dao address
+     * @dev save string to storage
+     * @param k key
+     * @param v value
      */
-    function onOwnerChage(address _dao)
+    function saveString(bytes4 k, string calldata v)
         public
+        onlyOwner
+        DataStorageCheck
+    {
+        IDataStorage dataStorageInstance = IDataStorage(_daoBridge);
+        dataStorageInstance.saveString(k, v);
+    }
+
+    /**
+     * @dev save multiple string to storage
+     * @param k key arrary
+     * @param v value arrary
+     */
+    function saveStrings(bytes4[] calldata k, string[] calldata v)
+        public
+        onlyOwner
+        DataStorageCheck
+    {
+        IDataStorage dataStorageInstance = IDataStorage(_daoBridge);
+        return dataStorageInstance.saveStrings(k, v);
+    }
+
+    /**
+     * @dev Add medals to current DAO
+     * @param medalsname array of medal name
+     * @param medalsuri array of medal image url
+     */
+    function addMedals(
+        string[] calldata medalsname,
+        string[] calldata medalsuri
+    ) public override onlyOwner {
+        require(medalsname.length > 0 && medalsname.length == medalsuri.length);
+        for (uint256 i = 0; i < medalsname.length; i++) {
+            _medalnameArr.push(medalsname[i]);
+            _medaluriArr.push(medalsuri[i]);
+            _medalPanel.push(MedalPanel(0, 0, 0, block.timestamp));
+        }
+    }
+
+    /**
+     * @dev get medals count
+     * @return uint256 the count of medals
+     */
+    function countMedals() public view override returns (uint256) {
+        return _medalnameArr.length;
+    }
+
+    /**
+     * @dev get medals
+     * @return array of medals
+     */
+    function getMedals()
+        public
+        view
         override
-        onlySoulBoundMedalAddress(_dao)
+        returns (
+            string[] memory,
+            string[] memory,
+            ISoulBoundMedal.MedalPanel[] memory
+        )
     {
-        _changeOwner(_dao);
+        return (_medalnameArr, _medaluriArr, _medalPanel);
     }
 
     /**
-     * @dev  get the owner of the contract
-     * @param _dao address
-     * @return address
+     * @dev get medalIndex by tokenid
+     * @param tokenid token id
+     * @return uint256 the medal index
      */
-    function getOwner(address _dao) private view returns (address) {
-        IOwnable ownable = IOwnable(_dao);
-        try ownable.owner() returns (address _owner) {
-            return _owner;
-        } catch {}
-        return address(0);
-    }
-
-    /**
-     * @dev  get the name of the contract
-     * @param _dao address
-     * @return string
-     */
-    function getName(address _dao) private view returns (string memory) {
-        IOwnable ownable = IOwnable(_dao);
-        try ownable.name() returns (string memory _name) {
-            return _name;
-        } catch {}
-        return "";
-    }
-
-    function _changeOwner(address _dao) private {
-        address owner = getOwner(_dao);
-        bytes32 key = keccak256(abi.encodePacked(owner, _dao));
-        if (contractOwnerMapIndex[key] == 0) {
-            contractOwnerMap[owner].push(_dao);
-            contractOwnerMapIndex[key] = contractOwnerMap[owner].length;
-        }
-    }
-
-    /**
-     * @dev  register a DAO contract
-     * @param _address user address
-     * @param _dao address  DAO contract address
-     */
-    function register(address _address, address _dao) public override {
-        if (storageEnumerableDAOMap[_dao] == 0) {
-            require(
-                _dao.code.length > 0,
-                "given address is not a valid contract"
-            );
-            require(
-                IERC165(_dao).supportsInterface(
-                    type(ISoulBoundMedal).interfaceId
-                ),
-                "given address is not a valid soul bound medal contract"
-            );
-            storageEnumerableDAOArr.push(_dao);
-            storageEnumerableDAOMap[_dao] = storageEnumerableDAOArr.length;
-
-            // register owner
-            _changeOwner(_dao);
-        }
-        bytes32 userDAOMappingKey = keccak256(abi.encodePacked(_address, _dao));
-        if (userDAOMapping[userDAOMappingKey] == 0) {
-            userDAOMapping[userDAOMappingKey] = 1;
-            if (storageEnumerableUserMap[_address].length == 0) {
-                storageEnumerableUserArr.push(_address);
-            }
-            storageEnumerableUserMap[_address].push(
-                storageEnumerableDAOMap[_dao]
-            );
-        }
-    }
-
-    /**
-     * @dev  DAO contract call this function on medal minted
-     * @param _address user address
-     * @param _dao address  DAO contract address
-     * @param _medalIndex uint256   medal index
-     */
-    function medalMint(
-        address _address,
-        address _dao,
-        uint256 _medalIndex
-    ) public override onlySoulBoundMedalAddress(_dao) {
-        bytes32 userDAOMappingKey = keccak256(abi.encodePacked(_address, _dao));
-        uint256[] memory keyIndex = userDaoMedalsMapIndex[userDAOMappingKey];
-        if (keyIndex.length == 0) {
-            userDaoMedalsDaoIndexMap[_address].push(
-                storageEnumerableDAOMap[_dao]
-            );
-        }
-        userDaoMedalsMapIndex[userDAOMappingKey].push(_medalIndex);
-    }
-
-    // endregion
-
-    // region DAO
-
-    /**
-     * @dev  count DAO
-     * @return uint256 DAO count
-     */
-    function countDAO() public view returns (uint256) {
-        return storageEnumerableDAOArr.length;
-    }
-
-    /**
-     * @dev list DAO
-     * @param offset uint256 query offset
-     * @param limit uint256 query limit
-     * @param medals_offset uint256 medal offset
-     * @param medals_limit uint256 medal limit,no medals fetched if 0
-     * @return string memory  json string
-     */
-    function listDAO(
-        uint256 offset,
-        uint256 limit,
-        uint256 medals_offset,
-        uint256 medals_limit // no medals fetched if 0
-    ) public view returns (string memory) {
-        /* 
-        {
-           "address": [
-                            '0x1',
-                            '0x2'
-                        ],
-            "medals": [
-                        {"total":1,"medals":[
-                                                    {
-                                                        "index":0,
-                                                        "name":"base64 string",
-                                                        "uri":"base64 string",
-                                                        "request":0,
-                                                        "approved":0,
-                                                        "rejected":0,
-                                                        "genesis":1539098983
-                                                    }
-                                            ]
-                        }
-                    ]
-        } 
-         */
-        string memory result_address = "[";
-        string memory result_medals = "[";
-        for (uint256 i = offset; i < offset + limit; i++) {
-            if (i >= storageEnumerableDAOArr.length) {
-                break;
-            }
-            if (i > offset) {
-                result_address = string(abi.encodePacked(result_address, ","));
-            }
-            result_address = string(
-                abi.encodePacked(
-                    result_address,
-                    '"',
-                    Strings.toHexString(
-                        uint256(uint160(storageEnumerableDAOArr[i]))
-                    ),
-                    '"'
-                )
-            );
-            if (medals_limit > 0) {
-                if (i > offset) {
-                    result_medals = string(
-                        abi.encodePacked(result_medals, ",")
-                    );
-                }
-                result_medals = string(
-                    abi.encodePacked(
-                        result_medals,
-                        listDAOMedals(
-                            storageEnumerableDAOArr[i],
-                            medals_offset,
-                            medals_limit
-                        )
-                    )
-                );
-            }
-        }
-        result_address = string(abi.encodePacked(result_address, "]"));
-        result_medals = string(abi.encodePacked(result_medals, "]"));
-        return
-            string(
-                abi.encodePacked(
-                    '{"address":',
-                    result_address,
-                    ',"medals":',
-                    result_medals,
-                    "}"
-                )
-            );
-    }
-
-    // endregion
-
-    // region CliamRequest
-
-    /**
-     * @dev  count CliamRequest by DAO
-     * @param _dao address DAO contract address
-     * @return uint256 CliamRequest count
-     */
-    function countCliamRequest(address _dao) public view returns (uint256) {
-        ISoulBoundMedal soulBoundMedal = ISoulBoundMedal(_dao);
-        try soulBoundMedal.getCliamRequestSize() returns (uint256 _size) {
-            return _size;
-        } catch {
-            return 0;
-        }
-    }
-
-    /**
-     * @dev  count approved CliamRequest by DAO
-     * @param _dao address DAO contract address
-     * @return string memory  json string
-     */
-    function countCliamRequestApproved(address _dao)
+    function getMedalIndexByTokenid(uint256 tokenid)
         public
         view
+        override
         returns (uint256)
     {
-        ISoulBoundMedal soulBoundMedal = ISoulBoundMedal(_dao);
-        uint256 count = 0;
-        try soulBoundMedal.countMedals() returns (uint256 _size) {
-            for (uint256 i = 0; i < _size; i++) {
-                count += countCliamRequestApproved(_dao, i);
-            }
-        } catch {}
-        return count;
+        return _medalMap[tokenid];
     }
 
     /**
-     * @dev  count Approved CliamRequest by DAO and medal index
-     * @param _dao address DAO contract address
-     * @return string memory  json string
+     * @dev get cliam status by key
+     * @param key key, bytes32 : request user address + medalIndex
+     * @return uint256 the cliam status,  1:pending,2:rejected ,>2 tokenid
      */
-    function countCliamRequestApproved(address _dao, uint256 _madalIndex)
+    function getCliamStatusByBytes32Key(bytes32 key)
         public
         view
+        override
         returns (uint256)
     {
-        ISoulBoundMedal soulBoundMedal = ISoulBoundMedal(_dao);
-        try soulBoundMedal.countCliamRequestApproved(_madalIndex) returns (
-            uint256 _size
-        ) {
-            return _size;
-        } catch {}
-        return 0;
+        return _cliamStatus[key];
     }
 
     /**
-     * @dev get CliamRequest by DAO
-     * @param medalContract  address  medal contract address instance
-     * @param _index  uint256  CliamRequest index
-     * @return string memory  json string
+     * @dev get size of cliam request list
+     * @return uint256 the size of cliam request list
      */
-    function getCliamRequest(ISoulBoundMedal medalContract, uint256 _index)
-        private
+    function getCliamRequestSize() public view override returns (uint256) {
+        return _cliamRequestList.length;
+    }
+
+    /**
+     * @dev get cliam request item by index
+     * @return ISoulBoundMedal.CliamRequest
+     */
+    function getCliamRequest(uint256 _index)
+        public
         view
+        override
+        returns (ISoulBoundMedal.CliamRequest memory)
+    {
+        require(_index < _cliamRequestList.length);
+        return _cliamRequestList[_index];
+    }
+
+    /**
+     * @dev get the size of cliam request approved list by medal index
+     * @param _medalIndex medal index
+     * @return uint256 the size of cliam request approved list
+     */
+    function countCliamRequestApproved(uint256 _medalIndex)
+        public
+        view
+        override
+        returns (uint256)
+    {
+        return _cliamRequestListApprovedIndex[_medalIndex].length;
+    }
+
+    /**
+     * @dev get Approved CliamRequest list index arrary by medal index
+     * @param _medalIndex medal index
+     * @return uint256[] CliamRequest index arrary of Cliam Request Approved
+     */
+    function listCliamRequestApproved(uint256 _medalIndex)
+        public
+        view
+        override
+        returns (uint256[] memory)
+    {
+        return _cliamRequestListApprovedIndex[_medalIndex];
+    }
+
+    /**
+     * @dev update medal by medal index
+     * @param medalIndex index of medal
+     * @param name new name of medal
+     * @param uri new image url of medal
+     */
+    function updateMedal(
+        uint256 medalIndex,
+        string calldata name,
+        string calldata uri
+    ) public override onlyOwner {
+        require(medalIndex < _medalnameArr.length);
+        _medalnameArr[medalIndex] = name;
+        _medaluriArr[medalIndex] = uri;
+    }
+
+    /**
+     * @dev  Approved cliam
+     * @param cliamId the index of the cliam request id
+     * Emits a {Transfer} event.
+     */
+    function cliamApproved(uint256 cliamId) public override onlyOwner {
+        require(cliamId < _cliamRequestList.length);
+        ISoulBoundMedal.CliamRequest memory request = _cliamRequestList[
+            cliamId
+        ];
+        require(request._status == 1, "cliam request is not pending");//1:pending,2:rejected ,>2 tokenid
+        bytes32 k = keccak256(
+            abi.encodePacked(request._address, request._medalIndex)
+        );
+        uint256 cliamStatus = _cliamStatus[k]; //1:pending,2:rejected ,>2 tokenid
+        require(
+            cliamStatus < 3,
+            "cliam request of the medal index is already approved before"
+        );
+        _cliamRequestListApprovedIndex[request._medalIndex].push(cliamId);
+        unchecked {
+            _medalPanel[request._medalIndex]._approved++;
+            _medalPanel[request._medalIndex]._request--;
+        }
+        _tokenIdCounter.increment();
+        uint256 tokenId = _tokenIdCounter.current();
+        _medalMap[tokenId] = request._medalIndex;
+
+        _cliamStatus[k] = tokenId;
+        _cliamRequestList[cliamId]._status = tokenId; //1:pending,2:rejected ,>2 tokenid
+
+        _mint(request._address, tokenId);
+    }
+
+    /**
+     * @dev  Rejected cliam
+     * @param cliamId the index of the cliam request id
+     */
+    function cliamRejected(uint256 cliamId) public override onlyOwner {
+        require(cliamId < _cliamRequestList.length);
+        ISoulBoundMedal.CliamRequest memory request = _cliamRequestList[
+            cliamId
+        ];
+        require(request._status == 1, "cliam request is not pending"); //1:pending,2:rejected ,>2 tokenid
+        bytes32 k = keccak256(
+            abi.encodePacked(request._address, request._medalIndex)
+        );
+        uint256 cliamStatus = _cliamStatus[k]; //1:pending,2:rejected ,>2 tokenid
+        _cliamRequestList[cliamId]._status = 2;
+        if (cliamStatus < 3) {
+            _cliamStatus[k] = 1;
+        }
+        unchecked {
+            _medalPanel[request._medalIndex]._rejected++;
+            _medalPanel[request._medalIndex]._request--;
+        }
+    }
+
+    /**
+     * @dev Users apply for mint medal
+     * @param medalIndex the index of the medal
+     */
+    function cliamRequest(uint256 medalIndex) public override {
+        require(medalIndex < _medalnameArr.length);
+        require(msg.sender.code.length == 0, "contract address not supported");
+        bytes32 k = keccak256(abi.encodePacked(msg.sender, medalIndex));
+
+        require(_cliamStatus[k] < 3, "already approved");///1:pending,2:rejected ,>2 tokenid
+
+        _cliamStatus[k] = 1;
+        _cliamRequestList.push(
+            ISoulBoundMedal.CliamRequest(
+                msg.sender,
+                medalIndex,
+                block.timestamp,
+                1
+            )
+        );
+
+        unchecked {
+            _medalPanel[medalIndex]._request++;
+        }
+        ISoulBoundBridge soulBoundBridge = ISoulBoundBridge(_daoBridge);
+        soulBoundBridge.onCliamRequest(msg.sender, address(this), medalIndex);
+    }
+
+    /**
+     * @dev  RFC 3986 compliant URL:base64://{json encoded with base64} ,json {"name":"base64(medal name)","image":"base64(medal uri)"}
+     * @param tokenId  tokenid
+     * @return string  the base64 uri of the Token
+     */
+    function tokenURI(uint256 tokenId)
+        public
+        view
+        override(ERC721)
         returns (string memory)
     {
-        try medalContract.getCliamRequest(_index) returns (
-            ISoulBoundMedal.CliamRequest memory cr
-        ) {
-            /* 
-        {
-            "index":0,
-            "address":"0x",
-            "medalindex":0,
-            "timestamp":0,
-            "status":0 //// status of the cliam,  0: rejected , 1: pending, 2: approved
-        }
-         */
-            return
-                string(
+        require(
+            _exists(tokenId),
+            "ERC721Metadata: URI query for nonexistent token"
+        );
+        string memory baseURI = _baseURI();
+        string memory medalName = _medalnameArr[_medalMap[tokenId]];
+        string memory medalURI = string(
+            abi.encodePacked(baseURI, _medaluriArr[_medalMap[tokenId]])
+        );
+        string memory json = string(
+            abi.encodePacked(
+                "base64://",
+                Base64.encode(
                     abi.encodePacked(
-                        '{"index":',
-                        Strings.toString(_index),
-                        ',"address":"',
-                        Strings.toHexString(uint256(uint160(cr._address))),
-                        '","medalindex":',
-                        Strings.toString(cr._medalIndex),
-                        ',"timestamp":',
-                        Strings.toString(cr._timestamp),
-                        ',"status":',
-                        Strings.toString(cr._status),
-                        "}"
+                        '{"owner":"',
+                        Strings.toHexString(uint256(uint160(ownerOf(tokenId)))),
+                        '","name":"',
+                        Base64.encode(bytes(medalName)),
+                        '","image":"',
+                        Base64.encode(bytes(medalURI)),
+                        '"}'
                     )
-                );
-        } catch {}
-        return "{}";
+                )
+            )
+        );
+        return json;
     }
 
-    /**
-     * @dev get CliamRequest list by DAO
-     * @param _dao address DAO contract address
-     * @param _offset uint256 query offset
-     * @param _limit uint256 query limit
-     * @return string memory  json string
-     */
-    function getCliamRequest(
-        address _dao,
-        uint256 _offset,
-        uint256 _limit
-    ) public view returns (string memory) {
-        string memory result = "[";
-        ISoulBoundMedal medalContract = ISoulBoundMedal(_dao);
-        uint256 c = countCliamRequest(_dao);
-        for (uint256 i = _offset; i < _offset + _limit; i++) {
-            if (i >= c) {
-                break;
-            }
-            if (i > _offset) {
-                result = string(abi.encodePacked(result, ","));
-            }
-            result = string(
-                abi.encodePacked(result, getCliamRequest(medalContract, i))
-            );
-        }
-        return string(abi.encodePacked(result, "]"));
-    }
-
-    /**
-     * @dev get CliamRequest Approved list by DAO
-     * @param _dao address DAO contract address
-     * @param _offset uint256 query offset
-     * @param _limit uint256 query limit
-     * @return string memory  json string
-     */
-    function getCliamRequestApproved(
-        address _dao,
-        uint256 _offset, // offset of each medal
-        uint256 _limit // limit of each medal
-    ) public view returns (string memory) {
-        /* 
-
-[
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        override(ERC721, IERC165)
+        returns (bool)
     {
-        "medalindex":0,
-        "list":[
-            {
-                "index":0,
-                "address":"0x",
-                "timestamp":0,
-                "status":0 //// status of the cliam,  0: rejected , 1: pending, 2: approved
-            }
-        ]
-    }
-]
-*/
-        string memory result = "[";
-        ISoulBoundMedal medalContract = ISoulBoundMedal(_dao);
-        uint256 c = 0;
-        try medalContract.countMedals() returns (uint256 _size) {
-            c = _size;
-        } catch {}
-        for (uint256 j = 0; j < c; j++) {
-            if (j > 0) {
-                result = string(abi.encodePacked(result, ","));
-            }
-            result = string(
-                abi.encodePacked(
-                    result,
-                    '{"medalindex":',
-                    Strings.toString(j),
-                    ',"list":',
-                    getCliamRequestApproved(_dao, _offset, _limit, j),
-                    "}"
-                )
-            );
-        }
-
-        return string(abi.encodePacked(result, "]"));
+        return
+            interfaceId == type(ISoulBound).interfaceId ||
+            interfaceId == type(ISoulBoundMedal).interfaceId ||
+            super.supportsInterface(interfaceId);
     }
 
-
-    /**
-     * @dev get CliamRequest Approved list by DAO and medal index
-     * @param _dao address DAO contract address
-     * @param _offset uint256 query offset
-     * @param _limit uint256 query limit
-     * @param _medalIndex uint256 medal index
-     * @return string memory  json string
-     */
-    function getCliamRequestApproved(
-        address _dao,
-        uint256 _offset,
-        uint256 _limit,
-        uint256 _medalIndex
-    ) public view returns (string memory) {
-        string memory result = "[";
-        ISoulBoundMedal medalContract = ISoulBoundMedal(_dao);
-        uint256 c = countCliamRequestApproved(_dao, _medalIndex);
-        for (uint256 i = _offset; i < _offset + _limit; i++) {
-            if (i >= c) {
-                break;
-            }
-            if (i > _offset) {
-                result = string(abi.encodePacked(result, ","));
-            }
-            result = string(
-                abi.encodePacked(result, getCliamRequest(medalContract, i))
-            );
-        }
-        return string(abi.encodePacked(result, "]"));
+    modifier SoulBoundToken() {
+        require(soulbound() == false, "SoulBound token cannot be transferred.");
+        _;
     }
 
-    // endregion
+    function transferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    ) public override(IERC721, ERC721) SoulBoundToken {}
 
-    // region medals
+    function safeTransferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    ) public override(IERC721, ERC721) SoulBoundToken {}
 
-    /**
-     * @dev list medals of DAO
-     * @param offset the offset, from 0
-     * @param limit the limit, minimum 1
-     * @return string json string of query result
-     */
-    function listDAOMedals(
-        address _address,
-        uint256 offset,
-        uint256 limit
-    ) public view onlySoulBoundMedalAddress(_address) returns (string memory) {
-        /*
-        {
-            "name":"base64",
-            "owner":"0x",
-            "total":1,"medals":[
-                {
-                    "index":0,
-                    "name":"base64 string",
-                    "uri":"base64 string",
-                    "request":0,
-                    "approved":0,
-                    "rejected":0,
-                    "genesis":1539098983
-                }
-            
-            ]
-        }
-         */
-        ISoulBoundMedal medalContract = ISoulBoundMedal(_address);
-        string[] memory _medalnameArr;
-        string[] memory _medaluriArr;
-        ISoulBoundMedal.MedalPanel[] memory _medalPanel;
-        try medalContract.getMedals() returns (
-            string[] memory __medalnameArr,
-            string[] memory __medaluriArr,
-            ISoulBoundMedal.MedalPanel[] memory __medalPanel
-        ) {
-            _medalnameArr = __medalnameArr;
-            _medaluriArr = __medaluriArr;
-            _medalPanel = __medalPanel;
-        } catch {}
-        string memory daoName = getName(_address);
-        address daoOwner = getOwner(_address);
-        string memory result = string(
-            abi.encodePacked(
-                '{"name":"',
-                Base64.encode(bytes(daoName)),
-                '","owner":"',
-                Strings.toHexString(uint256(uint160(daoOwner))),
-                '","total":'
-            )
-        );
-        //string memory result = '{"total":';
-        result = string(
-            abi.encodePacked(
-                result,
-                Strings.toString(_medalnameArr.length),
-                ',"medals":['
-            )
-        );
-        unchecked {
-            for (uint256 i = offset; i < offset + limit; i++) {
-                if (i >= _medalnameArr.length) {
-                    break;
-                }
-                if (i > offset) {
-                    result = string(abi.encodePacked(result, ","));
-                }
-                result = string(
-                    abi.encodePacked(
-                        result,
-                        "{",
-                        '"index":',
-                        Strings.toString(i),
-                        ',"name":"',
-                        Base64.encode(bytes(_medalnameArr[i])),
-                        '","uri":"',
-                        Base64.encode(bytes(_medaluriArr[i])),
-                        '","request":',
-                        Strings.toString(_medalPanel[i]._request),
-                        ',"approved":',
-                        Strings.toString(_medalPanel[i]._approved),
-                        ',"rejected":',
-                        Strings.toString(_medalPanel[i]._rejected),
-                        ',"genesis":',
-                        Strings.toString(_medalPanel[i]._genesis),
-                        "}"
-                    )
-                );
-            }
-        }
-        result = string(abi.encodePacked(result, "]}"));
-
-        return result;
-    }
-
-    // endregion
-
-    // region user
-
-    /**
-     * @dev get user info
-     * @param _address address user address
-     * @return string json string of user info
-     */
-    function userDetail(address _address) public view returns (string memory) {
-        /* 
-{
-    "owner": [
-        "0x1",
-        "0x2"
-    ],
-    "medals": [
-        {
-            "dao": "0x1",
-            "owned": [
-                {
-                    "index": 0,
-                    "name": "base64 string",
-                    "uri": "base64 string",
-                    "request": 0,
-                    "approved": 0,
-                    "rejected": 0,
-                    "genesis": 1539098983
-                }
-            ]
-        }
-    ]
-}
-         */
-        string memory result = '{"owner":[';
-        address[] memory _ownerArr = contractOwnerMap[_address];
-        uint256 _i = 0;
-        for (uint256 i = 0; i < _ownerArr.length; i++) {
-            address _dao = _ownerArr[i];
-            IOwnable ownable = IOwnable(_dao);
-            address owner = ownable.owner();
-            if (owner != _address) {
-                continue;
-            }
-            if (_i > 0) {
-                result = string(abi.encodePacked(result, ","));
-            }
-            result = string(
-                abi.encodePacked(
-                    result,
-                    '"',
-                    Strings.toHexString(uint256(uint160(_dao))),
-                    '"'
-                )
-            );
-            _i++;
-        }
-        result = string(abi.encodePacked(result, '],"medals":['));
-        uint256[] memory userDaoMedals = userDaoMedalsDaoIndexMap[_address];
-        for (uint256 i = 0; i < userDaoMedals.length; i++) {
-            if (i > 0) {
-                result = string(abi.encodePacked(result, ","));
-            }
-            address _dao = storageEnumerableDAOArr[userDaoMedals[i] - 1];
-            result = string(
-                abi.encodePacked(
-                    result,
-                    '{"dao":"',
-                    Strings.toHexString(uint256(uint160(_dao))),
-                    '","owned":['
-                )
-            );
-            ISoulBoundMedal medalContract = ISoulBoundMedal(_dao);
-            string[] memory _medalnameArr;
-            string[] memory _medaluriArr;
-            ISoulBoundMedal.MedalPanel[] memory _medalPanel;
-            try medalContract.getMedals() returns (
-                string[] memory __medalnameArr,
-                string[] memory __medaluriArr,
-                ISoulBoundMedal.MedalPanel[] memory __medalPanel
-            ) {
-                _medalnameArr = __medalnameArr;
-                _medaluriArr = __medaluriArr;
-                _medalPanel = __medalPanel;
-            } catch {}
-            bytes32 userDAOMappingKey = keccak256(
-                abi.encodePacked(_address, _dao)
-            );
-            uint256[] memory ownedMedalsIndex = userDaoMedalsMapIndex[
-                userDAOMappingKey
-            ];
-            for (uint256 j = 0; j < ownedMedalsIndex.length; j++) {
-                if (j > 0) {
-                    result = string(abi.encodePacked(result, ","));
-                }
-                uint256 medalIndex = ownedMedalsIndex[j];
-
-                result = string(
-                    abi.encodePacked(
-                        result,
-                        '{"index":',
-                        Strings.toString(medalIndex),
-                        ',"name":"',
-                        Base64.encode(bytes(_medalnameArr[medalIndex])),
-                        '","uri":"',
-                        Base64.encode(bytes(_medaluriArr[medalIndex])),
-                        '","request":',
-                        Strings.toString(_medalPanel[medalIndex]._request),
-                        ',"approved":',
-                        Strings.toString(_medalPanel[medalIndex]._approved),
-                        ',"rejected":',
-                        Strings.toString(_medalPanel[medalIndex]._rejected),
-                        ',"genesis":',
-                        Strings.toString(_medalPanel[medalIndex]._genesis),
-                        "}"
-                    )
-                );
-            }
-            result = string(abi.encodePacked(result, "]}"));
-        }
-        result = string(abi.encodePacked(result, "]}"));
-
-        return result;
-    }
-
-    // endregion
+    function safeTransferFrom(
+        address from,
+        address to,
+        uint256 tokenId,
+        bytes memory _data
+    ) public override(IERC721, ERC721) SoulBoundToken {}
 }

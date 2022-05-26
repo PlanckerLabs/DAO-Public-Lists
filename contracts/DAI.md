@@ -82,7 +82,7 @@ constructor(
     /**
      * @dev get cliam status by key | 根据key获取mint请求状态
      * @param key key, bytes32 : request user address + medalIndex | 键，bytes32：用户地址+勋章索引
-     * @return uint8 the cliam status, 0: rejected , 1: pending, 2: approved    | 获取mint请求状态，0：拒绝，1：待定，2：通过
+     * @return uint8 the cliam status, 1:pending,2:rejected ,>2 tokenid    | 获取mint请求状态， 
      */
     function getCliamStatusByBytes32Key(bytes32 key)
     

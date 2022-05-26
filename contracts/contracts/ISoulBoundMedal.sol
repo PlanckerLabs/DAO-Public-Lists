@@ -48,14 +48,16 @@ interface ISoulBoundMedal is ISoulBound {
         external
         view
         returns (uint256);
-
+ 
     /**
      * @dev get cliam status by key
+     * @param key key, bytes32 : request user address + medalIndex
+     * @return uint256 the cliam status,  1:pending,2:rejected ,>2 tokenid
      */
     function getCliamStatusByBytes32Key(bytes32 key)
         external
         view
-        returns (uint8);
+        returns (uint256);
 
     function getCliamRequestSize() external view returns (uint256);
 
@@ -63,7 +65,7 @@ interface ISoulBoundMedal is ISoulBound {
         address _address; // request address
         uint256 _medalIndex; // medal index
         uint256 _timestamp; // timestamp
-        uint8 _status; // status of the cliam,  0: rejected , 1: pending, 2: approved
+        uint256 _status; // status of the cliam,  1:pending,2:rejected ,>2 tokenid
     }
 
     function getCliamRequest(uint256 _index)

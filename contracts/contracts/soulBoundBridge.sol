@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 import "./ISoulBoundBridge.sol";
 
-interface IOwnable {
+interface ITokenInfo {
     /**
      * @dev Returns the address of the current owner.
      */
@@ -23,29 +23,29 @@ interface IOwnable {
 contract SoulBoundBridge is IDataStorage, ISoulBoundBridge {
     // region variables
 
-    address[] public storageEnumerableUserArr;
+    address[] private storageEnumerableUserArr;
 
-    mapping(address => uint256[]) public storageEnumerableUserMap;
+    mapping(address => uint256[]) private storageEnumerableUserMap;
 
-    mapping(bytes32 => uint8) public userDAOMapping;
+    mapping(bytes32 => bool) private userDAOMapping;
 
-    mapping(address => uint256) public storageEnumerableDAOMap;
+    mapping(address => uint256) private storageEnumerableDAOMap;
 
-    address[] public storageEnumerableDAOArr;
+    address[] private storageEnumerableDAOArr;
 
-    mapping(address => mapping(bytes4 => string)) public storageStrings;
+    mapping(address => mapping(bytes4 => string)) private storageStrings;
 
-    mapping(address => uint256[]) public userDaoMedalsDaoIndexMap; // key: user address,value:index-1 is the dao in the storageEnumerableDAOArr
-    mapping(bytes32 => uint256[]) public userDaoMedalsMapIndex; // key: user address+ dao address,value:value:user climbed the index of medal
+    mapping(address => uint256[]) private userDaoMedalsDaoIndexMap; // key: user address,value:index-1 is the dao in the storageEnumerableDAOArr
+    mapping(bytes32 => uint256[]) private userDaoMedalIndexMapIndex; // key: user address+ dao address,value:medalIndex
+    mapping(bytes32 => bool) private userDaoMedalIndexMapUnique; // key: user address+ dao address+ medalIndex,value: true:has set
 
-    mapping(address => address[]) public contractOwnerMap; // key:user address,value: dao address array
-    mapping(bytes32 => uint256) public contractOwnerMapIndex; // key: user address+ dao address,value -1 is the index of the contractOwnerMap -> value
+    mapping(address => address[]) private contractOwnerMap; // key:user address,value: dao address array
+    mapping(bytes32 => uint256) private contractOwnerMapIndex; // key: user address+ dao address,value -1 is the index of the contractOwnerMap -> value
 
     // endregion
 
-    constructor() {}
-
     // region functional
+    constructor() {}
 
     /**
      * @dev save a string to the storage
@@ -154,7 +154,7 @@ contract SoulBoundBridge is IDataStorage, ISoulBoundBridge {
      * @return address
      */
     function getOwner(address _dao) private view returns (address) {
-        IOwnable ownable = IOwnable(_dao);
+        ITokenInfo ownable = ITokenInfo(_dao);
         try ownable.owner() returns (address _owner) {
             return _owner;
         } catch {}
@@ -167,7 +167,7 @@ contract SoulBoundBridge is IDataStorage, ISoulBoundBridge {
      * @return string
      */
     function getName(address _dao) private view returns (string memory) {
-        IOwnable ownable = IOwnable(_dao);
+        ITokenInfo ownable = ITokenInfo(_dao);
         try ownable.name() returns (string memory _name) {
             return _name;
         } catch {}
@@ -184,11 +184,16 @@ contract SoulBoundBridge is IDataStorage, ISoulBoundBridge {
     }
 
     /**
-     * @dev  register a DAO contract
-     * @param _address user address
-     * @param _dao address  DAO contract address
+     * @dev on user request a medal
+     * @param _address address of user
+     * @param _dao  address of dao
+     * @param _medalIndex tokenid of medal
      */
-    function register(address _address, address _dao) public override {
+    function onCliamRequest(
+        address _address,
+        address _dao,
+        uint256 _medalIndex
+    ) public override {
         if (storageEnumerableDAOMap[_dao] == 0) {
             require(
                 _dao.code.length > 0,
@@ -207,8 +212,13 @@ contract SoulBoundBridge is IDataStorage, ISoulBoundBridge {
             _changeOwner(_dao);
         }
         bytes32 userDAOMappingKey = keccak256(abi.encodePacked(_address, _dao));
-        if (userDAOMapping[userDAOMappingKey] == 0) {
-            userDAOMapping[userDAOMappingKey] = 1;
+        if (userDAOMapping[userDAOMappingKey] == false) {
+            // register user
+            require(
+                _address.code.length == 0,
+                "given address is a contract,soul bound medal can not be claimed by a contract"
+            );
+            userDAOMapping[userDAOMappingKey] = true;
             if (storageEnumerableUserMap[_address].length == 0) {
                 storageEnumerableUserArr.push(_address);
             }
@@ -216,27 +226,123 @@ contract SoulBoundBridge is IDataStorage, ISoulBoundBridge {
                 storageEnumerableDAOMap[_dao]
             );
         }
+
+        bytes32 userDAOMedalIndexMappingKey = keccak256(
+            abi.encodePacked(_address, _dao, _medalIndex)
+        );
+        if (userDaoMedalIndexMapUnique[userDAOMedalIndexMappingKey] == false) {
+            userDaoMedalIndexMapUnique[userDAOMedalIndexMappingKey] = true;
+
+            if (userDaoMedalIndexMapIndex[userDAOMappingKey].length == 0) {
+                uint256 DAOIndex = storageEnumerableDAOMap[_dao];
+                userDaoMedalsDaoIndexMap[_address].push(DAOIndex);
+            }
+            userDaoMedalIndexMapIndex[userDAOMappingKey].push(_medalIndex);
+        }
     }
 
-    /**
-     * @dev  DAO contract call this function on medal minted
-     * @param _address user address
-     * @param _dao address  DAO contract address
-     * @param _medalIndex uint256   medal index
-     */
-    function medalMint(
-        address _address,
-        address _dao,
-        uint256 _medalIndex
-    ) public override onlySoulBoundMedalAddress(_dao) {
-        bytes32 userDAOMappingKey = keccak256(abi.encodePacked(_address, _dao));
-        uint256[] memory keyIndex = userDaoMedalsMapIndex[userDAOMappingKey];
-        if (keyIndex.length == 0) {
-            userDaoMedalsDaoIndexMap[_address].push(
-                storageEnumerableDAOMap[_dao]
-            );
-        }
-        userDaoMedalsMapIndex[userDAOMappingKey].push(_medalIndex);
+    // endregion
+
+    // region Composability functions for other contracts
+
+    //address[] private storageEnumerableUserArr;
+    function get_storageEnumerableUserArr()
+        public
+        view
+        returns (address[] memory)
+    {
+        return storageEnumerableUserArr;
+    }
+
+
+    //mapping(address => uint256[]) private storageEnumerableUserMap;
+    function get_storageEnumerableUserMap(address _address)
+        public
+        view
+        returns (uint256[] memory)
+    {
+        return storageEnumerableUserMap[_address];
+    }
+
+    //mapping(bytes32 => bool) private userDAOMapping;
+    function get_userDAOMapping(bytes32 key)
+        public
+        view
+        returns (bool)
+    {
+        return userDAOMapping[key];
+    }
+
+    //mapping(address => uint256) private storageEnumerableDAOMap;
+    function get_storageEnumerableDAOMap(address _dao)
+        public
+        view
+        returns (uint256)
+    {
+        return storageEnumerableDAOMap[_dao];
+    }
+
+    //address[] private storageEnumerableDAOArr;
+    function get_storageEnumerableDAOArr()
+        public
+        view
+        returns (address[] memory)
+    {
+        return storageEnumerableDAOArr;
+    }
+
+    //mapping(address => mapping(bytes4 => string)) private storageStrings;
+    function get_storageStrings(address _dao, bytes4 _key)
+        public
+        view
+        returns (string memory)
+    {
+        return storageStrings[_dao][_key];
+    }
+
+    //mapping(address => uint256[]) private userDaoMedalsDaoIndexMap;
+    function get_userDaoMedalsDaoIndexMap(address _address)
+        public
+        view
+        returns (uint256[] memory)
+    {
+        return userDaoMedalsDaoIndexMap[_address];
+    }
+
+    //mapping(bytes32 => uint256[]) private userDaoMedalIndexMapIndex;
+    function get_userDaoMedalIndexMapIndex(bytes32 key)
+        public
+        view
+        returns (uint256[] memory)
+    {
+        return userDaoMedalIndexMapIndex[key];
+    }
+
+    //mapping(bytes32 => bool) private userDaoMedalIndexMapUnique;
+    function get_userDaoMedalIndexMapUnique(bytes32 key)
+        public
+        view
+        returns (bool)
+    {
+        return userDaoMedalIndexMapUnique[key];
+    }
+
+    //mapping(address => address[]) private contractOwnerMap;
+    function get_contractOwnerMap(address _owner)
+        public
+        view
+        returns (address[] memory)
+    {
+        return contractOwnerMap[_owner];
+    }
+
+    //mapping(bytes32 => uint256) private contractOwnerMapIndex;
+    function get_contractOwnerMapIndex(bytes32 key)
+        public
+        view
+        returns (uint256)
+    {
+        return contractOwnerMapIndex[key];
     }
 
     // endregion
@@ -415,7 +521,7 @@ contract SoulBoundBridge is IDataStorage, ISoulBoundBridge {
             "address":"0x",
             "medalindex":0,
             "timestamp":0,
-            "status":0 //// status of the cliam,  0: rejected , 1: pending, 2: approved
+            "status":0 //// status of the cliam,   1:pending,2:rejected ,>2 tokenid
         }
          */
             return
@@ -519,7 +625,6 @@ contract SoulBoundBridge is IDataStorage, ISoulBoundBridge {
 
         return string(abi.encodePacked(result, "]"));
     }
-
 
     /**
      * @dev get CliamRequest Approved list by DAO and medal index
@@ -655,6 +760,32 @@ contract SoulBoundBridge is IDataStorage, ISoulBoundBridge {
 
     // endregion
 
+    // region tokenId
+
+    /**
+     * @dev get tokenId or cliam status by DAO and medal index
+     * @param _user address user address
+     * @param _dao address DAO contract address
+     * @param _medalIndex uint256 medal index
+     * @return uint256   1:pending,2:rejected ,>2 tokenid
+     */
+    function _getCliamStatusByBytes32Key(
+        address _user,
+        address _dao,
+        uint256 _medalIndex
+    ) private view returns (uint256) {
+        ISoulBoundMedal medalContract = ISoulBoundMedal(_dao);
+        bytes32 k = keccak256(abi.encodePacked(_user, _medalIndex));
+        try medalContract.getCliamStatusByBytes32Key(k) returns (
+            uint256 _status
+        ) {
+            return _status;
+        } catch {}
+        return 0;
+    }
+
+    // endregion
+
     // region user
 
     /**
@@ -665,16 +796,17 @@ contract SoulBoundBridge is IDataStorage, ISoulBoundBridge {
     function userDetail(address _address) public view returns (string memory) {
         /* 
 {
-    "owner": [
+    "owned": [
         "0x1",
         "0x2"
     ],
-    "medals": [
+    "dao": [
         {
-            "dao": "0x1",
-            "owned": [
+            "address": "0x1",
+            "medals": [
                 {
-                    "index": 0,
+                    "medalindex": 0, 
+                    "status":1, //status of the cliam,0:nodata, 1:pending,2:rejected ,>2 tokenid
                     "name": "base64 string",
                     "uri": "base64 string",
                     "request": 0,
@@ -687,92 +819,137 @@ contract SoulBoundBridge is IDataStorage, ISoulBoundBridge {
     ]
 }
          */
-        string memory result = '{"owner":[';
-        address[] memory _ownerArr = contractOwnerMap[_address];
-        uint256 _i = 0;
-        for (uint256 i = 0; i < _ownerArr.length; i++) {
-            address _dao = _ownerArr[i];
-            IOwnable ownable = IOwnable(_dao);
-            address owner = ownable.owner();
-            if (owner != _address) {
-                continue;
-            }
-            if (_i > 0) {
-                result = string(abi.encodePacked(result, ","));
-            }
-            result = string(
-                abi.encodePacked(
-                    result,
-                    '"',
-                    Strings.toHexString(uint256(uint160(_dao))),
-                    '"'
-                )
-            );
-            _i++;
-        }
-        result = string(abi.encodePacked(result, '],"medals":['));
-        uint256[] memory userDaoMedals = userDaoMedalsDaoIndexMap[_address];
-        for (uint256 i = 0; i < userDaoMedals.length; i++) {
-            if (i > 0) {
-                result = string(abi.encodePacked(result, ","));
-            }
-            address _dao = storageEnumerableDAOArr[userDaoMedals[i] - 1];
-            result = string(
-                abi.encodePacked(
-                    result,
-                    '{"dao":"',
-                    Strings.toHexString(uint256(uint160(_dao))),
-                    '","owned":['
-                )
-            );
-            ISoulBoundMedal medalContract = ISoulBoundMedal(_dao);
-            string[] memory _medalnameArr;
-            string[] memory _medaluriArr;
-            ISoulBoundMedal.MedalPanel[] memory _medalPanel;
-            try medalContract.getMedals() returns (
-                string[] memory __medalnameArr,
-                string[] memory __medaluriArr,
-                ISoulBoundMedal.MedalPanel[] memory __medalPanel
-            ) {
-                _medalnameArr = __medalnameArr;
-                _medaluriArr = __medaluriArr;
-                _medalPanel = __medalPanel;
-            } catch {}
-            bytes32 userDAOMappingKey = keccak256(
-                abi.encodePacked(_address, _dao)
-            );
-            uint256[] memory ownedMedalsIndex = userDaoMedalsMapIndex[
-                userDAOMappingKey
-            ];
-            for (uint256 j = 0; j < ownedMedalsIndex.length; j++) {
-                if (j > 0) {
+        string memory result = '{"owned":[';
+
+        {
+            //Stack too deep
+            address[] memory _ownerArr = contractOwnerMap[_address];
+            uint256 _i = 0;
+            for (uint256 i = 0; i < _ownerArr.length; i++) {
+                address _dao = _ownerArr[i];
+                ITokenInfo ownable = ITokenInfo(_dao);
+                address owner = ownable.owner();
+                if (owner != _address) {
+                    continue;
+                }
+                if (_i > 0) {
                     result = string(abi.encodePacked(result, ","));
                 }
-                uint256 medalIndex = ownedMedalsIndex[j];
-
                 result = string(
                     abi.encodePacked(
                         result,
-                        '{"index":',
-                        Strings.toString(medalIndex),
-                        ',"name":"',
-                        Base64.encode(bytes(_medalnameArr[medalIndex])),
-                        '","uri":"',
-                        Base64.encode(bytes(_medaluriArr[medalIndex])),
-                        '","request":',
-                        Strings.toString(_medalPanel[medalIndex]._request),
-                        ',"approved":',
-                        Strings.toString(_medalPanel[medalIndex]._approved),
-                        ',"rejected":',
-                        Strings.toString(_medalPanel[medalIndex]._rejected),
-                        ',"genesis":',
-                        Strings.toString(_medalPanel[medalIndex]._genesis),
-                        "}"
+                        '"',
+                        Strings.toHexString(uint256(uint160(_dao))),
+                        '"'
                     )
                 );
+                _i++;
             }
-            result = string(abi.encodePacked(result, "]}"));
         }
+        result = string(abi.encodePacked(result, '],"dao":['));
+        {
+            uint256[] memory userDaoMedals = userDaoMedalsDaoIndexMap[_address];
+
+            for (uint256 i = 0; i < userDaoMedals.length; i++) {
+                //for (uint256 i = _pageIndex*5; i < 5*(_pageIndex+1); i++) {
+                if (i > 0) {
+                    result = string(abi.encodePacked(result, ","));
+                }
+                address _dao = storageEnumerableDAOArr[userDaoMedals[i] - 1];
+                {
+                    result = string(
+                        abi.encodePacked(
+                            result,
+                            '{"address":"',
+                            Strings.toHexString(uint256(uint160(_dao))),
+                            '","medals":['
+                        )
+                    );
+                }
+                {
+                    ISoulBoundMedal medalContract = ISoulBoundMedal(_dao);
+                    string[] memory _medalnameArr;
+                    string[] memory _medaluriArr;
+                    ISoulBoundMedal.MedalPanel[] memory _medalPanel;
+                    {
+                        try medalContract.getMedals() returns (
+                            string[] memory __medalnameArr,
+                            string[] memory __medaluriArr,
+                            ISoulBoundMedal.MedalPanel[] memory __medalPanel
+                        ) {
+                            _medalnameArr = __medalnameArr;
+                            _medaluriArr = __medaluriArr;
+                            _medalPanel = __medalPanel;
+                        } catch {}
+                    }
+                    uint256[]
+                        memory requestedMedalIndexArrary = userDaoMedalIndexMapIndex[
+                            keccak256(abi.encodePacked(_address, _dao))
+                        ];
+
+                    for (
+                        uint256 j = 0;
+                        j < requestedMedalIndexArrary.length;
+                        j++
+                    ) {
+                        if (j > 0) {
+                            result = string(abi.encodePacked(result, ","));
+                        }
+                        uint256 status = 0;
+                        uint256 medalIndex = requestedMedalIndexArrary[j];
+                        {
+                            try
+                                medalContract.getCliamStatusByBytes32Key(
+                                    keccak256(
+                                        abi.encodePacked(_address, medalIndex)
+                                    )
+                                )
+                            returns (uint256 _status) {
+                                status = _status;
+                            } catch {}
+                        }
+                        {
+                            result = string(
+                                abi.encodePacked(
+                                    result,
+                                    '{"medalindex":',
+                                    Strings.toString(medalIndex),
+                                    ',"status":',
+                                    Strings.toString(status),
+                                    ',"name":"',
+                                    Base64.encode(
+                                        bytes(_medalnameArr[medalIndex])
+                                    ),
+                                    '","uri":"',
+                                    Base64.encode(
+                                        bytes(_medaluriArr[medalIndex])
+                                    ),
+                                    '","request":',
+                                    Strings.toString(
+                                        _medalPanel[medalIndex]._request
+                                    ),
+                                    ',"approved":',
+                                    Strings.toString(
+                                        _medalPanel[medalIndex]._approved
+                                    ),
+                                    ',"rejected":',
+                                    Strings.toString(
+                                        _medalPanel[medalIndex]._rejected
+                                    ),
+                                    ',"genesis":',
+                                    Strings.toString(
+                                        _medalPanel[medalIndex]._genesis
+                                    ),
+                                    "}"
+                                )
+                            );
+                        }
+                    }
+                }
+                result = string(abi.encodePacked(result, "]}"));
+            }
+        }
+
         result = string(abi.encodePacked(result, "]}"));
 
         return result;

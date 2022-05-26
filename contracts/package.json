@@ -1,0 +1,18 @@
+{
+  "scripts": {
+    "start": "ts-node contracts_Tests/app.ts"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.6.0",
+    "fs-extra": "^10.1.0",
+    "solc": "^0.8.14-fixed",
+    "web3": "^1.7.3"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.13",
+    "@types/node": "^17.0.35",
+    "sol-merger": "^4.1.1",
+    "ts-node": "^10.8.0",
+    "typescript": "^4.7.2"
+  }
+}
