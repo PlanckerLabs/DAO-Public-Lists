@@ -4,7 +4,7 @@
 ---
 
 ## [`frontend`]
-- link:[frontend/](frontend)
+- link:[frontend/](frontend/)
 
 #### [`DEMO`]
 - [UI layout demo](https://static-bd1f1f21-0a04-4091-96a3-ac8c61aa60d3.bspapp.com)
@@ -29,6 +29,6 @@ remixd
 ```
 
 #### [`DOC`]
-[Decentralized Application interface](DAI.md)
+[Decentralized Application interface](contracts/DAI.md)
 
 *Note:The current contract is fully composable,any contract can use the current contract as a database or a query tool*
