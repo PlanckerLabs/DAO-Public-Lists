@@ -37,11 +37,12 @@ remixd
 
 *Note:The current contract is fully composable,any contract can use the current contract as a database or a query tool*
 
-#### [Third-party License]
-[link](Third-party License.md)
-- [vue](https://github.com/vuejs/vue)
-- [solc](https://github.com/ethereum/solc-js/)
-- [truffle](https://github.com/trufflesuite/truffle/)
-- [openzeppelin-contracts](https://github.com/OpenZeppelin/openzeppelin-contracts/)
-- [web3.js](https://github.com/ChainSafe/web3.js)
-- [MetaMask/detect-provider](https://github.com/MetaMask/detect-provider)
+
+## [`Third-party License`]
+- link: (Third-party License.md)
+   - [vue](https://github.com/vuejs/vue)
+   - [solc](https://github.com/ethereum/solc-js/)
+   - [truffle](https://github.com/trufflesuite/truffle/)
+   - [openzeppelin-contracts](https://github.com/OpenZeppelin/openzeppelin-contracts/)
+   - [web3.js](https://github.com/ChainSafe/web3.js)
+   - [MetaMask/detect-provider](https://github.com/MetaMask/detect-provider)
