@@ -7,7 +7,7 @@
 - link:[frontend/](frontend/)
 
 #### [演示/DEMO]
-- [UI演示/UI layout demo](https://static-bd1f1f21-0a04-4091-96a3-ac8c61aa60d3.bspapp.com)
+- [UI演示/UI layout demo](https://planckerlabs.github.io/DAOSquare/index.html)
 
 ---
 

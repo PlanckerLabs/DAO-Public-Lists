@@ -4,7 +4,7 @@
  * @Autor: z.cejay@gmail.com
  * @Date: 2022-05-25 21:51:39
  * @LastEditors: cejay
- * @LastEditTime: 2022-05-25 23:47:02
+ * @LastEditTime: 2022-05-26 21:58:21
  */
 
 import { Web3Helper } from './utils/web3';
@@ -31,7 +31,7 @@ async function compileContract(solPath: string, contractClassName: string) {
         }
     };
     // solc.compile use v0.8.14+commit.80d49f37
-    //await solc.loadRemoteVersion('v0.8.14+commit.80d49f37');
+    await solc.loadRemoteVersion('v0.8.14+commit.80d49f37');
 
     const output = JSON.parse(solc.compile(JSON.stringify(input)));
     const abi = output.contracts['contract.sol'][contractClassName].abi;
@@ -47,32 +47,33 @@ function deployContract(solPath: string, contractClassName: string, args: any[] 
         // 编译并部署 contract.sol 文件  
         const { abi, bytecode } = await compileContract(solPath, contractClassName);
         // deploy contract
-        const contract = new web3.eth.Contract(abi);
-        contract.deploy({
-            data: bytecode,
-            arguments: args
-        }).send({
-            from: account,
-            gas: 100000000
-        }).on('error', (err) => {
-            console.log(err);
-            reject(err);
-        }).then((instance) => {
-            console.log(instance.options.address);
-            resolve({
-                address: instance.options.address,
-                abi
-            });
-        }).catch((err) => {
-            console.log(err);
-            reject(err);
-        });
+        // const contract = new web3.eth.Contract(abi);
+        // contract.deploy({
+        //     data: bytecode,
+        //     arguments: args
+        // }).send({
+        //     from: account,
+        //     gas: 100000000
+        // }).on('error', (err) => {
+        //     console.log(err);
+        //     reject(err);
+        // }).then((instance) => {
+        //     console.log(instance.options.address);
+        //     resolve({
+        //         address: instance.options.address,
+        //         abi
+        //     });
+        // }).catch((err) => {
+        //     console.log(err);
+        //     reject(err);
+        // });
     });
 
 }
 
 async function Main() {
     const _accounts = await web3.eth.personal.getAccounts();
+    
     let accounts: string[] = [];
     for (let index = 0; index < 4; index++) {
         accounts.push(_accounts[index]);

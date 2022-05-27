@@ -3,7 +3,7 @@
 soulBoundMedal.sol 为SoulBound DAO合约。
 
 soulBoundBridge.sol 为 DAO 之间的桥接工具 , 
-- 当前桥接工具部署地址为：[0x4702a438E2DC4Bf2F5ba4BA49027d49407157CcC](https://mumbai.polygonscan.com/address/0x4702a438e2dc4bf2f5ba4ba49027d49407157ccc#code)
+- 当前桥接工具部署地址为：[0x4E3ba0edcE8df1b20eE19FfF11fC32447933bf4c](https://mumbai.polygonscan.com/address/0x4E3ba0edcE8df1b20eE19FfF11fC32447933bf4c#code)
 
 # soulBoundMedal.sol
 

@@ -1309,6 +1309,8 @@ library Base64 {
 interface ISoulBoundBridge {
     function onOwnerChage(address _dao) external;
 
+    function register(address _dao) external;
+
     /**
     * @dev on user request a medal
     * @param _address address of user
@@ -1331,11 +1333,6 @@ interface ITokenInfo {
     function owner() external view returns (address);
 
     function name() external view returns (string memory);
-
-    /**
-     * @dev See {IERC721Metadata-symbol}.
-     */
-    function symbol() external view returns (string memory);
 }
 
 contract SoulBoundBridge is IDataStorage, ISoulBoundBridge {
@@ -1356,9 +1353,9 @@ contract SoulBoundBridge is IDataStorage, ISoulBoundBridge {
     mapping(address => uint256[]) private userDaoMedalsDaoIndexMap; // key: user address,value:index-1 is the dao in the storageEnumerableDAOArr
     mapping(bytes32 => uint256[]) private userDaoMedalIndexMapIndex; // key: user address+ dao address,value:medalIndex
     mapping(bytes32 => bool) private userDaoMedalIndexMapUnique; // key: user address+ dao address+ medalIndex,value: true:has set
-
     mapping(address => address[]) private contractOwnerMap; // key:user address,value: dao address array
     mapping(bytes32 => uint256) private contractOwnerMapIndex; // key: user address+ dao address,value -1 is the index of the contractOwnerMap -> value
+    mapping(address => address) private DAOOwner; // key:dao address,value:owner address
 
     // endregion
 
@@ -1440,15 +1437,11 @@ contract SoulBoundBridge is IDataStorage, ISoulBoundBridge {
     }
 
     modifier onlySoulBoundMedalAddress(address _soulBoundMedalAddress) {
-        require(
-            _soulBoundMedalAddress.code.length > 0,
-            "given address is not a valid contract"
-        );
+        require(_soulBoundMedalAddress.code.length > 0);
         require(
             IERC165(_soulBoundMedalAddress).supportsInterface(
                 type(ISoulBoundMedal).interfaceId
-            ),
-            "given address is not a valid soul bound medal contract"
+            )
         );
 
         _;
@@ -1493,12 +1486,43 @@ contract SoulBoundBridge is IDataStorage, ISoulBoundBridge {
     }
 
     function _changeOwner(address _dao) private {
-        address owner = getOwner(_dao);
-        bytes32 key = keccak256(abi.encodePacked(owner, _dao));
-        if (contractOwnerMapIndex[key] == 0) {
-            contractOwnerMap[owner].push(_dao);
-            contractOwnerMapIndex[key] = contractOwnerMap[owner].length;
+        address owner_before = DAOOwner[_dao];
+        address owner_after = getOwner(_dao);
+        if (owner_before != owner_after) {
+            bytes32 key_before = keccak256(
+                abi.encodePacked(_dao, owner_before)
+            );
+            bytes32 key_after = keccak256(abi.encodePacked(_dao, owner_after));
+            uint256 index_before = contractOwnerMapIndex[key_before];
+            if (index_before > 0) {
+                // delete item from contractOwnerMap[owner_before][index_before-1]
+                unchecked {
+                    uint256 index_before_real = index_before - 1;
+                    contractOwnerMap[owner_before][
+                        index_before_real
+                    ] = contractOwnerMap[owner_before][
+                        contractOwnerMap[owner_before].length - 1
+                    ];
+                    // move item to the end of the array,then delete the last item
+                    contractOwnerMap[owner_before].pop();
+                }
+                contractOwnerMapIndex[key_before] = 0;
+            }
+
+            if (contractOwnerMapIndex[key_after] == 0) {
+                contractOwnerMap[owner_after].push(_dao);
+                contractOwnerMapIndex[key_after] = contractOwnerMap[owner_after]
+                    .length;
+            }
         }
+    }
+
+    function register(address _dao) public onlySoulBoundMedalAddress(_dao) {
+        require(storageEnumerableDAOMap[_dao] == 0); //, "already registered"
+        storageEnumerableDAOArr.push(_dao);
+        storageEnumerableDAOMap[_dao] = storageEnumerableDAOArr.length;
+        // register owner
+        _changeOwner(_dao);
     }
 
     /**
@@ -1513,16 +1537,12 @@ contract SoulBoundBridge is IDataStorage, ISoulBoundBridge {
         uint256 _medalIndex
     ) public override {
         if (storageEnumerableDAOMap[_dao] == 0) {
-            require(
-                _dao.code.length > 0,
-                "given address is not a valid contract"
-            );
+            require(_dao.code.length > 0); //, "not a valid contract"
             require(
                 IERC165(_dao).supportsInterface(
                     type(ISoulBoundMedal).interfaceId
-                ),
-                "given address is not a valid soul bound medal contract"
-            );
+                )
+            );//  "not a valid soulbound contract"
             storageEnumerableDAOArr.push(_dao);
             storageEnumerableDAOMap[_dao] = storageEnumerableDAOArr.length;
 
@@ -1532,10 +1552,7 @@ contract SoulBoundBridge is IDataStorage, ISoulBoundBridge {
         bytes32 userDAOMappingKey = keccak256(abi.encodePacked(_address, _dao));
         if (userDAOMapping[userDAOMappingKey] == false) {
             // register user
-            require(
-                _address.code.length == 0,
-                "given address is a contract,soul bound medal can not be claimed by a contract"
-            );
+            require(_address.code.length == 0);//, "address is a contract"
             userDAOMapping[userDAOMappingKey] = true;
             if (storageEnumerableUserMap[_address].length == 0) {
                 storageEnumerableUserArr.push(_address);
@@ -1563,6 +1580,11 @@ contract SoulBoundBridge is IDataStorage, ISoulBoundBridge {
 
     // region Composability functions for other contracts
 
+    //DAOOwner
+    function getDAOOwner(address _dao) public view returns (address) {
+        return DAOOwner[_dao];
+    }
+
     //address[] private storageEnumerableUserArr;
     function get_storageEnumerableUserArr()
         public
@@ -1571,7 +1593,6 @@ contract SoulBoundBridge is IDataStorage, ISoulBoundBridge {
     {
         return storageEnumerableUserArr;
     }
-
 
     //mapping(address => uint256[]) private storageEnumerableUserMap;
     function get_storageEnumerableUserMap(address _address)
@@ -1583,11 +1604,7 @@ contract SoulBoundBridge is IDataStorage, ISoulBoundBridge {
     }
 
     //mapping(bytes32 => bool) private userDAOMapping;
-    function get_userDAOMapping(bytes32 key)
-        public
-        view
-        returns (bool)
-    {
+    function get_userDAOMapping(bytes32 key) public view returns (bool) {
         return userDAOMapping[key];
     }
 
@@ -2080,27 +2097,27 @@ contract SoulBoundBridge is IDataStorage, ISoulBoundBridge {
 
     // region tokenId
 
-    /**
-     * @dev get tokenId or cliam status by DAO and medal index
-     * @param _user address user address
-     * @param _dao address DAO contract address
-     * @param _medalIndex uint256 medal index
-     * @return uint256   1:pending,2:rejected ,>2 tokenid
-     */
-    function _getCliamStatusByBytes32Key(
-        address _user,
-        address _dao,
-        uint256 _medalIndex
-    ) private view returns (uint256) {
-        ISoulBoundMedal medalContract = ISoulBoundMedal(_dao);
-        bytes32 k = keccak256(abi.encodePacked(_user, _medalIndex));
-        try medalContract.getCliamStatusByBytes32Key(k) returns (
-            uint256 _status
-        ) {
-            return _status;
-        } catch {}
-        return 0;
-    }
+    // /**
+    //  * @dev get tokenId or cliam status by DAO and medal index
+    //  * @param _user address user address
+    //  * @param _dao address DAO contract address
+    //  * @param _medalIndex uint256 medal index
+    //  * @return uint256   1:pending,2:rejected ,>2 tokenid
+    //  */
+    // function _getCliamStatusByBytes32Key(
+    //     address _user,
+    //     address _dao,
+    //     uint256 _medalIndex
+    // ) private view returns (uint256) {
+    //     ISoulBoundMedal medalContract = ISoulBoundMedal(_dao);
+    //     bytes32 k = keccak256(abi.encodePacked(_user, _medalIndex));
+    //     try medalContract.getCliamStatusByBytes32Key(k) returns (
+    //         uint256 _status
+    //     ) {
+    //         return _status;
+    //     } catch {}
+    //     return 0;
+    // }
 
     // endregion
 

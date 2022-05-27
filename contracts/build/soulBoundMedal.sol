@@ -1092,8 +1092,8 @@ library Counters {
     function reset(Counter storage counter) internal {
         counter._value = 0;
     }
-    function set(Counter storage counter,uint256 v) internal {
-        counter._value = v;
+    function set(Counter storage counter, uint256 value) internal {
+        counter._value = value;
     }
 }
 
@@ -1352,6 +1352,8 @@ interface IDataStorage {
 // _
 interface ISoulBoundBridge {
     function onOwnerChage(address _dao) external;
+
+    function register(address _dao) external;
 
     /**
     * @dev on user request a medal

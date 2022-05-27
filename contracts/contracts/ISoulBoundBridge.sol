@@ -4,6 +4,8 @@ pragma solidity ^0.8.4;
 interface ISoulBoundBridge {
     function onOwnerChage(address _dao) external;
 
+    function register(address _dao) external;
+
     /**
     * @dev on user request a medal
     * @param _address address of user
