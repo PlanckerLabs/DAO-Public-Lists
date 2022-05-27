@@ -295,7 +295,7 @@ contract SoulBoundMedal is ERC721, Ownable, ISoulBoundMedal {
         uint256 cliamStatus = _cliamStatus[k]; //1:pending,2:rejected ,>2 tokenid
         _cliamRequestList[cliamId]._status = 2;
         if (cliamStatus < 3) {
-            _cliamStatus[k] = 1;
+            _cliamStatus[k] = 2;
         }
         unchecked {
             _medalPanel[request._medalIndex]._rejected++;
