@@ -16,13 +16,14 @@
 import {onMounted, reactive, ref, watch} from "vue";
 import Dao from "./componets/Dao/index.vue";
 import User from "./componets/User/index.vue";
-import useWeb3 from "/src/utils/useWeb3";
-import abi_bridge from '/src/assets/abi/soulBoundBridge.json';
+import useContractTool from '@/utils/useContractTool';
 import {useStore} from "/src/store";
+import _ from 'lodash';
 
 const store = useStore();
+const {Bridge_getStrings, Bridge_listDAO} = useContractTool();
 const DaoList = reactive([]);
-const {ContractCall, bridge} = useWeb3();
+// const {ContractCall, bridge} = useWeb3();
 const searchInputStyle = {
   display: 'inline',
   width: '35.33rem',
@@ -32,41 +33,25 @@ const searchContent = ref('');
 const loading = ref(false);
 const btnDisable = ref(true);
 
-// 编码参数
-const encodeParam = () => {
-  let params = [];
-  ['avatar', 'email', 'comgithub'].forEach((k) => {
-    // params[k] = ;
-    params.push(store.web3.eth.abi.encodeFunctionSignature(k));
-  })
-  return params;
-}
+
 watch(searchContent, (newV, oV) => {
-  btnDisable.value = !store.web3.utils.isAddress(newV);
+  // btnDisable.value = !store.web3.utils.isAddress(newV);
 })
 const DaoDetail = async (address) => {
-  let values = JSON.parse(JSON.stringify(await ContractCall(abi_bridge, bridge, 'getStrings', [address, encodeParam()])));
+  let values = await Bridge_getStrings(address, ['avatar', 'email', 'comgithub'])
   values[0] = values[0] !== '' ? values[0] : '/img/dapp_dao_tx%402x.png';
   return values;
 }
 
-const read = async () => {
-  return await ContractCall(abi_bridge, bridge, 'listDAO', [0, 9999, 0, 9999]).then((res) => {
-    return res;
-  }).catch(() => {
-  })
-}
 onMounted(async () => {
-
-  let res = await read();
-  let ret = JSON.parse(res);
+  let ret = await Bridge_listDAO();
   // console.log(ret);
   for (let index in ret.medals) {
     let v = ret.medals[index];
     // remove item if it is empty
-        if(v.medals.length===0){
-          continue;
-        }
+    if (v.medals.length === 0) {
+      continue;
+    }
 
     for (let a in v.medals) {
       let medal = v.medals[a];
@@ -104,30 +89,28 @@ onMounted(async () => {
       })
     }
     // console.log(v.medals);
-    DaoList.push(JSON.parse(JSON.stringify({detail: {name: atob(v.name)}, medals: v.medals})))
-  };
+    DaoList.push(_.cloneDeep({detail: {name: atob(v.name)}, medals: v.medals}))
+  }
+  ;
   ret.address.forEach(async (address, index) => {
     let detail = await DaoDetail(address)
     DaoList[index].detail.avatar = detail[0];
     DaoList[index].detail.email = detail[1];
     DaoList[index].detail.comgithub = detail[2];
   });
-   // desc by nft holder
-    DaoList.sort((a, b) => {
-      //sum a.medals.request+a.medals.approved
-      let a_sum = 0;
-      let b_sum = 0;
-      a.medals.forEach((v) => {
-        a_sum += v.request + v.approved;
-      });
-      b.medals.forEach((v) => {
-        b_sum += v.request + v.approved;
-      });
-      return b_sum - a_sum;
-    })
-
-
-
+  // desc by nft holder
+  DaoList.sort((a, b) => {
+    //sum a.medals.request+a.medals.approved
+    let a_sum = 0;
+    let b_sum = 0;
+    a.medals.forEach((v) => {
+      a_sum += v.request + v.approved;
+    });
+    b.medals.forEach((v) => {
+      b_sum += v.request + v.approved;
+    });
+    return b_sum - a_sum;
+  })
 })
 
 
