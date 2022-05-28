@@ -48,19 +48,6 @@ const store = useStore();
 const handleClick = (flag) => {
   activeName.value = flag;
 }
-// const read = async (method, params) => {
-//   const loading = ElLoading.service({
-//     lock: true,
-//     text: 'Loading',
-//     background: 'rgba(0, 0, 0, 0.7)',
-//   })
-//   return await ContractCall(abi_bridge, bridge, method, params).then((res) => {
-//     loading.close();
-//     return res;
-//   }).catch(() => {
-//     loading.close();
-//   })
-// }
 
 onMounted(async () => {
 //  read('userDetail', [store.account]).then(async (res) => {
@@ -99,11 +86,6 @@ onMounted(async () => {
       }
     }
   })
-  // ContractCall(abi_bridge, bridge, 'userDetail', [account.value]).then((res) => {
-  //   let ret = JSON.parse(res);
-  //   console.log(ret)
-  //   console.log(ret.dao)
-  // })
 })
 
 </script>

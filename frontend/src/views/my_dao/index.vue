@@ -8,7 +8,7 @@
         <MyDAo/>
       </el-tab-pane>
       <el-tab-pane :label="tabs[1]" name="second">
-        <!--        <MyNFT/>-->
+        <MyNFT/>
       </el-tab-pane>
       <el-tab-pane :label="tabs[2]" name="third">
         <!--        <DaoSquare/>-->
@@ -36,7 +36,7 @@ const tabs = ['MY DAO', 'MY NFT', 'DAO SQUARE'];
 const handleClick = (tab: TabsPaneContext, event: Event) => {
   console.log(tab.paneName)
 }
-onMounted(()=>{
+onMounted(() => {
 
 })
 
@@ -64,7 +64,7 @@ $tabs-header-color: #FFF;
   .el-tabs__item.is-active {
     width: 10rem !important;
     font-size: 0.67rem !important;
-    
+
     font-weight: 500 !important;
     color: $tab-font-active;
   }
@@ -74,7 +74,7 @@ $tabs-header-color: #FFF;
     font-size: 0.67rem;
     line-height: 2.5rem;
     height: 2.5rem;
-    
+
     font-weight: 500;
     color: $tab-font;
   }

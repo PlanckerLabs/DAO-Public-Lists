@@ -9,10 +9,7 @@ const {init} = useWeb3();
 onMounted(async () => {
   await init();
 })
-const oldatob = window.atob;
-window.atob = function (bt) {
-  return decodeURIComponent(escape(oldatob(bt)));
-}
+
 function rem() {
   let remsize = document.documentElement.clientWidth / 80;
   document.documentElement.style.fontSize = (remsize > 24 ? 24 : remsize) + 'px';
