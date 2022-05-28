@@ -38,15 +38,17 @@ watch(searchContent, (newV, oV) => {
   // btnDisable.value = !store.web3.utils.isAddress(newV);
 })
 const DaoDetail = async (address) => {
-  let values = await Bridge_getStrings(address, ['avatar', 'email', 'comgithub'])
-  values[0] = values[0] !== '' ? values[0] : '/img/dapp_dao_tx%402x.png';
+  let values = await Bridge_getStrings(address, ['avatar', 'email', 'comgithub']);
+  if (!values.avatar) {
+    values.avatar = '/img/dapp_dao_tx%402x.png';
+  }
   return values;
 }
 
 onMounted(async () => {
   let dataArr = [];
   try {
-    dataArr = Promise.all(Bridge_listDAO(), Bridge_userDetail());
+    dataArr = await Promise.all([Bridge_listDAO(), Bridge_userDetail()]);
   } catch (error) {
     console.error(error);
     ElMessage.error(error.message);
@@ -127,8 +129,16 @@ onMounted(async () => {
       // })
     }
     // console.log(v.medals);
-    DaoList.push(_.cloneDeep({ detail: { name: atob(v.name) }, medals: v.medals }))
-  }; 
+
+    DaoList.push({
+      address: ret.address[index],
+      detail: {
+        name: v.name
+      },
+      medals: v.medals
+    });
+    //DaoList.push(_.cloneDeep({ detail: { name: atob(v.name) }, medals: v.medals }))
+  };
   // desc by nft holder
   DaoList.sort((a, b) => {
     //sum a.medals.request+a.medals.approved
@@ -142,12 +152,20 @@ onMounted(async () => {
     });
     return b_sum - a_sum;
   });
-  ret.address.forEach(async (address, index) => {
-    let detail = await DaoDetail(address)
-    DaoList[index].detail.avatar = detail[0];
-    DaoList[index].detail.email = detail[1];
-    DaoList[index].detail.comgithub = detail[2];
-  });
+  for (const oneDAO of DaoList) {
+    let _dao_address = oneDAO.address;
+    let _dao_detail = await DaoDetail(_dao_address);
+    oneDAO.detail.avatar = _dao_detail.avatar;
+    oneDAO.detail.email = _dao_detail.email;
+    oneDAO.detail.comgithub = _dao_detail.comgithub;
+  }
+
+  // ret.address.forEach(async (address, index) => {
+  //   let detail = await DaoDetail(address)
+  //   DaoList[index].detail.avatar = detail.avatar;
+  //   DaoList[index].detail.email = detail.email;
+  //   DaoList[index].detail.comgithub = detail.comgithub;
+  // });
 })
 
 
