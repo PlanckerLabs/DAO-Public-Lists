@@ -87,7 +87,7 @@ const onHandleCreateDao = () => {
 }
 
 const route_path = ref('');
-const logo = '/img/dapp_logo%20@2x.png';
+const logo = '/img/dapp_logo_2x.png';
 const tx = '/img/dapp_tx.png';
 const icon = {
   settings: '/img/dapp_Settings.png',

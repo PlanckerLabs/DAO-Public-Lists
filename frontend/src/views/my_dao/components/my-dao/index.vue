@@ -1,3 +1,11 @@
+<!--
+ * @Description: 
+ * @Version: 1.0
+ * @Autor: z.cejay@gmail.com
+ * @Date: 2022-05-29 02:45:44
+ * @LastEditors: cejay
+ * @LastEditTime: 2022-05-29 03:37:59
+-->
 <template>
   <template v-if="DaoList.length>0">
     <template v-for="(item,index) in DaoList" :key="index">
@@ -49,7 +57,7 @@ const DaoDetail = (address) => {
   Bridge_listDAOMedals(address).then(async (obj) => {
     obj.contract_address = address;
     let avatar = await Bridge_getString(address, 'avatar');
-    obj.avatar = avatar ? avatar : '/img/dapp_dao_tx@2x.png';
+    obj.avatar = avatar ? avatar : '/img/dapp_dao_tx_2x.png';
     obj.approved = 0;
     obj.rejected = 0;
     obj.pending = 0;

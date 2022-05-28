@@ -52,7 +52,7 @@ import {ElLoading} from 'element-plus';
 import Tools from '/src/utils/tools';
 import useContractTool from '@/utils/useContractTool';
 import {useStore} from "@/store";
-let defaultavater = '/img/dapp_user_tx@2x.png';   
+let defaultavater = '/img/dapp_user_tx_2x.png';   
 const {Bridge_getStrings} = useContractTool(); 
 const store = useStore(); 
 const uinfo = reactive({
