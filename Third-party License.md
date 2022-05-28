@@ -8,6 +8,7 @@ We use some open source software in the project, thanks.
 - [MetaMask/detect-provider](https://github.com/MetaMask/detect-provider)
 - [lodash](https://github.com/lodash/lodash)
 - [store.js](https://github.com/marcuswestin/store.js)
+- [Tomorrow](https://fonts.google.com/specimen/Tomorrow)
 
 
 -- -
@@ -228,3 +229,15 @@ https://github.com/marcuswestin/store.js/blob/master/LICENSE
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
+
+
+Tomorrow
+https://fonts.google.com/specimen/Tomorrow
+
+    License
+    These fonts are licensed under the [Open Font License](https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL).
+
+    You can use them in your products & projects - print or digital, commercial or otherwise.
+
+    This isn't legal advice, please consider consulting a lawyer and see the full license for all details.
+
