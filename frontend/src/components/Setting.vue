@@ -69,13 +69,8 @@ import useWeb3 from "/src/utils/useWeb3";
 import abi from '/src/assets/abi/soulBoundBridge.json';
 import {ElLoading, ElNotification} from 'element-plus';
 
-const {account, web3, ContractCall, ContractSend, bridge} = useWeb3();
-const btn1_loading = ref(false);
-const btn1_disable = ref(true);
-
-const btn2_loading = ref(false);
-const btn2_disable = ref(true);
-
+const {account, web3, ContractCall, ContractSend, bridge} = useWeb3();  
+const btn2_loading = ref(false);  
 const showDlg = ref(false);
 
 
@@ -167,6 +162,7 @@ const save = () => {
 // 显示dialog
 const showdrawer = async () => {
     // init
+    btn2_loading.value = false;
     let values = await read(); 
     Object.keys(toRefs(info)).forEach((k, v) => {
         info[k] = values[v];

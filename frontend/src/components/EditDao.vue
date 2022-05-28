@@ -140,6 +140,8 @@ function savedata() {
 
 //
 const showdialog = async function (address) {
+  
+  btn2_loading.value = false;
   let arr = [];
   contract_address.value = address;
   Object.keys(toRefs(setinfo)).forEach((k) => {
