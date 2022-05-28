@@ -65,7 +65,6 @@
 </template>
 <script setup>
 import {reactive, ref, toRefs} from "vue";
-import abi_bridge from '/src/assets/abi/soulBoundBridge.json';
 import {ElLoading, ElNotification} from 'element-plus';
 
 import useContractTool from '@/utils/useContractTool';
@@ -215,7 +214,7 @@ defineExpose({
   height: 2rem;
   line-height: 2rem;
   font-size: 0.83rem;
-  
+
   font-weight: 400;
   color: #999999;
   text-align: right;
@@ -236,7 +235,7 @@ defineExpose({
   border-radius: 0.33rem;
   line-height: 2rem;
   font-size: 0.67rem;
-  
+
   font-weight: 500;
   color: #999999;
   margin-left: 1.67rem;
@@ -252,7 +251,7 @@ defineExpose({
 .headrow {
   margin: 3.33rem 0 1.33rem 21rem;
   font-size: 1.25rem;
-  
+
   font-weight: 400;
   color: #000000;
 }
@@ -266,7 +265,7 @@ defineExpose({
 .headclose {
   height: 1rem;
   font-size: 0.71rem;
-  
+
   font-weight: 400;
   color: #F53F3F;
   margin: 1.67rem 1.67rem 0 0;

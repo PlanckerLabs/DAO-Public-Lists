@@ -11,7 +11,7 @@ export default function useContractTool() {
     const {ContractCall, ContractSend, getWeb3, deployContract: deployContract_} = useWeb3(store.Account);
     // 解码
     const atob_: (base64: string) => string = (base64: string): string => {
-        return decodeURIComponent(encodeURI(window.atob(base64)));
+        return decodeURIComponent(escape(window.atob(base64)));
     }
     // 编码
     const encode_ = (param: any) => {
