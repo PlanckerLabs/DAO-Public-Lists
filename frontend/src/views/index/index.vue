@@ -19,15 +19,16 @@
     </div>
   </div>
   <!-- Third-party License -->
-  <a target="_blank" style="color: #cdcdcd; float: right; font-size: 0.8rem; padding: 1rem;" href="https://github.com/PlanckerLabs/DAO-Square/blob/main/Third-party%20License.md">Third&nbsp;party&nbsp;License</a>
+  <a target="_blank" style="color: #cdcdcd; float: right; font-size: 0.8rem; padding: 1rem;"
+     href="https://github.com/PlanckerLabs/DAO-Square/blob/main/Third-party%20License.md">Third&nbsp;party&nbsp;License</a>
 
 </template>
 
 <script setup>
-import Header from '../../components/Header.vue';
+import Header from '@/components/Header.vue';
 
 const bg_style = {
-  backgroundImage: 'url(home_bg@2x.png)',
+  backgroundImage: 'url(/img/home_bg@2x.png)',
   backgroundRepeat: 'no-repeat',
   backgroundSize: '100%'
 }

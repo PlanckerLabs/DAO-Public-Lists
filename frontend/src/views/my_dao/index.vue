@@ -50,7 +50,7 @@ $tabs-header-color: #FFF;
 
 .header_ {
   height: 16.67rem;
-  background: url("https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_top_bg%402x.png") no-repeat;
+  background: url("/img/dapp_top_bg%402x.png") no-repeat;
   background-size: cover;
 }
 

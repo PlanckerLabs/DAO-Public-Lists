@@ -46,7 +46,7 @@ watch(searchContent, (newV, oV) => {
 })
 const DaoDetail = async (address) => {
   let values = JSON.parse(JSON.stringify(await ContractCall(abi_bridge, bridge, 'getStrings', [address, encodeParam()])));
-  values[0] = values[0] !== '' ? values[0] : 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_dao_tx%402x.png';
+  values[0] = values[0] !== '' ? values[0] : '/img/dapp_dao_tx%402x.png';
   return values;
 }
 
