@@ -160,7 +160,7 @@ export default function useContractTool() {
             throw Error(err);
         })
     }
-    //
+    // 请求一个Dao的勋章
     const Dao_cliamRequest = (address: string, nftIndex: number) => {
         return ContractSend(<AbiItem[]>abi_dao, address, 'cliamRequest', [nftIndex])
     }
