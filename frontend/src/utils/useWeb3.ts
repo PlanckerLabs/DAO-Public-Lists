@@ -75,7 +75,7 @@ export default function useWeb3(account?: string) {
         return await contract.methods[method](...params).send();
     }
     // 部署合约
-    const deployContract = async (jsonInterface: AbiItem[], bytecode: string, args: [string, string, [], [], string]) => {
+    const deployContract = async (jsonInterface: AbiItem[], bytecode: string, args: [...any[], string]) => {
         let web3: Web3 = await getWeb3();
         let contract = new web3.eth.Contract(jsonInterface);
         return await contract.deploy({
