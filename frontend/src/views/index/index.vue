@@ -28,7 +28,7 @@
 import Header from '@/components/Header.vue';
 
 const bg_style = {
-  backgroundImage: 'url(/img/home_bg@2x.png)',
+  backgroundImage: 'url(/img/home_bg_2x.png)',
   backgroundRepeat: 'no-repeat',
   backgroundSize: '100%'
 }
