@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="item" :class="activeName==='first'? 'active':''" @click="handleClick('first')">All</div>
-    <div class="item" :class="activeName==='second'? 'active':''" @click="handleClick('second')">Pending
+    <div class="item" :class="activeName==='second'? 'active':''" @click="handleClick('second')">Currently Applying
     </div>
   </div>
   <div style="margin-top: 0.04rem;"></div>
@@ -34,11 +34,13 @@ import useWeb3 from "/src/utils/useWeb3";
 import abi_bridge from '/src/assets/abi/soulBoundBridge.json';
 import {ElLoading} from "element-plus";
 import EmptyNFT from '/src/components/empty-nft/index.vue';
+import {useStore} from "/src/store";
 
 const activeName = ref('first')
-const {ContractCall, web3, mounted, account, bridge} = useWeb3();
+const {ContractCall, bridge} = useWeb3();
 const allList = reactive([]); //全部列表
 const applyingList = reactive([]); //申请中列表
+const store = useStore();
 const handleClick = (flag) => {
   activeName.value = flag;
 }
@@ -65,8 +67,7 @@ const encodeParam = () => {
   return params;
 }
 onMounted(async () => {
-  await mounted();
-  read('userDetail', [account.value]).then(async (res) => {
+  read('userDetail', [store.account]).then(async (res) => {
     let values = JSON.parse(res);
     let daos = values.dao
     // console.log(daos);
@@ -125,7 +126,7 @@ onMounted(async () => {
   .item {
     cursor: pointer;
     font-size: 0.5rem;
-    
+    font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #999999;
     height: 2.5rem;

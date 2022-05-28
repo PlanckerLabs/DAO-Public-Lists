@@ -71,7 +71,7 @@ body {
   .font {
     height: 0.92rem;
     font-size: 0.67rem;
-    
+    font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #FFFFFF;
     line-height: 0.92rem;
@@ -110,7 +110,7 @@ body {
   .el-tabs__item.is-active {
     width: 10rem !important;
     font-size: 0.67rem !important;
-    
+    font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500 !important;
     color: $tab-font-active;
   }
@@ -120,7 +120,7 @@ body {
     font-size: 0.67rem;
     line-height: 2.5rem;
     height: 2.5rem;
-    
+    font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: $tab-font;
   }

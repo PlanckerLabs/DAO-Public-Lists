@@ -67,7 +67,7 @@ defineExpose({
 .headrow {
   height: 1.75rem;
   font-size: 1.25rem;
-  
+  font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #000000;
   line-height: 1.75rem;
@@ -83,7 +83,7 @@ defineExpose({
   width: 7.91rem;
   margin-right: 1.67rem;
   font-size: 0.93rem;
-  
+  font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 400;
   color: #999999;
   display: inline-block;
@@ -92,7 +92,7 @@ defineExpose({
 
 .rightdata {
   font-size: 0.93rem;
-  
+  font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #000000;
 }

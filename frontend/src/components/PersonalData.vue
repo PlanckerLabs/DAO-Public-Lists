@@ -16,7 +16,7 @@
     <el-row class="datarow avaterrow">
       <el-col :span="12" class="datal"><span class="labelname">Avater</span></el-col>
       <el-col :span="12" class="datar">
-      <el-image class="nftimg" :src="Tools.imgURL(uinfo.avater)" fit="cover" />
+      <el-image class="nftimg" :src="uinfo.avater" fit="fill" />
       </el-col>
     </el-row>
     <el-row class="datarow">
@@ -51,7 +51,6 @@ import {reactive, toRefs, onMounted, watch } from "vue";
 import useWeb3 from "/src/utils/useWeb3";
 import abi from '/src/assets/abi/soulBoundBridge.json';
 import {ElLoading} from 'element-plus';
-import Tools from '/src/utils/tools';
 let defaultavater = 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_user_tx%402x.png';
 const {account, web3, ContractCall, bridge} = useWeb3();
  
@@ -138,19 +137,19 @@ defineExpose({
 
 .datal {
   text-align: right;
-  font-size: 1rem;
-  
+  font-size: 1.23rem;
+  font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: RGBA(151, 147, 161, 1);
 }
 
 .datal .labelname {
-  margin-right: 1rem;
+  margin-right: 1.87rem;
 }
 
 .datar {
   text-align: left;
-  font-size: 1rem;
+  font-size: 1.23rem;
   color: #FFFFFF;
 }
 </style>

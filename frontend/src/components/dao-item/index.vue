@@ -9,15 +9,15 @@
           <!--          <div class="normal">Creation Time:{{ daoInfo.create_time }}</div>-->
           <div class="flex normal">
             <div class="flex">
-              <div>Approved:</div>
+              <div>Apply For Medal:</div>
               <div class="value">0</div>
             </div>
             <div class="flex" style="margin-left: 0.83rem;">
-              <div>Rejected:</div>
+              <div>Reject Application：</div>
               <div class="value">0</div>
             </div>
             <div class="flex" style="margin-left: 0.83rem;">
-              <div>Pending:</div>
+              <div>Application Approved:</div>
               <div class="value">0</div>
             </div>
           </div>
@@ -37,7 +37,7 @@
 </template>
 
 <script setup>
-import {toRef, ref, onBeforeUpdate} from "vue";
+import {toRef} from "vue";
 import useWeb3 from '/src/utils/useWeb3';
 
 
@@ -48,13 +48,13 @@ const props = defineProps({
     type: Object,
     default: {
       avatar:'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_dao_tx%402x.png',
-      name: '',
-      owner: '',
+      name: 'Kyle Dao',
+      owner: '0x0C81Dc3f36Ed9f8c30B62b7e4E5362Dac02fE221',
       contract_address: ''
     }
   }
 })
-const daoInfo = toRef(props, 'daoInfo'); 
+const daoInfo = toRef(props, 'daoInfo');
 
 const emit = defineEmits(['edit', 'add'])
 
@@ -73,7 +73,7 @@ const emit = defineEmits(['edit', 'add'])
 </script>
 
 <style lang="scss" scoped>
-$font-family: Tomorrow,sans-serif;
+$font-family: PingFangSC-Medium, PingFang SC;
 .dao-item {
   margin: 0 10rem;
   padding: 1.67em 0;
@@ -135,7 +135,7 @@ $font-family: Tomorrow,sans-serif;
     width: 1.92rem;
     height: 0.92rem;
     font-size: 0.67rem;
-    
+    font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #000000;
     line-height: 0.92rem;
@@ -152,7 +152,7 @@ $font-family: Tomorrow,sans-serif;
     width: 1.25rem;
     height: 0.92rem;
     font-size: 0.67rem;
-    
+    font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #FFFFFF;
     line-height: 0.92rem;

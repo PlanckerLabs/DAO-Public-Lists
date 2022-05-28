@@ -1,17 +1,9 @@
-<!--
- * @Description: 
- * @Version: 1.0
- * @Autor: z.cejay@gmail.com
- * @Date: 2022-05-28 21:06:56
- * @LastEditors: cejay
- * @LastEditTime: 2022-05-28 22:24:38
--->
 <template>
   <div class="flex flex-column align-center nft_item">
     <div class="position-relative">
-      <el-image class="avatar" fit="cover" :src="item.uri"></el-image>
+      <el-image class="avatar" fit="fill" :src="item.uri"></el-image>
       <div v-if="applying" class="applying flex align-center justify-center">
-        <div class="applying-des">Pending</div>
+        <div class="applying-des">Currently Applying</div>
       </div>
     </div>
     <div class="des">{{ item.name }}</div>
@@ -57,7 +49,7 @@ const applying = toRef(props, 'applying');
 
     .applying-des {
       font-size: 0.67rem;
-      
+      font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 500;
       color: #FFFFFF;
     }
@@ -66,7 +58,7 @@ const applying = toRef(props, 'applying');
   .des {
     margin-top: 0.42rem;
     font-size: 0.67rem;
-    
+    font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #000000;
 

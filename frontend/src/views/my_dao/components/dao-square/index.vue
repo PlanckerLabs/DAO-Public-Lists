@@ -18,9 +18,11 @@ import Dao from "./componets/Dao/index.vue";
 import User from "./componets/User/index.vue";
 import useWeb3 from "/src/utils/useWeb3";
 import abi_bridge from '/src/assets/abi/soulBoundBridge.json';
+import {useStore} from "/src/store";
 
+const store = useStore();
 const DaoList = reactive([]);
-const {web3, account, ContractCall, mounted, bridge} = useWeb3();
+const {ContractCall, bridge} = useWeb3();
 const searchInputStyle = {
   display: 'inline',
   width: '35.33rem',
@@ -35,12 +37,12 @@ const encodeParam = () => {
   let params = [];
   ['avatar', 'email', 'comgithub'].forEach((k) => {
     // params[k] = ;
-    params.push(web3.eth.abi.encodeFunctionSignature(k));
+    params.push(store.web3.eth.abi.encodeFunctionSignature(k));
   })
   return params;
 }
 watch(searchContent, (newV, oV) => {
-  btnDisable.value = !web3.utils.isAddress(newV);
+  btnDisable.value = !store.web3.utils.isAddress(newV);
 })
 const DaoDetail = async (address) => {
   let values = JSON.parse(JSON.stringify(await ContractCall(abi_bridge, bridge, 'getStrings', [address, encodeParam()])));
@@ -48,82 +50,64 @@ const DaoDetail = async (address) => {
   return values;
 }
 
-const read = async ( ) => {  
-    return await ContractCall(abi_bridge, bridge, 'listDAO', [0, 9999, 0, 9999]).then((res) => { 
-        return res;
-    }).catch(() => { 
-    })
-} 
+const read = async () => {
+  return await ContractCall(abi_bridge, bridge, 'listDAO', [0, 9999, 0, 9999]).then((res) => {
+    return res;
+  }).catch(() => {
+  })
+}
 onMounted(async () => {
-  await mounted();
+
   let res = await read();
   let ret = JSON.parse(res);
-    // console.log(ret);
-    for(let index in ret.medals )
-    {
-        let v = ret.medals[ index ];
-        // remove item if it is empty
-        if(v.medals.length===0){
-          continue;
-        }
-        for(let a in v.medals)
-        {
-            let medal = v.medals[a];
-            medal.name = atob(medal.name);
-            medal.uri = atob(medal.uri);
-            medal.applying = false;
-            medal.canApply = true;
-            medal.contract_address = ret.address[index];
-            // 判断该NFT申请状态  持有 申请中 被拒绝
-            await ContractCall(abi_bridge, bridge, 'getCliamRequest', [ret.address[index], 0, 9999]).then((res) => {
-              let requestList = JSON.parse(res);
-              requestList.forEach((v, index) => {
-                if (v.address === account.value && v.medalindex == medal.index) {
-                  // 存在我的申请记录
-                  switch (v.status) {
-                    case 1:
-                      // 申请中
-                      medal.applying = true;
-                      medal.canApply = false;
-                      break;
-                    case 2:
-                      // 被拒绝
-                      medal.canApply = false;
-                      medal.canApply = false;
-                      break;
-                    default:
-                      // 其他值  已申请成功  >2 tokenid
-                      medal.applying = false;
-                      medal.canApply = false;
-                      break;
-                  }
-                }
-              })
-              // console.log(medal);
-            })
-        }
-        // console.log(v.medals);
-        DaoList.push(JSON.parse(JSON.stringify({detail: {name: atob(v.name)}, medals: v.medals})))
-    } 
-    ret.address.forEach(async (address, index) => {
-      let detail = await DaoDetail(address)
-      DaoList[index].detail.avatar = detail[0];
-      DaoList[index].detail.email = detail[1];
-      DaoList[index].detail.comgithub = detail[2];
-    });
-    // desc by nft holder
-    DaoList.sort((a, b) => {
-      //sum a.medals.request+a.medals.approved
-      let a_sum = 0;
-      let b_sum = 0;
-      a.medals.forEach((v) => {
-        a_sum += v.request + v.approved;
-      });
-      b.medals.forEach((v) => {
-        b_sum += v.request + v.approved;
-      });
-      return b_sum - a_sum;
-    })
+  // console.log(ret);
+  for (let index in ret.medals) {
+    let v = ret.medals[index];
+
+    for (let a in v.medals) {
+      let medal = v.medals[a];
+      medal.name = atob(medal.name);
+      medal.uri = atob(medal.uri);
+      medal.applying = false;
+      medal.canApply = true;
+      medal.contract_address = ret.address[index];
+      // 判断该NFT申请状态  持有 申请中 被拒绝
+      await ContractCall(abi_bridge, bridge, 'getCliamRequest', [ret.address[index], 0, 9999]).then((res) => {
+        let requestList = JSON.parse(res);
+        requestList.forEach((v, index) => {
+          if (v.address === store.account && v.medalindex === medal.index) {
+            // 存在我的申请记录
+            switch (v.status) {
+              case 1:
+                // 申请中
+                medal.applying = true;
+                medal.canApply = false;
+                break;
+              case 2:
+                // 被拒绝
+                medal.canApply = false;
+                medal.canApply = false;
+                break;
+              default:
+                // 其他值  已申请成功  >2 tokenid
+                medal.applying = false;
+                medal.canApply = false;
+                break;
+            }
+          }
+        })
+        // console.log(medal);
+      })
+    }
+    // console.log(v.medals);
+    DaoList.push(JSON.parse(JSON.stringify({detail: {name: atob(v.name)}, medals: v.medals})))
+  }
+  ret.address.forEach(async (address, index) => {
+    let detail = await DaoDetail(address)
+    DaoList[index].detail.avatar = detail[0];
+    DaoList[index].detail.email = detail[1];
+    DaoList[index].detail.comgithub = detail[2];
+  })
 })
 
 

@@ -13,17 +13,17 @@
     </template>
     <div class="row">
       <span class="label">NFT Name</span>
-      <el-input class="dlginput" v-model="nftinfo.name" placeholder="No more than 50 characters"
+      <el-input class="dlginput" v-model="nftinfo.name" placeholder="no more than 50 char"
                 maxlength="50"></el-input>
     </div>
     <div class="row">
       <span class="label">NFT Image URL</span>
-      <el-input class="dlginput" v-model="nftinfo.uri" placeholder="Image URL, starts with https:// or ipfs://"></el-input>
+      <el-input class="dlginput" v-model="nftinfo.uri" placeholder="Please enter address"></el-input>
       <span class="addnftbt" @click="addnewnft()">+ Add</span>
     </div>
     <div class="nftrow">
       <div class="nftbox" v-for="(item, index) in nftinfolist">
-        <el-image class="nftimg" :src="Tools.imgURL(item.uri)" fit="cover"/>
+        <el-image class="nftimg" :src="item.uri" fit="fill"/>
         <div class="nfttext">{{ item.name }}</div>
         <span class="nftremove" @click="removenft(index)">
             <el-image class="nftremoveimg" :src="removeimg" fit="fill"/>
@@ -39,11 +39,11 @@
 </template>
 <script setup>
 import {reactive, ref, watch} from "vue";
-import Tools from '/src/utils/tools';
 import useWeb3 from '/src/utils/useWeb3';
 import abi from '/src/assets/abi/soulBoundMedal.json';
 let removeimg = 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/addnft_delete.png';
 const {ContractCall, ContractSend, bridge} = useWeb3();
+
 const nftinfo = reactive({
   'name': '',
   'uri': ''
@@ -174,7 +174,7 @@ defineExpose({
   text-align: center;
   height: 0.92rem;
   font-size: 0.67rem;
-  
+  font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #000000;
   line-height: 0.92rem;
@@ -190,7 +190,7 @@ defineExpose({
   margin-top: 0.16rem;
   margin-left: 1.63rem;
   font-size: 0.67rem;
-  
+  font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #FFFFFF;
   cursor: pointer;
@@ -211,7 +211,7 @@ defineExpose({
   background: #6E3FF5;
   border-radius: 0.33rem;
   font-size: 0.67rem;
-  
+  font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #FFFFFF;
   text-align: center;
@@ -221,7 +221,7 @@ defineExpose({
 
 .headtitle {
   font-size: 1.25rem;
-  
+  font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #000000;
   display: inline-block;
@@ -230,7 +230,7 @@ defineExpose({
 .headclose {
   height: 1rem;
   font-size: 0.71rem;
-  
+  font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #F53F3F;
   line-height: 1rem;
@@ -247,7 +247,7 @@ defineExpose({
   width: 10rem;
   height: 2rem;
   display: inline-block;
-  
+  font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   line-height: 2rem;
   text-align: right;

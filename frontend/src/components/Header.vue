@@ -25,7 +25,7 @@
         <div class="header-my" ref="buttonRef" v-click-outside="onClickOutside">
           <img class="tx" :src="tx"/>
           <div class="divider"></div>
-          <div class="font_ text-ellipsis">{{ account }}</div>
+          <div class="font_ text-ellipsis">{{ store.Account }}</div>
         </div>
       </div>
     </div>
@@ -62,12 +62,13 @@ import {ClickOutside as vClickOutside} from 'element-plus'
 
 import CreateDao from "./CreateDao.vue";
 import Settings from './Setting.vue';
+import {useStore} from "@/store";
 
 const buttonRef = ref()
 const createDaoDlg = ref();
 const settingsDlg = ref();
 const popoverRef = ref()
-
+const store = useStore();
 const onClickOutside = () => {
   unref(popoverRef).popperRef?.delayHide?.();
 }
@@ -96,22 +97,11 @@ const icon = {
 }
 const router = useRouter()
 const route = useRoute()
-const {account, mounted, connectNetwork} = useWeb3();
+
 
 onMounted(() => {
   route_path.value = route.path;
-  // console.log(route_path.value)
-  mounted();
 })
-// 连接网络
-const connect_network = async () => {
-  let chainId: number = 80001;
-  return await connectNetwork({
-    chainId: '0x' + chainId.toString(16),
-    chainName: 'Mumbai',
-    rpcUrl: 'https://matic-mumbai.chainstacklabs.com'
-  })
-}
 // 跳转路由
 const pushRouter = (path: string) => {
   router.push({
@@ -120,7 +110,7 @@ const pushRouter = (path: string) => {
 }
 // 进入DAPP
 const enterApp = () => {
-  connect_network().then((res) => {
+  store.login().then((res) => {
     pushRouter('/myDao');
   }).catch(() => {
     console.log("err");
@@ -138,7 +128,7 @@ const enterApp = () => {
   .item {
     padding: 0.67rem 0 0.67rem 1.33rem;
     font-size: 0.83rem;
-    
+    font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #000000;
     line-height: 1.17rem;
@@ -183,7 +173,7 @@ const enterApp = () => {
 
     height: 0.92rem;
     font-size: 0.67rem;
-    
+    font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #FFFFFF;
     line-height: 0.92rem;
@@ -197,6 +187,7 @@ const enterApp = () => {
   border-radius: 0.17rem;
   margin-right: 3.33rem;
   font-size: 0.67rem;
+  font-family: Gilroy-Regular, Gilroy;
   font-weight: 400;
   color: #FFFFFF;
   line-height: 0.79rem;
@@ -231,6 +222,7 @@ const enterApp = () => {
     width: 4.38rem;
     height: 0.88rem;
     font-size: 0.67rem;
+    font-family: Roboto-Medium, Roboto;
     font-weight: 500;
     color: #FFFFFF;
     line-height: 0.88rem;

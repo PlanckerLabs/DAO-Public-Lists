@@ -12,12 +12,15 @@
     "element-plus": "^2.2.1",
     "lodash": "^4.17.21",
     "pinia": "^2.0.14",
+    "store": "^2.0.12",
     "vue": "^3.2.25",
     "vue-router": "^4.0.15",
     "web3": "^1.7.3"
   },
   "devDependencies": {
     "@types/web3": "^1.2.2",
+    "@types/lodash": "^4.14.168",
+    "@types/store": "^2.0.2",
     "@vitejs/plugin-vue": "^2.3.3",
     "sass": "^1.52.1",
     "typescript": "^4.5.4",
