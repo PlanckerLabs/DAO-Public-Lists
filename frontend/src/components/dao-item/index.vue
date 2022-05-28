@@ -9,15 +9,15 @@
           <!--          <div class="normal">Creation Time:{{ daoInfo.create_time }}</div>-->
           <div class="flex normal">
             <div class="flex">
-              <div>Apply For Medal:</div>
+              <div>Approved:</div>
               <div class="value">0</div>
             </div>
             <div class="flex" style="margin-left: 0.83rem;">
-              <div>Reject Application：</div>
+              <div>Rejected:</div>
               <div class="value">0</div>
             </div>
             <div class="flex" style="margin-left: 0.83rem;">
-              <div>Application Approved:</div>
+              <div>Pending:</div>
               <div class="value">0</div>
             </div>
           </div>
@@ -48,8 +48,8 @@ const props = defineProps({
     type: Object,
     default: {
       avatar:'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_dao_tx%402x.png',
-      name: 'Kyle Dao',
-      owner: '0x0C81Dc3f36Ed9f8c30B62b7e4E5362Dac02fE221',
+      name: '',
+      owner: '',
       contract_address: ''
     }
   }
