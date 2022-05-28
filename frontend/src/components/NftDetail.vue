@@ -276,7 +276,7 @@ defineExpose({
   height: 2.5rem;
   line-height: 2.5rem;
   font-size: 0.67rem;
-  //font-family: PingFangSC-Medium, PingFang SC;
+  
   font-weight: 500;
   color: #999999;
   border-bottom: solid #EEEEEE 0.04rem;
@@ -315,7 +315,7 @@ defineExpose({
 .reqline {
   min-height: 2.5rem;
   font-size: 0.67rem;
-  //font-family: PingFangSC-Medium, PingFang SC;
+  
   font-weight: 500;
   color: #000000;
   line-height: 2.5rem;
@@ -354,7 +354,7 @@ defineExpose({
 
 
   font-size: 0.5rem;
-  //font-family: PingFangSC-Regular, PingFang SC;
+  
   font-weight: 400;
   color: #000000;
   margin-left: 0.5rem;
@@ -411,7 +411,7 @@ defineExpose({
   margin-top: 0.83rem;
   height: 2.33rem;
   font-size: 1.67rem;
-  //font-family: PingFangSC-Medium, PingFang SC;
+  
   font-weight: 500;
   color: #000000;
   line-height: 2.33rem;
@@ -421,7 +421,7 @@ defineExpose({
   margin-left: 3.33rem;
   height: 1.75rem;
   font-size: 1.25rem;
-  //font-family: PingFangSC-Regular, PingFang SC;
+  
   font-weight: 400;
   color: #999999;
   line-height: 1.75rem;
@@ -440,7 +440,7 @@ defineExpose({
 
 .nftfilterbt {
   font-size: 0.67rem;
-  //font-family: PingFangSC-Medium, PingFang SC;
+  
   font-weight: 500;
   width: 7.67rem;
   height: 2.5rem;
@@ -467,7 +467,7 @@ defineExpose({
 .headclose {
   height: 1rem;
   font-size: 0.71rem;
-  //font-family: PingFangSC-Regular, PingFang SC;
+  
   font-weight: 400;
   color: #F53F3F;
   margin: 1.67rem 1.67rem 0 0;

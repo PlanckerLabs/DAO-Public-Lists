@@ -26,7 +26,7 @@
     margin-top: 0.42rem;
     height: 0.92rem;
     font-size: 0.67rem;
-    //font-family: PingFangSC-Medium, PingFang SC;
+    
     font-weight: 500;
     color: #000000;
     line-height: 0.92rem;

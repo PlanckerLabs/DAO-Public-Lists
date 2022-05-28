@@ -57,7 +57,7 @@ const applying = toRef(props, 'applying');
 
     .applying-des {
       font-size: 0.67rem;
-      //font-family: PingFangSC-Medium, PingFang SC;
+      
       font-weight: 500;
       color: #FFFFFF;
     }
@@ -66,7 +66,7 @@ const applying = toRef(props, 'applying');
   .des {
     margin-top: 0.42rem;
     font-size: 0.67rem;
-    //font-family: PingFangSC-Medium, PingFang SC;
+    
     font-weight: 500;
     color: #000000;
 

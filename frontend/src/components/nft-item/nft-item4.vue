@@ -128,7 +128,7 @@ if( account.value && !inistatus )
     margin-left: 0.42rem;
     height: 0.92rem;
     font-size: 0.67rem;
-    //font-family: PingFangSC-Medium, PingFang SC;
+    
     font-weight: 500;
     color: #FFFFFF;
     line-height: 0.92rem;
@@ -158,7 +158,7 @@ if( account.value && !inistatus )
     height: 0.92rem;
     font-size: 0.67rem;
     padding: 0.42rem 0 0 1.08rem;
-    //font-family: PingFangSC-Medium, PingFang SC;
+    
     font-weight: 500;
     color: #FFFFFF;
     line-height: 0.92rem;
@@ -167,7 +167,7 @@ if( account.value && !inistatus )
   .des {
     font-size: 0.5rem;
     padding: 0.17rem 0 0.58rem 1.08rem;
-    //font-family: PingFangSC-Regular, PingFang SC;
+    
     font-weight: 400;
     color: #FFFFFF;
     line-height: 0.71rem;

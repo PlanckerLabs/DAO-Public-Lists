@@ -135,7 +135,7 @@ $font-family: Tomorrow,sans-serif;
     width: 1.92rem;
     height: 0.92rem;
     font-size: 0.67rem;
-    //font-family: PingFangSC-Medium, PingFang SC;
+    
     font-weight: 500;
     color: #000000;
     line-height: 0.92rem;
@@ -152,7 +152,7 @@ $font-family: Tomorrow,sans-serif;
     width: 1.25rem;
     height: 0.92rem;
     font-size: 0.67rem;
-    //font-family: PingFangSC-Medium, PingFang SC;
+    
     font-weight: 500;
     color: #FFFFFF;
     line-height: 0.92rem;
