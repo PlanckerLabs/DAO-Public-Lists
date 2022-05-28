@@ -4,8 +4,8 @@
       <el-image class="avatar" :src="Tools.imgURL(info.avatar)"></el-image>
       <div class="flex flex-column des">
         <div class="name">{{ info.name }}</div>
-        <div class="normal">Discord: {{ info.comdiscord ? info.comdiscord:'--' }}</div>
-        <div class="normal">Telegram: {{ info.comtelegram?info.comtelegram:'--'  }}</div>
+        <div class="normal">Discord: {{ info.comdiscord ? info.comdiscord : '--' }}</div>
+        <div class="normal">Telegram: {{ info.comtelegram ? info.comtelegram : '--' }}</div>
         <div class="flex">
           <!--          <div class="normal">Already Applied:-->
           <!--            <div class="value">-->
@@ -20,16 +20,16 @@
         </div>
       </div>
     </div>
-<!--    <el-popover placement="left" :width="400" trigger="click">-->
-<!--      <template #reference>-->
-<!--        <div class="menu-btn">-->
-<!--          <div class="font">-->
-<!--            ···-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </template>-->
-<!--      <PersonalDataPop/>-->
-<!--    </el-popover>-->
+    <!--    <el-popover placement="left" :width="400" trigger="click">-->
+    <!--      <template #reference>-->
+    <!--        <div class="menu-btn">-->
+    <!--          <div class="font">-->
+    <!--            ···-->
+    <!--          </div>-->
+    <!--        </div>-->
+    <!--      </template>-->
+    <!--      <PersonalDataPop/>-->
+    <!--    </el-popover>-->
   </div>
 
 
@@ -41,6 +41,7 @@ import {toRef, unref} from "vue";
 import PersonalDataPop from '/src/components/PersonalDatapop.vue';
 
 import Tools from '/src/utils/tools';
+
 const props = defineProps({
   info: {
     type: Object,
@@ -90,7 +91,7 @@ const info = toRef(props, 'info');
     .name {
       height: 0.92rem;
       font-size: 0.67rem;
-      
+
       font-weight: 500;
       color: #000000;
       line-height: 0.92rem;
@@ -100,7 +101,7 @@ const info = toRef(props, 'info');
       display: flex;
       height: 0.71rem;
       font-size: 0.5rem;
-      
+
       font-weight: 500;
       color: #999999;
       line-height: 0.71rem;
