@@ -4,8 +4,8 @@
       <el-image class="avatar" :src="info.avatar"></el-image>
       <div class="flex flex-column des">
         <div class="name">{{ info.name }}</div>
-        <div class="normal">Email: {{ info.email }}</div>
-        <div class="normal">Url: {{ info.comgithub }}</div>
+        <div class="normal">Discord: {{ info.comdiscord ? info.comdiscord:'--' }}</div>
+        <div class="normal">Telegram: {{ info.comtelegram?info.comtelegram:'--'  }}</div>
         <div class="flex">
           <!--          <div class="normal">Already Applied:-->
           <!--            <div class="value">-->

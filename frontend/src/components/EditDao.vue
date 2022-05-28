@@ -19,22 +19,18 @@
     <div class="row">
       <span class="label">Symbol</span>
       <el-input class="dlginput" v-model="daosymbol" disabled></el-input>
-    </div>
+    </div> 
     <div class="row">
-      <span class="label">Email</span>
-      <el-input class="dlginput" v-model="setinfo.email"></el-input>
-    </div>
-    <div class="row">
-      <span class="label">Avater</span>
+      <span class="label">Logo</span>
       <el-input class="dlginput" v-model="setinfo.avatar"  placeholder="Image URL, starts with https:// or ipfs://"></el-input>
-    </div>
-    <div class="row">
-      <span class="label">Description</span>
-      <el-input class="dlginput" v-model="setinfo.description" :rows="2" type="textarea"></el-input>
     </div>
     <div class="row">
       <span class="label">Discord</span>
       <el-input class="dlginput" v-model="setinfo.comdiscord"></el-input>
+    </div>
+    <div class="row">
+      <span class="label">Telegram</span>
+      <el-input class="dlginput" v-model="setinfo.comtelegram"></el-input>
     </div>
     <div class="row">
       <span class="label">Github</span>
@@ -49,9 +45,14 @@
       <el-input class="dlginput" v-model="setinfo.comtwitter"></el-input>
     </div>
     <div class="row">
-      <span class="label">Telegram</span>
-      <el-input class="dlginput" v-model="setinfo.comtelegram"></el-input>
+      <span class="label">Email</span>
+      <el-input class="dlginput" v-model="setinfo.email"></el-input>
     </div>
+    <div class="row">
+      <span class="label">Description</span>
+      <el-input class="dlginput" v-model="setinfo.description" :rows="2" type="textarea"></el-input>
+    </div>
+    
     <div class="rowbt">
       <!-- <span class="savebt" @click="savedata()">Save</span>  -->
       <el-button color="#6E3FF5" :loading="btn2_loading" @click="saveData">Submit</el-button>
