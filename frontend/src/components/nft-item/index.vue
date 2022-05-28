@@ -1,9 +1,9 @@
 <template>
   <div class="flex flex-column align-center nft_item">
     <div class="position-relative">
-      <el-image class="avatar" fit="fill" :src="item.uri"></el-image>
+      <el-image class="avatar" fit="cover" :src="item.uri"></el-image>
       <div v-if="applying" class="applying flex align-center justify-center">
-        <div class="applying-des">Currently Applying</div>
+        <div class="applying-des">Pending</div>
       </div>
     </div>
     <div class="des">{{ item.name }}</div>
