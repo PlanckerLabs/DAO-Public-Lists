@@ -81,7 +81,7 @@ onMounted(async () => {
       medal.name = medal.name;
       medal.uri = medal.uri;
       medal.applying = false;
-      medal.canApply = true; 
+      medal.canApply = true;
       medal.rejected = false;
       medal.contract_address = ret.address[index];
       const _key = medal.contract_address + '_' + a;
@@ -89,13 +89,13 @@ onMounted(async () => {
       if (_status === undefined) {
         _status = 0;
       }
-      if (_status === 0) {  
+      if (_status === 0) {
       } else if (_status === 1) {
         medal.applying = true;
         medal.canApply = false;
-      } else if (_status === 2) {  
+      } else if (_status === 2) {
         medal.rejected = true;
-      }else {
+      } else {
         medal.canApply = false;
       }
       // // 判断该NFT申请状态  持有 申请中 被拒绝
@@ -128,14 +128,7 @@ onMounted(async () => {
     }
     // console.log(v.medals);
     DaoList.push(_.cloneDeep({ detail: { name: atob(v.name) }, medals: v.medals }))
-  }
-  ;
-  ret.address.forEach(async (address, index) => {
-    let detail = await DaoDetail(address)
-    DaoList[index].detail.avatar = detail[0];
-    DaoList[index].detail.email = detail[1];
-    DaoList[index].detail.comgithub = detail[2];
-  });
+  }; 
   // desc by nft holder
   DaoList.sort((a, b) => {
     //sum a.medals.request+a.medals.approved
@@ -148,7 +141,13 @@ onMounted(async () => {
       b_sum += v.request + v.approved;
     });
     return b_sum - a_sum;
-  })
+  });
+  ret.address.forEach(async (address, index) => {
+    let detail = await DaoDetail(address)
+    DaoList[index].detail.avatar = detail[0];
+    DaoList[index].detail.email = detail[1];
+    DaoList[index].detail.comgithub = detail[2];
+  });
 })
 
 
