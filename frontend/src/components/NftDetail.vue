@@ -9,8 +9,8 @@
       direction="btt">
     <div class="cbox">
       <div class="cdleft">
-        <el-image class="nftimg" :src="nftinfo.uri"
-                  fit="fill"/>
+        <el-image class="nftimg" :src="Tools.imgURL(nftinfo.uri)"
+                  fit="cover"/>
         <div class="nfttext">{{nftinfo.name}}</div>
         <div class="nftisused">Holder：{{nftinfo.approved}}</div>
       </div>
@@ -70,6 +70,7 @@ import useWeb3 from "/src/utils/useWeb3";
 import bridgeabi from '/src/assets/abi/soulBoundBridge.json';
 import daoabi from '/src/assets/abi/soulBoundMedal.json';
 import {ElLoading,ElNotification} from 'element-plus';  
+import Tools from '/src/utils/tools';
 const {account, web3, ContractCall, ContractSend ,bridge } = useWeb3();
 let contractaddress = '';
 let nftdetaildrawer = ref(false);
