@@ -33,7 +33,6 @@
           <span class="span1">Number</span>
           <span class="span2">Time</span>
           <span class="span3">Address</span>
-          <span class="span4">Remarks</span>
           <span class="span5">Status</span>
           <span class="span6">Operation</span>
         </div>
@@ -42,7 +41,6 @@
             <span class="span1">{{ item.Number }}</span>
             <span class="span2">{{ item.Time }}</span>
             <span class="span3">{{ item.Address }}</span>
-            <span class="span4">{{ item.Remarks }}</span>
             <span class="span5">{{ item.Status }}</span>
             <span class="span6" v-if="item.Status!='pending'">/</span>
             <span class="span6" v-if="item.Status=='pending'">
@@ -65,13 +63,11 @@
   </el-drawer>
 </template>
 <script setup> 
-import {reactive, toRefs,ref, onMounted, watch } from "vue";  
-import useWeb3 from "/src/utils/useWeb3";
-import bridgeabi from '/src/assets/abi/soulBoundBridge.json';
-import daoabi from '/src/assets/abi/soulBoundMedal.json';
+import { ref } from "vue";   
+import useContractTool from '@/utils/useContractTool';  
 import {ElLoading,ElNotification} from 'element-plus';  
-import Tools from '/src/utils/tools';
-const {account, web3, ContractCall, ContractSend ,bridge } = useWeb3();
+import Tools from '/src/utils/tools'; 
+const {Bridge_getCliamRequest, Dao_cliamApproved, Dao_cliamRejected} = useContractTool(); 
 let contractaddress = '';
 let nftdetaildrawer = ref(false);
 let req = ref({});
@@ -81,8 +77,7 @@ let nftinfo = ref({
 });
 let reqlist = ref('');
 let pageset = ref({});
-reqlist.value = [];
-
+reqlist.value = []; 
 let alldata = []; 
 let statustype = {
     0: 'error', 
@@ -146,49 +141,49 @@ function getFormatTs(value) {
     d = d < 10 ? "0" + d : d;
     return y + "-" + MM + "-" + d;
 }
-const read = async ( arr , funcname, s ) => { 
+const read = async () => { 
     const loading = ElLoading.service({
         lock: true,
         text: 'Loading',
         background: 'rgba(0, 0, 0, 0.7)',
     })
-    return await ContractCall(bridgeabi, s, funcname, arr).then((res) => {
-        loading.close();
-        return res;
-    }).catch(() => {
-        loading.close();
-    })
+    let ret = await Bridge_getCliamRequest( contractaddress ); 
+    loading.close();
+    return ret; 
 } 
 let curexecute = '';
-function excutereq( mtype, nftindex ) {
+async function excutereq( mtype, nftindex ) {
     if( curexecute === nftindex )
     {
         return;
     }
-    curexecute = nftindex; 
-    let methodstypes = {
-        pass : 'cliamApproved',
-        reject : 'cliamRejected',
-    };
+    curexecute = nftindex;  
     const loading = ElLoading.service({
         lock: true,
         text: 'Loading',
         background: 'rgba(0, 0, 0, 0.7)',
     })
-    ContractSend(daoabi, contractaddress , methodstypes[ mtype ], [ nftindex ]).then((res) => {
+    let ret = false;
+    if( mtype == 'pass' )
+    {
+        ret = await Dao_cliamApproved( contractaddress, nftindex );
+    }
+    if( mtype == 'reject' )
+    {
+        ret = await Dao_cliamRejected( contractaddress, nftindex );
+    }
+    if( ret && ret.blockHash )
+    {
         curexecute = '';
-        loading.close();
+        loading.close(); 
         ElNotification({
             title: 'Success',
-            message: 'blockHash:' + res.blockHash,
+            message: 'blockHash:' + ret.blockHash,
             type: 'success',
             duration: 3000
         })
         loaddata( 'all', 1 );
-    }).catch((e) => {
-        curexecute = '';
-        loading.close();
-    })
+    } 
 }
 function changepage( curpage )
 {
@@ -237,8 +232,7 @@ function changepage( curpage )
 }
 async function loaddata( filtertype = 'all',setcurpage = 1 )
 {
-    alldata = await read( [ contractaddress, 0, 999 ], 'getCliamRequest', bridge );
-    alldata = JSON.parse( alldata ); 
+    alldata = await read(); 
     nftdetaildrawer.value = true;  
     req.value = { 
         rejected:0,
@@ -292,16 +286,16 @@ defineExpose({
 }
 
 .listhead .span1, .reqline .span1 {
-  width: 6.3rem;
+  width: 5.3rem;
   padding-left: 1.33rem;
 }
 
 .listhead .span2, .reqline .span2 {
-  width: 6.3rem;
+  width: 7.3rem;
 }
 
 .listhead .span3, .reqline .span3 {
-  width: 6.8rem;
+  width: 8.8rem;
 }
 
 .listhead .span5, .reqline .span5 {
@@ -309,7 +303,7 @@ defineExpose({
 }
 
 .listhead .span6, .reqline .span6 {
-  width: 6rem;
+  min-width: 10rem;
 }
 
 .reqline {
@@ -323,7 +317,7 @@ defineExpose({
 }
 
 .span6 .reqpass {
-  width: 3rem;
+  width: 4rem;
   display: inline-block;
   color: #6E3FF5;
   cursor: pointer;

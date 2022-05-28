@@ -32,7 +32,7 @@ import {reactive, ref, toRefs} from "vue";
 // import useWeb3 from "/src/utils/useWeb3";
 import abi from '/src/assets/abi/soulBoundMedal.json';
 import bytecode from '/src/assets/bytecode/soulBoundMedal.json';
-import {ElNotification} from 'element-plus';
+import {ElLoading, ElNotification} from 'element-plus';
 import {ElMessage, ElMessageBox} from 'element-plus'
 import {watch} from 'vue';
 import abi_bridge from '/src/assets/abi/soulBoundBridge.json'
@@ -47,6 +47,7 @@ const nftdao = reactive({
 const showDlg = ref(false);
 // const {deployContract, ContractSend, bridge} = useWeb3();
 const loading = ref(false);
+const loading_register = ref(false);
 const btnDisable = ref(true);
 
 watch(nftdao, (newV, preV) => {
@@ -75,22 +76,30 @@ const createDao = () => {
         }
     )
         .then(() => {
+          const loading_register = ElLoading.service({
+            lock: true,
+            text: 'Loading',
+            background: 'rgba(0, 0, 0, 0.7)',
+          })
           Bridge_register(newContractInstance.options.address).then((res) => {
             // console.log("注册成功",res)
+            loading_register.close();
+            // 可以考虑注册完成刷新页面
             ElNotification({
               title: 'Success',
               message: 'Register',
               type: 'success',
               duration: 3000
-            })
+            });
+          }).catch(() => {
+            loading_register.close();
           })
-        })
-        .catch(() => {
-          ElMessage({
-            type: 'info',
-            message: 'Register Fail',
-          })
-        })
+        }).catch(() => {
+      ElMessage({
+        type: 'info',
+        message: 'Register Fail',
+      })
+    })
   }).catch(() => {
     // console.log("err");
     loading.value = false;
