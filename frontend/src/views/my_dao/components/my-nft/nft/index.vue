@@ -24,7 +24,7 @@ const props = defineProps({
 })
 
 const collection = toRef(props, 'collection');
-// console.log(collection);
+
 </script>
 
 <style lang="scss" scoped>
