@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-column align-center nft_item">
     <div class="position-relative">
-      <el-image class="avatar" fit="cover" :src="item.uri"></el-image>
+      <el-image class="avatar" fit="cover" :src="Tools.imgURL(item.uri)"></el-image>
       <div v-if="applying" class="applying flex align-center justify-center">
         <div class="applying-des">Pending</div>
       </div>
@@ -13,6 +13,7 @@
 <script setup>
 // 我的NFT item
 import {toRef} from "vue";
+import Tools from '/src/utils/tools';
 
 const props = defineProps({
   item: {

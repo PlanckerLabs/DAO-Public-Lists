@@ -2,7 +2,7 @@
   <div style="background-color: #FFF">
     <div class="flex dao-item justify-between align-center">
       <div class="flex">
-        <el-image :src="daoInfo.avatar" class="avatar"></el-image>
+        <el-image :src="Tools.imgURL(daoInfo.avatar)" class="avatar"></el-image>
         <div class="right-panel">
           <div class="name">{{ daoInfo.name }}</div>
           <div class="normal">{{ daoInfo.contract_address }}</div>
@@ -39,6 +39,8 @@
 <script setup>
 import {toRef} from "vue";
 import useWeb3 from '/src/utils/useWeb3';
+
+import Tools from '/src/utils/tools';
 
 
 const {ContractCall, bridge, mounted} = useWeb3();
