@@ -30,7 +30,7 @@ import type {TabsPaneContext} from 'element-plus'
 
 
 const activeName = ref('first')
-const tabs = ['My Dao', 'My NFT', 'Dao Square'];
+const tabs = ['MY DAO', 'MY NFT', 'DAO SQUARE'];
 
 
 const handleClick = (tab: TabsPaneContext, event: Event) => {
