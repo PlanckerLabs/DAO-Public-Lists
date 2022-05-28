@@ -150,14 +150,14 @@ defineExpose({
 <style lang="scss" scoped>
 .tipmsg
 {
-    font-size: 0.67rem;
-    
-    font-weight: 400;
-    color: #F53F3F; 
-    margin-left: 11.7rem;
+  font-size: 0.67rem;
+
+  font-weight: 400;
+  color: #F53F3F;
+  margin-left: 11.7rem;
 }
-.rowbt { 
-    margin-top:0.84rem;
+.rowbt {
+  margin-top:0.84rem;
   margin-bottom: 7.83rem;
   text-align: right;
   width: 47rem;
@@ -170,7 +170,7 @@ defineExpose({
 
 .headtitle {
   font-size: 1.25rem;
-  
+
   font-weight: 400;
   color: #000000;
   display: inline-block;
@@ -179,7 +179,7 @@ defineExpose({
 .headclose {
   height: 1rem;
   font-size: 0.71rem;
-  
+
   font-weight: 400;
   color: #F53F3F;
   line-height: 1rem;
@@ -196,7 +196,7 @@ defineExpose({
   width: 10rem;
   height: 2rem;
   display: inline-block;
-  
+
   font-weight: 400;
   line-height: 2rem;
   text-align: right;
