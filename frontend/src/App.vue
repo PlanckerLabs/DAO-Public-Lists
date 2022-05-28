@@ -29,6 +29,6 @@ html {
 
 body {
   margin: 0;
-  padding: 0px !important;
+  padding: 0 !important;
 }
 </style>
