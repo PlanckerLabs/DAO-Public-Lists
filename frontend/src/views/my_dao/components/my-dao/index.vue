@@ -50,7 +50,7 @@ const DaoDetail = (address) => {
     obj.contract_address = address;
     let avatar = await Bridge_getString(address, 'avatar');
     obj.avatar = avatar ? avatar : '/img/dapp_dao_tx%402x.png';
-    obj.name = atob(obj.name);
+    // obj.name = atob(obj.name);
     DaoList.push(obj);
   })
 }

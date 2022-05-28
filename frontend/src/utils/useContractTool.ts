@@ -51,10 +51,12 @@ export default function useContractTool() {
         return ContractCall(<AbiItem[]>abi_bridge, config.BridgeAddress, 'listDAOMedals', [address, 0, 999]).then((res) => {
             let ret = JSON.parse(res);
             // NFT name 解码
+            ret.name = atob_(ret.name);
             ret.medals.forEach((medal: any) => {
                 medal.name = atob_(medal.name);
                 medal.uri = atob_(medal.uri);
             })
+            // console.log(ret);
             return ret;
         }).catch((err) => {
             throw Error(err);
