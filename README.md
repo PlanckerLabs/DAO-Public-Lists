@@ -6,8 +6,21 @@
 ## [`前端/frontend`]
 - link:[frontend/](frontend/)
 
-#### [演示/DEMO]
-- [UI演示/UI layout demo](https://planckerlabs.github.io/DAOSquare/)
+#### [DEMO]
+- [demo](https://planckerlabs.github.io/DAOSquare/)
+
+
+#### [开发/DEV]
+
+- Requirements
+```shell
+Node >= v12
+```
+
+```shell
+1. npm install
+2. npm run build
+```
 
 ---
 

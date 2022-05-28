@@ -1,3 +1,15 @@
-# *前端正在开发中*
+#### [DEMO]
+- [demo](https://planckerlabs.github.io/DAOSquare/)
 
-[UI layout demo](https://planckerlabs.github.io/DAOSquare/)
+
+#### [开发/DEV]
+
+- Requirements
+```shell
+Node >= v12
+```
+
+```shell
+1. npm install
+2. npm run build
+```
