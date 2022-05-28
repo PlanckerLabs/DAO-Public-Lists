@@ -4,6 +4,7 @@ import abi_dao from '@/assets/abi/soulBoundMedal.json';
 import {useStore} from '@/store';
 import {config} from "@/config";
 import {AbiItem} from "web3-utils";
+import abi from "@/assets/abi/soulBoundMedal.json";
 
 export default function useContractTool() {
     const store = useStore();
@@ -117,6 +118,14 @@ export default function useContractTool() {
             throw Error(err);
         })
     }
+    // Dao组织创建勋章
+    const Dao_addMedals = (address: string, params: string[]) => {
+        return ContractSend(<AbiItem[]>abi_dao, address, 'addMedals', params).then((res) => {
+            return res
+        }).catch((err) => {
+            throw Error(err);
+        })
+    }
     return {
         Bridge_userDetail,
         Bridge_listDAOMedals,
@@ -125,6 +134,7 @@ export default function useContractTool() {
         Dao_Name,
         Dao_Symbol,
         Dao_saveStrings,
-        Bridge_saveStrings
+        Bridge_saveStrings,
+        Dao_addMedals
     }
 }
