@@ -19,19 +19,21 @@
 </template>
 
 <script setup> 
-import {reactive, toRefs, ref, onMounted, watch } from "vue";
-import useWeb3 from "/src/utils/useWeb3";
-import abi from '/src/assets/abi/soulBoundBridge.json';
+import {reactive, toRefs, ref, onMounted, watch } from "vue"; 
 import {ElLoading} from 'element-plus';
+import useContractTool from '@/utils/useContractTool';
+import {useStore} from "@/store";
+const {Bridge_userDetail, Bridge_listDAOMedals, Bridge_getString } = useContractTool(); 
 let defaultavater = '/img/dapp_user_tx%402x.png'; 
 let nonft = ref('/img/dapp_nonft_img.png');
-const {account, web3, ContractCall, bridge} = useWeb3();
+const store = useStore();  
 const mynfts = ref([]);
-const read = async ( methodname, argsarr ) => {  
-    return await ContractCall(abi, bridge, methodname, argsarr).then((res) => {
-        return res;
-    }).catch(() => {
-    })
+const read = async ( methodname, argsarr ) => {
+
+    // return await ContractCall(abi, bridge, methodname, argsarr).then((res) => {
+    //     return res;
+    // }).catch(() => {
+    // })
 } 
 let inidata = async function () {
     const loading = ElLoading.service({
@@ -41,20 +43,15 @@ let inidata = async function () {
     }) 
     try
     { 
-        let values = await read( 'userDetail', [account.value] );
-        values = JSON.parse( values );
-        console.log( values );
+        let values = await Bridge_userDetail( store.Account ); 
         let alldao =  values.dao;
         mynfts.value = [];
         for( let v in alldao )
         {
             let daoaddress = alldao[v].address;
-            let daoinfo = await read( 'listDAOMedals', [ daoaddress , 0, 999 ] ); 
-            daoinfo = JSON.parse( daoinfo );
-            console.log( daoinfo );
-            let daoname = atob(daoinfo.name);
-            let byteavatar = web3.eth.abi.encodeFunctionSignature('avatar');
-            let avatar = await read('getString', [ daoaddress, byteavatar ] );
+            let daoinfo = await Bridge_listDAOMedals( daoaddress ); 
+            let daoname = daoinfo.name;
+            let avatar = await await Bridge_getString( daoaddress, 'avatar' );
             if( alldao[v]['medals'] && alldao[v]['medals'].length > 0 )
             { 
                 let daomedals = alldao[v].medals;
@@ -63,8 +60,8 @@ let inidata = async function () {
                     if( daomedals[ dm ].status > 2 )
                     {
                         mynfts.value.push({
-                            image: atob( daomedals[ dm ].uri ),
-                            title: atob( daomedals[ dm ].name ),
+                            image: daomedals[ dm ].uri,
+                            title: daomedals[ dm ].name,
                             approved: daomedals[ dm ].approved,
                             daoavatar: avatar?avatar:defaultavater,
                             daoname: daoname,
@@ -80,21 +77,8 @@ let inidata = async function () {
         loading.close();
         console.log(e);
     } 
-}
-let inistatus = false;
-watch(account, (account, prevaccount) => {
-    if( account && !prevaccount && !inistatus )
-    {
-        inidata();
-        inistatus = true;
-    }
-})
-if( account.value && !inistatus )
-{
-    inidata();
-    inistatus = true;
-}
-
+} 
+inidata(); 
 </script>
 
 <style lang="scss" scoped>
