@@ -6,12 +6,12 @@
   </div>
   <div class="nftbox" v-for="item in mynfts" v-else>
     <div class="nft">
-      <el-image class="image" :src="item.image"></el-image>
+      <el-image class="image" :src="Tools.imgURL(item.image)"></el-image>
       <div class="title">{{ item.title }}</div>
       <div class="des">Holdings:{{ item.approved }}</div>
       <div class="divider"></div>
       <div class="flex align-center" style="height: 2.5rem">
-        <el-image class="avatar" :src="item.daoavatar"></el-image>
+        <el-image class="avatar" :src="Tools.imgURL(item.daoavatar)"></el-image>
         <div class="name">{{ item.daoname }}</div>
       </div>
     </div>
@@ -23,6 +23,8 @@ import {ref} from "vue";
 import {ElLoading} from 'element-plus';
 import useContractTool from '@/utils/useContractTool';
 import {useStore} from "@/store";
+
+import Tools from '/src/utils/tools'; 
 
 const {Bridge_userDetail, Bridge_listDAOMedals, Bridge_getString} = useContractTool();
 let defaultavater = '/img/dapp_user_tx%402x.png';

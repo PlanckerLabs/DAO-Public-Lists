@@ -4,7 +4,7 @@
  * @Autor: z.cejay@gmail.com
  * @Date: 2022-05-28 21:49:53
  * @LastEditors: cejay
- * @LastEditTime: 2022-05-28 21:58:35
+ * @LastEditTime: 2022-05-29 02:50:40
  */
 import { unref, ref, toRaw } from 'vue';
 
@@ -14,7 +14,7 @@ class Tools {
             return '';
         }
         if (url.toLowerCase().indexOf('ipfs://') === 0) {
-            return `https://ipfs.io/ipfs/${url.substr(8)}`;
+            return `https://ipfs.io/ipfs/${url.substring(7)}`;
         }
         return url;
 

@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-between personal_info align-center">
     <div class="flex">
-      <el-image class="avatar" :src="personal_info.avatar"></el-image>
+      <el-image class="avatar" :src="Tools.imgURL(personal_info.avatar)"></el-image>
       <div class="flex flex-column des">
         <div class="name">{{ personal_info.name }}</div>
         <div class="normal">Email: {{ personal_info.email }}</div>
@@ -39,6 +39,8 @@
 
 import {toRef} from "vue";
 import PersonalDataPop from '/src/components/PersonalDatapop.vue';
+
+import Tools from '/src/utils/tools'; 
 
 const props = defineProps({
   personal_info: {
