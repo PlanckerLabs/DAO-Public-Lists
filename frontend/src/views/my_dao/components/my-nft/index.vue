@@ -53,7 +53,7 @@ onMounted(async () => {
       let listDAOMedals = await Bridge_listDAOMedals(daos[index].address);
       let info = await Bridge_getStrings(daos[index].address, ['avatar', 'email', 'url']);
       daoInfo.name = listDAOMedals.name;
-      daoInfo.avatar = info.avatar === '' ? '/img/dapp_dao_tx_2x.png' : info.avatar;
+      daoInfo.avatar = info.avatar === '' ? '/src/assets/img/dapp_dao_tx_2x.png' : info.avatar;
       daoInfo.email = info.email;
       daoInfo.url = info.url;
       // 全部列表

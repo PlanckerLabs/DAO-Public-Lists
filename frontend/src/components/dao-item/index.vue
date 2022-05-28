@@ -39,13 +39,10 @@
 <script setup>
 import {toRef} from "vue";
 import useWeb3 from '/src/utils/useWeb3';
-import dapp_add2 from '/img/dapp_add2_2x.png';
+import dapp_add2 from '/src/assets/img/dapp_add2_2x.png';
 
 import Tools from '/src/utils/tools';
-import dappavatar from '/img/dapp_dao_tx_2x.png';
-
-
-const {ContractCall, bridge, mounted} = useWeb3();
+import dappavatar from '/src/assets/img/dapp_dao_tx_2x.png';
 
 const props = defineProps({
   daoInfo: {
@@ -59,20 +56,7 @@ const props = defineProps({
   }
 })
 const daoInfo = toRef(props, 'daoInfo');
-
 const emit = defineEmits(['edit', 'add'])
-
-
-// onMounted(async () => {
-//   // await mounted();
-//   // console.log(daoInfo.contract_address);
-//   // ContractCall(abi, bridge, 'getString', [daoInfo.contract_address, encodeParam()]).then((res) => {
-//   //
-//   //
-//   // }).catch(() => {
-//   //
-//   // })
-// })
 
 </script>
 

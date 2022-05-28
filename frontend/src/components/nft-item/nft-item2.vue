@@ -24,11 +24,11 @@
 </template>
 
 <script setup>
-import {toRef, ref, unref} from 'vue'; 
-import useContractTool from '@/utils/useContractTool'; 
+import {toRef, ref, unref} from 'vue';
+import useContractTool from '@/utils/useContractTool';
 
-import Tools from '/src/utils/tools'; 
-const {Dao_cliamRequest} = useContractTool(); 
+import Tools from '/src/utils/tools';
+const {Dao_cliamRequest} = useContractTool();
 const emit = defineEmits(['nftDetail']);
 const props = defineProps({
   info: {
@@ -36,7 +36,7 @@ const props = defineProps({
     default: {
       index: 0,
       contract_address: '',
-      uri: '/img/demo/2063481ac4d0df1f44243100bce0ed8.jpg',
+      uri: '',
       name: 'kyle Medal of Honour',
       approved: 30,
       request: 40,
@@ -72,7 +72,7 @@ const apply = () => {
   border: 0.04rem solid #EEEEEE;
 
   .apply-btn {
-    position: absolute; 
+    position: absolute;
     bottom: 0.5rem;
     right: 0.42rem;
   }
@@ -86,7 +86,7 @@ const apply = () => {
 
     .applying-des {
       font-size: 0.67rem;
-      
+
       font-weight: 500;
       color: #FFFFFF;
     }
@@ -105,7 +105,7 @@ const apply = () => {
     .name {
       height: 0.92rem;
       font-size: 0.67rem;
-      
+
       font-weight: 500;
       color: #000000;
       line-height: 0.92rem;
@@ -116,7 +116,7 @@ const apply = () => {
       margin-top: 0.17rem;
       height: 0.71rem;
       font-size: 0.5rem;
-      
+
       font-weight: 400;
       color: #999999;
       line-height: 0.71rem;

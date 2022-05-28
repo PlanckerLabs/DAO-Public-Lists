@@ -46,7 +46,7 @@ const props = defineProps({
   info: {
     type: Object,
     default: {
-      avatar: '/img/demo/a4765b6b6f385375f0fd09b3bb7059d.jpg',
+      avatar: '',
       name: 'Kyle Dao',
       email: '88766@qq.com',
       url: 'www.baidu.com',
@@ -91,7 +91,7 @@ const info = toRef(props, 'personal_info');
     .name {
       height: 0.92rem;
       font-size: 0.67rem;
-      
+
       font-weight: 500;
       color: #000000;
       line-height: 0.92rem;
@@ -101,7 +101,7 @@ const info = toRef(props, 'personal_info');
       display: flex;
       height: 0.71rem;
       font-size: 0.5rem;
-      
+
       font-weight: 500;
       color: #999999;
       line-height: 0.71rem;

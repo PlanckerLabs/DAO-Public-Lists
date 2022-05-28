@@ -38,10 +38,10 @@
   </el-dialog>
 </template>
 <script setup>
-import {reactive, ref, watch} from "vue"; 
+import {reactive, ref, watch} from "vue";
 import useContractTool from '@/utils/useContractTool';
 import Tools from '/src/utils/tools';
-import removeimg from '/img/addnft_delete.png'; 
+import removeimg from '/src/assets/img/addnft_delete.png';
 const {Dao_addMedals} = useContractTool();
 const nftinfo = reactive({
   'name': '',
@@ -173,7 +173,7 @@ defineExpose({
   text-align: center;
   height: 0.92rem;
   font-size: 0.67rem;
-  
+
   font-weight: 500;
   color: #000000;
   line-height: 0.92rem;
@@ -189,7 +189,7 @@ defineExpose({
   margin-top: 0.16rem;
   margin-left: 1.63rem;
   font-size: 0.67rem;
-  
+
   font-weight: 500;
   color: #FFFFFF;
   cursor: pointer;
@@ -210,7 +210,7 @@ defineExpose({
   background: #6E3FF5;
   border-radius: 0.33rem;
   font-size: 0.67rem;
-  
+
   font-weight: 500;
   color: #FFFFFF;
   text-align: center;
@@ -220,7 +220,7 @@ defineExpose({
 
 .headtitle {
   font-size: 1.25rem;
-  
+
   font-weight: 400;
   color: #000000;
   display: inline-block;
@@ -229,7 +229,7 @@ defineExpose({
 .headclose {
   height: 1rem;
   font-size: 0.71rem;
-  
+
   font-weight: 400;
   color: #F53F3F;
   line-height: 1rem;
@@ -246,7 +246,7 @@ defineExpose({
   width: 10rem;
   height: 2rem;
   display: inline-block;
-  
+
   font-weight: 400;
   line-height: 2rem;
   text-align: right;

@@ -8,7 +8,7 @@
         <MyDAo/>
       </el-tab-pane>
       <el-tab-pane :label="tabs[1]" name="second">
-        <MyNFT/> 
+        <MyNFT/>
       </el-tab-pane>
       <el-tab-pane :label="tabs[2]" name="third">
                <DaoSquare/>
@@ -50,7 +50,7 @@ $tabs-header-color: #FFF;
 
 .header_ {
   height: 16.67rem;
-  background: url("/img/dapp_top_bg_2x.png") no-repeat;
+  background: url("/src/assets/img/dapp_top_bg_2x.png") no-repeat;
   background-size: cover;
 }
 

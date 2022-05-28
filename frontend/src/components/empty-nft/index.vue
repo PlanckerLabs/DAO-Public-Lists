@@ -11,7 +11,7 @@
 
 <script setup>
 
-import nonft from '/img/dapp_nonft_img.png';
+import nonft from '/src/assets/img/dapp_nonft_img.png';
 </script>
 
 <style lang="scss" scoped>
@@ -27,7 +27,7 @@ import nonft from '/img/dapp_nonft_img.png';
     margin-top: 0.42rem;
     height: 0.92rem;
     font-size: 0.67rem;
-    
+
     font-weight: 500;
     color: #000000;
     line-height: 0.92rem;

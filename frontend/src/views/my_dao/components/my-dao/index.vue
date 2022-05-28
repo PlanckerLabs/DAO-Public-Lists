@@ -1,11 +1,3 @@
-<!--
- * @Description: 
- * @Version: 1.0
- * @Autor: z.cejay@gmail.com
- * @Date: 2022-05-29 02:45:44
- * @LastEditors: cejay
- * @LastEditTime: 2022-05-29 03:37:59
--->
 <template>
   <template v-if="DaoList.length>0">
     <template v-for="(item,index) in DaoList" :key="index">
@@ -19,7 +11,7 @@
         <template v-else>
           <div class="flex flex-1 box justify-center" style="margin-top: 1rem;margin-bottom: 3rem;">
             <div class="flex flex-column align-center">
-              <el-image src="/img/dapp_nonft_img.png"></el-image>
+              <el-image src="/src/assets/img/dapp_nonft_img.png"></el-image>
               <div class="des">No NFT</div>
             </div>
           </div>
@@ -57,7 +49,7 @@ const DaoDetail = (address) => {
   Bridge_listDAOMedals(address).then(async (obj) => {
     obj.contract_address = address;
     let avatar = await Bridge_getString(address, 'avatar');
-    obj.avatar = avatar ? avatar : '/img/dapp_dao_tx_2x.png';
+    obj.avatar = avatar ? avatar : '/src/assets/img/dapp_dao_tx_2x.png';
     obj.approved = 0;
     obj.rejected = 0;
     obj.pending = 0;

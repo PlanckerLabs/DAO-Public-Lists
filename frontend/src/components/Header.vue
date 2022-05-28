@@ -62,10 +62,10 @@ import CreateDao from "./CreateDao.vue";
 import Settings from './Setting.vue';
 import {useStore} from "@/store";
 
-import logo from '/img/dapp_logo_2x.png';
-import tx from '/img/dapp_tx.png';
-import importsettings from '/img/dapp_settings.png';
-import importadd from '/img/dapp_add.png';
+import logo from '/src/assets/img/dapp_logo_2x.png';
+import tx from '/src/assets/img/dapp_tx.png';
+import importsettings from '/src/assets/img/dapp_Settings.png';
+import importadd from '/src/assets/img/dapp_add.png';
 
 const buttonRef = ref()
 const createDaoDlg = ref();

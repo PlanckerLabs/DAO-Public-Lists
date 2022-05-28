@@ -10,7 +10,7 @@
       <template v-else>
         <div class="flex flex-1 box justify-center" style="margin-top: 1rem;margin-bottom: 3rem;">
           <div class="flex flex-column align-center">
-            <el-image src="/img/dapp_nonft_img.png"></el-image>
+            <el-image src="/src/assets/img/dapp_nonft_img.png"></el-image>
             <div class="des">No NFT</div>
           </div>
         </div>

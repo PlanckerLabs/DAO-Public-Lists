@@ -19,8 +19,8 @@ const props = defineProps({
   item: {
     type: Object,
     default: {
-      name: '/img/demo/5aeef77b3fc25beb79f5d188fac90a0.jpg',
-      uri: 'Kyle Medal of Honour'
+      name: '',
+      uri: ''
     }
   },
   applying: {

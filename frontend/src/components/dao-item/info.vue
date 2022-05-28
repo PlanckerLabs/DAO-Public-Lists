@@ -46,7 +46,7 @@ const props = defineProps({
   info: {
     type: Object,
     default: {
-      avatar: '/img/demo/a4765b6b6f385375f0fd09b3bb7059d.jpg',
+      avatar: '',
       name: '',
       email: '',
       url: '',
