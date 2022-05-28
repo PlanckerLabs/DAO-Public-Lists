@@ -13,17 +13,17 @@
     </template>
     <div class="row">
       <span class="label">NFT Name</span>
-      <el-input class="dlginput" v-model="nftinfo.name" placeholder="no more than 50 char"
+      <el-input class="dlginput" v-model="nftinfo.name" placeholder="No more than 50 characters"
                 maxlength="50"></el-input>
     </div>
     <div class="row">
       <span class="label">NFT Image URL</span>
-      <el-input class="dlginput" v-model="nftinfo.uri" placeholder="Please enter address"></el-input>
+      <el-input class="dlginput" v-model="nftinfo.uri" placeholder="Image URL, starts with https:// or ipfs://"></el-input>
       <span class="addnftbt" @click="addnewnft()">+ Add</span>
     </div>
     <div class="nftrow">
       <div class="nftbox" v-for="(item, index) in nftinfolist">
-        <el-image class="nftimg" :src="item.uri" fit="fill"/>
+        <el-image class="nftimg" :src="Tools.imgURL(item.uri)" fit="cover"/>
         <div class="nfttext">{{ item.name }}</div>
         <span class="nftremove" @click="removenft(index)">
             <el-image class="nftremoveimg" :src="removeimg" fit="fill"/>
@@ -40,6 +40,7 @@
 <script setup>
 import {reactive, ref, watch} from "vue"; 
 import useContractTool from '@/utils/useContractTool';
+import Tools from '/src/utils/tools';
 let removeimg = 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/addnft_delete.png'; 
 const {Dao_addMedals} = useContractTool();
 const nftinfo = reactive({
