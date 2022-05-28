@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="item" :class="activeName==='first'? 'active':''" @click="handleClick('first')">All</div>
-    <div class="item" :class="activeName==='second'? 'active':''" @click="handleClick('second')">Currently Applying
+    <div class="item" :class="activeName==='second'? 'active':''" @click="handleClick('second')">Pending
     </div>
   </div>
   <div style="margin-top: 0.04rem;"></div>
@@ -125,7 +125,7 @@ onMounted(async () => {
   .item {
     cursor: pointer;
     font-size: 0.5rem;
-    font-family: PingFangSC-Medium, PingFang SC;
+    //font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #999999;
     height: 2.5rem;

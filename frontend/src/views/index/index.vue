@@ -1,6 +1,14 @@
+<!--
+ * @Description: 
+ * @Version: 1.0
+ * @Autor: z.cejay@gmail.com
+ * @Date: 2022-05-28 21:06:56
+ * @LastEditors: cejay
+ * @LastEditTime: 2022-05-28 22:17:24
+-->
 <template>
   <div class="bg">
-    <Header/>
+    <Header />
     <div class="flex justify-center" style="margin-top: 88px;">
       <div class="flex flex-column align-center">
         <div style="width: 100%">
@@ -18,6 +26,8 @@
       </div>
     </div>
   </div>
+  <!-- Third-party License -->
+  <a target="_blank" style="color: #cdcdcd; float: right; font-size: 0.8rem; padding: 1rem;" href="https://github.com/PlanckerLabs/DAO-Square/blob/main/Third-party%20License.md">Third&nbsp;party&nbsp;License</a>
 
 </template>
 

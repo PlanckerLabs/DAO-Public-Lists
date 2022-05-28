@@ -45,9 +45,9 @@ const props = defineProps({
     type: Object,
     default: {
       avatar: 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/demo/a4765b6b6f385375f0fd09b3bb7059d.jpg',
-      name: 'Kyle Dao',
-      email: '88766@qq.com',
-      url: 'www.baidu.com',
+      name: '',
+      email: '',
+      url: '',
       alreadyApplied: 5,
       passed: 4
     }
@@ -89,7 +89,7 @@ const info = toRef(props, 'info');
     .name {
       height: 0.92rem;
       font-size: 0.67rem;
-      font-family: PingFangSC-Medium, PingFang SC;
+      //font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 500;
       color: #000000;
       line-height: 0.92rem;
@@ -99,7 +99,7 @@ const info = toRef(props, 'info');
       display: flex;
       height: 0.71rem;
       font-size: 0.5rem;
-      font-family: PingFangSC-Medium, PingFang SC;
+      //font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 500;
       color: #999999;
       line-height: 0.71rem;
