@@ -164,13 +164,6 @@ export default function useContractTool() {
                     medal_.uri=atob_(medal_.uri);
                 })
             })
-            // // NFT name 解码
-            // ret.name = atob_(ret.name);
-            // ret.medals.forEach((medal: any) => {
-            //     medal.name = atob_(medal.name);
-            //     medal.uri = atob_(medal.uri);
-            // })
-            // // console.log(ret);
             return ret;
         }).catch((err) => {
             throw Error(err);
