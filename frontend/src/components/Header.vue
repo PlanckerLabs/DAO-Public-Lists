@@ -89,11 +89,11 @@ const onHandleCreateDao = () => {
 }
 
 const route_path = ref('');
-const logo = 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_logo%20%402x.png';
-const tx = 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_tx.png';
+const logo = '/img/dapp_logo%20%402x.png';
+const tx = '/img/dapp_tx.png';
 const icon = {
-  settings: 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_Settings.png',
-  add: 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_add.png'
+  settings: '/img/dapp_Settings.png',
+  add: '/img/dapp_add.png'
 }
 const router = useRouter()
 const route = useRoute()

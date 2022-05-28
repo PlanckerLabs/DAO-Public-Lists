@@ -18,7 +18,7 @@ const props = defineProps({
   item: {
     type: Object,
     default: {
-      name: 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/demo/5aeef77b3fc25beb79f5d188fac90a0.jpg',
+      name: '/img/demo/5aeef77b3fc25beb79f5d188fac90a0.jpg',
       uri: 'Kyle Medal of Honour'
     }
   },

@@ -27,7 +27,7 @@
         <el-button color="#EEEEEE" class="edit-btn" @click="emit('edit',daoInfo.contract_address)">Editor</el-button>
         <el-button color="#6E3FF5" class="add-btn" @click="emit('add',daoInfo.contract_address)">
           <img class="add-btn-icon"
-               src="https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_add2%402x.png"/>
+               src="/img/dapp_add2%402x.png"/>
           Add
         </el-button>
       </div>
@@ -47,7 +47,7 @@ const props = defineProps({
   daoInfo: {
     type: Object,
     default: {
-      avatar:'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_dao_tx%402x.png',
+      avatar:'/img/dapp_dao_tx%402x.png',
       name: '',
       owner: '',
       contract_address: ''

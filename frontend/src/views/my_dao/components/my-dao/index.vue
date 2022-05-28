@@ -11,7 +11,7 @@
         <template v-else>
           <div class="flex flex-1 box justify-center" style="margin-top: 1rem;margin-bottom: 3rem;">
             <div class="flex flex-column align-center">
-              <el-image src="https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_nonft_img.png"></el-image>
+              <el-image src="/img/dapp_nonft_img.png"></el-image>
               <div class="des">No NFT</div>
             </div>
           </div>
@@ -49,7 +49,7 @@ const DaoDetail = (address) => {
   Bridge_listDAOMedals(address).then(async (obj) => {
     obj.contract_address = address;
     let avatar = await Bridge_getString(address, 'avatar');
-    obj.avatar = avatar ? avatar : 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_dao_tx%402x.png';
+    obj.avatar = avatar ? avatar : '/img/dapp_dao_tx%402x.png';
     obj.name = atob(obj.name);
     DaoList.push(obj);
   })

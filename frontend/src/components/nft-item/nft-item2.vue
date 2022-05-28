@@ -37,7 +37,7 @@ const props = defineProps({
     default: {
       index: 0,
       contract_address: '',
-      uri: 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/demo/2063481ac4d0df1f44243100bce0ed8.jpg',
+      uri: '/img/demo/2063481ac4d0df1f44243100bce0ed8.jpg',
       name: 'kyle Medal of Honour',
       approved: 30,
       request: 40,
