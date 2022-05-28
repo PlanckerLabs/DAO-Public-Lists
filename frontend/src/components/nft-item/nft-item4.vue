@@ -6,7 +6,7 @@
   </div>
   <div class="nftbox" v-for="item in mynfts" v-else>
     <div class="nft">
-      <el-image class="image" :src="Tools.imgURL(item.image)"></el-image>
+      <el-image class="image" fit="cover" :src="Tools.imgURL(item.image)"></el-image>
       <div class="title">{{ item.title }}</div>
       <div class="des">Holdings:{{ item.approved }}</div>
       <div class="divider"></div>
