@@ -1,0 +1,138 @@
+<template>
+  <div class="top">
+    <div class="search">
+      <el-input :input-style="searchInputStyle" v-model="searchContent"
+                placeholder="Please enter address search" maxlength="50"></el-input>
+      <el-button color="#6E3FF5" class="search-btn" @click="onHandleSearch" :disabled="btnDisable" :loading="loading">
+        Search
+      </el-button>
+    </div>
+    <div style="margin-top: 0.04rem;"></div>
+  </div>
+  <Dao :list="DaoList"/>
+</template>
+
+<script setup>
+import {onMounted, reactive, ref, watch} from "vue";
+import Dao from "./componets/Dao/index.vue";
+import User from "./componets/User/index.vue";
+import useWeb3 from "/src/utils/useWeb3";
+import abi_bridge from '/src/assets/abi/soulBoundBridge.json';
+
+const DaoList = reactive([]);
+const {web3, account, ContractCall, mounted, bridge} = useWeb3();
+const searchInputStyle = {
+  display: 'inline',
+  width: '35.33rem',
+  height: '1.67rem',
+}
+const searchContent = ref('');
+const loading = ref(false);
+const btnDisable = ref(true);
+
+// 编码参数
+const encodeParam = () => {
+  let params = [];
+  ['avatar', 'email', 'comgithub'].forEach((k) => {
+    // params[k] = ;
+    params.push(web3.eth.abi.encodeFunctionSignature(k));
+  })
+  return params;
+}
+watch(searchContent, (newV, oV) => {
+  btnDisable.value = !web3.utils.isAddress(newV);
+})
+const DaoDetail = async (address) => {
+  let values = JSON.parse(JSON.stringify(await ContractCall(abi_bridge, bridge, 'getStrings', [address, encodeParam()])));
+  values[0] = values[0] !== '' ? values[0] : 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_dao_tx%402x.png';
+  return values;
+}
+
+const read = async ( ) => {  
+    return await ContractCall(abi_bridge, bridge, 'listDAO', [0, 9999, 0, 9999]).then((res) => { 
+        return res;
+    }).catch(() => { 
+    })
+} 
+onMounted(async () => {
+  await mounted();
+  let res = await read();
+  let ret = JSON.parse(res);
+    // console.log(ret);
+    for(let index in ret.medals )
+    {
+        let v = ret.medals[ index ];
+        
+        for(let a in v.medals)
+        {
+            let medal = v.medals[a];
+            medal.name = atob(medal.name);
+            medal.uri = atob(medal.uri);
+            medal.applying = false;
+            medal.canApply = true;
+            medal.contract_address = ret.address[index];
+            // 判断该NFT申请状态  持有 申请中 被拒绝
+            await ContractCall(abi_bridge, bridge, 'getCliamRequest', [ret.address[index], 0, 9999]).then((res) => {
+              let requestList = JSON.parse(res);
+              requestList.forEach((v, index) => {
+                if (v.address === account.value && v.medalindex == medal.index) {
+                  // 存在我的申请记录
+                  switch (v.status) {
+                    case 1:
+                      // 申请中
+                      medal.applying = true;
+                      medal.canApply = false;
+                      break;
+                    case 2:
+                      // 被拒绝
+                      medal.canApply = false;
+                      medal.canApply = false;
+                      break;
+                    default:
+                      // 其他值  已申请成功  >2 tokenid
+                      medal.applying = false;
+                      medal.canApply = false;
+                      break;
+                  }
+                }
+              })
+              // console.log(medal);
+            })
+        }
+        // console.log(v.medals);
+        DaoList.push(JSON.parse(JSON.stringify({detail: {name: atob(v.name)}, medals: v.medals})))
+    } 
+    ret.address.forEach(async (address, index) => {
+      let detail = await DaoDetail(address)
+      DaoList[index].detail.avatar = detail[0];
+      DaoList[index].detail.email = detail[1];
+      DaoList[index].detail.comgithub = detail[2];
+    }) 
+})
+
+
+const onHandleSearch = () => {
+  loading.value = true;
+
+}
+</script>
+
+<style lang="scss" scoped>
+
+.top {
+  display: flex;
+  height: 3.33rem;
+  background: #FFFFFF;
+  padding: 0.83rem 10rem 0.83rem 10rem;
+
+  .search {
+    .search-btn {
+      margin-left: 0.83rem;
+      width: 4.17rem;
+      height: 1.67rem;
+      border-radius: 0.33rem;
+    }
+  }
+}
+
+</style>
