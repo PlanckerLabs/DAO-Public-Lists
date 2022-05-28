@@ -101,6 +101,11 @@ const route = useRoute()
 
 onMounted(() => {
   route_path.value = route.path;
+  if (route_path.value !== '/') {
+    if (store.Account == '' || store.Account == null) {
+      pushRouter('/');
+    }
+  }
 })
 // 跳转路由
 const pushRouter = (path: string) => {
@@ -117,7 +122,7 @@ const enterApp = () => {
   })
 }
 // 退出登录
-const exit=()=>{
+const exit = () => {
   store.loginOut();
   pushRouter('/');
 }
