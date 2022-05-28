@@ -30,7 +30,6 @@
 <script setup>
 import {onMounted, reactive, ref, toRefs} from 'vue';
 import NFTCollection from './nft/index.vue';
-//import useWeb3 from "/src/utils/useWeb3";
 import abi_bridge from '/src/assets/abi/soulBoundBridge.json';
 import {ElLoading} from "element-plus";
 import EmptyNFT from '/src/components/empty-nft/index.vue';
@@ -41,10 +40,10 @@ import useContractTool from '@/utils/useContractTool';
 const {  Bridge_userDetail,Bridge_listDAOMedals ,Bridge_getStrings} = useContractTool();
 
 const activeName = ref('first')
-//const {ContractCall, bridge} = useWeb3();
 const allList = reactive([]); //全部列表
 const applyingList = reactive([]); //申请中列表
 const store = useStore();
+
 const handleClick = (flag) => {
   activeName.value = flag;
 }
@@ -61,19 +60,10 @@ const handleClick = (flag) => {
 //     loading.close();
 //   })
 // }
-// 编码参数
-const encodeParam = () => {
-  let params = [];
-  ['avatar', 'email', 'comgithub'].forEach((k) => {
-    // params[k] = ;
-    params.push(web3.eth.abi.encodeFunctionSignature(k));
-  })
-  return params;
-}
+
 onMounted(async () => {
 //  read('userDetail', [store.account]).then(async (res) => {
-  Bridge_userDetail(store.account).then(async (res) => {
-    let values = JSON.parse(res);
+  Bridge_userDetail(store.Account).then(async (values) => {
     let daos = values.dao
     // console.log(daos);
     for (let index in daos) {
@@ -133,7 +123,7 @@ onMounted(async () => {
   .item {
     cursor: pointer;
     font-size: 0.5rem;
-    
+
     font-weight: 500;
     color: #999999;
     height: 2.5rem;
