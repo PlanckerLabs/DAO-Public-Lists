@@ -70,8 +70,8 @@ const createDao = () => {
         'Whether to register to the Dao Square?',
         'Prompt',
         {
+          showCancelButton: false,
           confirmButtonText: 'Yes',
-          cancelButtonText: 'No',
           type: 'info',
         }
     )
