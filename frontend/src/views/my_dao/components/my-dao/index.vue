@@ -53,7 +53,7 @@ const DaoDetail = (address) => {
     obj.approved = 0;
     obj.rejected = 0;
     obj.pending = 0;
-    console.log(obj);
+    // console.log(obj);
     obj.medals.forEach((medal) => {
       obj.pending += medal.request;
       obj.approved += medal.approved;
