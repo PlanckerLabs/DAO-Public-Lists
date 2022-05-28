@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import {onMounted, reactive, ref, toRefs} from 'vue';
+import {onMounted, reactive, ref} from 'vue';
 import NFTCollection from './nft/index.vue';
 import EmptyNFT from '/src/components/empty-nft/index.vue';
 import {useStore} from "/src/store";
