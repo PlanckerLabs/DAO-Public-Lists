@@ -30,33 +30,37 @@
 <script setup>
 import {onMounted, reactive, ref, toRefs} from 'vue';
 import NFTCollection from './nft/index.vue';
-import useWeb3 from "/src/utils/useWeb3";
+//import useWeb3 from "/src/utils/useWeb3";
 import abi_bridge from '/src/assets/abi/soulBoundBridge.json';
 import {ElLoading} from "element-plus";
 import EmptyNFT from '/src/components/empty-nft/index.vue';
 import {useStore} from "/src/store";
 
+
+import useContractTool from '@/utils/useContractTool';
+const {  Bridge_userDetail,Bridge_listDAOMedals ,Bridge_getStrings} = useContractTool();
+
 const activeName = ref('first')
-const {ContractCall, bridge} = useWeb3();
+//const {ContractCall, bridge} = useWeb3();
 const allList = reactive([]); //全部列表
 const applyingList = reactive([]); //申请中列表
 const store = useStore();
 const handleClick = (flag) => {
   activeName.value = flag;
 }
-const read = async (method, params) => {
-  const loading = ElLoading.service({
-    lock: true,
-    text: 'Loading',
-    background: 'rgba(0, 0, 0, 0.7)',
-  })
-  return await ContractCall(abi_bridge, bridge, method, params).then((res) => {
-    loading.close();
-    return res;
-  }).catch(() => {
-    loading.close();
-  })
-}
+// const read = async (method, params) => {
+//   const loading = ElLoading.service({
+//     lock: true,
+//     text: 'Loading',
+//     background: 'rgba(0, 0, 0, 0.7)',
+//   })
+//   return await ContractCall(abi_bridge, bridge, method, params).then((res) => {
+//     loading.close();
+//     return res;
+//   }).catch(() => {
+//     loading.close();
+//   })
+// }
 // 编码参数
 const encodeParam = () => {
   let params = [];
@@ -67,16 +71,19 @@ const encodeParam = () => {
   return params;
 }
 onMounted(async () => {
-  read('userDetail', [store.account]).then(async (res) => {
+//  read('userDetail', [store.account]).then(async (res) => {
+  Bridge_userDetail(store.account).then(async (res) => {
     let values = JSON.parse(res);
     let daos = values.dao
     // console.log(daos);
     for (let index in daos) {
       // read('listDAOMedals',[])
       let daoInfo = {};
-      let listDAOMedals = JSON.parse(await read('listDAOMedals', [daos[index].address, 0, 9999]));
+      //let listDAOMedals = JSON.parse(await read('listDAOMedals', [daos[index].address, 0, 9999]));
+      let listDAOMedals = JSON.parse(await Bridge_listDAOMedals(daos[index].address));
 
-      let info = await read('getStrings', [daos[index].address, encodeParam()]);
+      //let info = await read('getStrings', [daos[index].address, encodeParam()]);
+      let info = await  Bridge_getStrings([daos[index].address, encodeParam()]);
       daoInfo.name = atob(listDAOMedals.name);
       daoInfo.avatar = info[0];
       daoInfo.email = info[1];
