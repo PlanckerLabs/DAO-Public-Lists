@@ -130,9 +130,25 @@ export default function useContractTool() {
         })
     }
     //获取一个DAO中全部勋章的请求、拒绝、通过列表【无法做到分勋章，只能查询全部，然后前端可以按照勋章分页】
+    // address dao地址
     const Bridge_getCliamRequest = (address: string) => {
         return ContractSend(<AbiItem[]>abi_bridge, config.BridgeAddress, 'getCliamRequest', [address, 0, 999]).then((res) => {
             return JSON.parse(res);
+        }).catch((err) => {
+            throw Error(err);
+        })
+    }
+
+    const Dao_cliamApproved=(address:string,nftIndex:number)=>{
+        return ContractSend(<AbiItem[]>abi_dao, address, 'cliamApproved', [nftIndex]).then((res) => {
+            return res
+        }).catch((err) => {
+            throw Error(err);
+        })
+    }
+    const Dao_cliamRejected=(address:string,nftIndex:number)=>{
+        return ContractSend(<AbiItem[]>abi_dao, address, 'cliamRejected', [nftIndex]).then((res) => {
+            return res
         }).catch((err) => {
             throw Error(err);
         })
@@ -148,6 +164,8 @@ export default function useContractTool() {
         Dao_Symbol,
         Dao_saveStrings,
         Bridge_saveStrings,
-        Dao_addMedals
+        Dao_addMedals,
+        Dao_cliamApproved,
+        Dao_cliamRejected
     }
 }
