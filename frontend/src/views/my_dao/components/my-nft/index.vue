@@ -30,16 +30,12 @@
 <script setup>
 import {onMounted, reactive, ref, toRefs} from 'vue';
 import NFTCollection from './nft/index.vue';
-import abi_bridge from '/src/assets/abi/soulBoundBridge.json';
-import {ElLoading} from "element-plus";
 import EmptyNFT from '/src/components/empty-nft/index.vue';
 import {useStore} from "/src/store";
-
-
 import useContractTool from '@/utils/useContractTool';
 
-const {Bridge_userDetail, Bridge_listDAOMedals, Bridge_getStrings} = useContractTool();
 
+const {Bridge_userDetail, Bridge_listDAOMedals, Bridge_getStrings} = useContractTool();
 const activeName = ref('first')
 const allList = reactive([]); //全部列表
 const applyingList = reactive([]); //申请中列表
@@ -50,7 +46,6 @@ const handleClick = (flag) => {
 }
 
 onMounted(async () => {
-//  read('userDetail', [store.account]).then(async (res) => {
   Bridge_userDetail(store.Account).then(async (values) => {
     let daos = values.dao
     for (let index in daos) {
@@ -65,9 +60,6 @@ onMounted(async () => {
       let medals = [];
       daos[index].medals.forEach((v) => {
         let obj = JSON.parse(JSON.stringify(v))
-        obj.name = atob(obj.name);
-        obj.uri = atob(obj.uri);
-        // console.log(obj);
         medals.push(obj);
       })
       allList.push({daoInfo, medals: ref(medals)})
@@ -75,8 +67,6 @@ onMounted(async () => {
       medals = [];
       daos[index].medals.forEach((v) => {
         let obj = JSON.parse(JSON.stringify(v))
-        obj.name = atob(obj.name);
-        obj.uri = atob(obj.uri);
         if (obj.status === 1) {
           medals.push(obj);
         }
