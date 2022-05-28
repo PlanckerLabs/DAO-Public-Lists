@@ -1,6 +1,6 @@
 // edit dao info
 <template>
-  <el-dialog v-model="dialogeditdao"
+  <el-dialog v-model="editDlg"
              custom-class="editdlg" width="60rem;"
              :show-close="false"
              :close-on-click-modal="false"
@@ -26,7 +26,7 @@
     </div>
     <div class="row">
       <span class="label">Avater</span>
-      <el-input class="dlginput" v-model="setinfo.avatar"  placeholder="Image URL, starts with https:// or ipfs://"></el-input>
+      <el-input class="dlginput" v-model="setinfo.avatar"></el-input>
     </div>
     <div class="row">
       <span class="label">Description</span>
@@ -54,19 +54,18 @@
     </div>
     <div class="rowbt">
       <!-- <span class="savebt" @click="savedata()">Save</span>  -->
-      <el-button color="#6E3FF5" :loading="btn2_loading" @click="savedata">Submit</el-button>
+      <el-button color="#6E3FF5" :loading="btn2_loading" @click="saveData">Submit</el-button>
     </div>
   </el-dialog>
 </template>
 <script setup>
 import {reactive, toRefs, ref} from "vue";
-import useWeb3 from "/src/utils/useWeb3";
-import abi_bridge from '/src/assets/abi/soulBoundBridge.json';
-import abi_nft from '/src/assets/abi/soulBoundMedal.json';
 import {ElLoading, ElNotification} from 'element-plus';
+import useContractTool from '@/utils/useContractTool';
 
-const {account, web3, ContractCall, ContractSend, bridge} = useWeb3();
-const dialogeditdao = ref(false);
+
+const {Bridge_getStrings, Dao_Name, Dao_Symbol, Dao_saveStrings} = useContractTool();
+const editDlg = ref(false);
 const contract_address = ref('');
 
 const daoname = ref('');
@@ -86,46 +85,34 @@ const setinfo = reactive({
 let oldsetinfo = {};
 const btn2_loading = ref(false);
 
-function fieldsdiffarr() {
-  let fieldarr = [];
-  let valarr = [];
+function fieldsDiffArr() {
+  let fieldArr = [];
+  let valArr = [];
   Object.keys(toRefs(setinfo)).forEach((k) => {
     if (setinfo[k] !== oldsetinfo[k]) {
-      fieldarr.push(web3.eth.abi.encodeFunctionSignature(k));
-      valarr.push(setinfo[k]);
+      fieldArr.push(k);
+      valArr.push(setinfo[k]);
     }
   })
-  if (!fieldarr || fieldarr.length === 0) {
+  if (!fieldArr || fieldArr.length === 0) {
     return false;
   }
-  return [fieldarr, valarr];
+  return [fieldArr, valArr];
 }
 
-const read = async (arr, funcname, bridge) => {
-  const loading = ElLoading.service({
-    lock: true,
-    text: 'Loading',
-    background: 'rgba(0, 0, 0, 0.7)',
-  })
-  // console.log(arr);
-  return await ContractCall(abi_bridge, bridge, funcname, arr).then((res) => {
-    loading.close();
-    return res;
-  }).catch(() => {
-    loading.close();
-  })
-}
 
-function savedata() {
+function saveData() {
   btn2_loading.value = true;
-  let savearr = fieldsdiffarr();
-  if (!savearr) {
-    dialogeditdao.value = false;
+  let paramsArr = fieldsDiffArr();
+  if (!paramsArr) {
+    btn2_loading.value = false;
+    editDlg.value = false;
     return;
   }
-  ContractSend(abi_nft, contract_address.value, 'saveStrings', savearr).then((res) => {
+  // console.log(paramsArr);
+  Dao_saveStrings(contract_address.value, ...paramsArr).then((res) => {
     // console.log(res);
-    dialogeditdao.value = false;
+    editDlg.value = false;
     btn2_loading.value = false;
     ElNotification({
       title: 'Success',
@@ -140,25 +127,26 @@ function savedata() {
 
 //
 const showdialog = async function (address) {
-  
-  btn2_loading.value = false;
-  let arr = [];
-  contract_address.value = address;
-  Object.keys(toRefs(setinfo)).forEach((k) => {
-    arr.push(web3.eth.abi.encodeFunctionSignature(k));
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading',
+    background: 'rgba(0, 0, 0, 0.7)',
   })
-  let values = await read([address, arr], 'getStrings', bridge);
-  Object.keys(toRefs(setinfo)).forEach((k, v) => {
-    setinfo[k] = values[v];
-    oldsetinfo[k] = values[v];
+  let params = [];
+  contract_address.value = address;
+  Object.keys(setinfo).forEach((k) => {
+    params.push(k);
+  })
+  let values = await Bridge_getStrings(address, [...params]);
+  // console.log(values)
+  Object.keys(toRefs(setinfo)).forEach((k) => {
+    setinfo[k] = values[k];
+    oldsetinfo[k] = values[k];
   });
-  daoname.value = await ContractCall(abi_nft, address, 'name', []).then((res) => {
-    return res;
-  });
-  daosymbol.value = await ContractCall(abi_nft, address, 'symbol', []).then((res) => {
-    return res;
-  });
-  dialogeditdao.value = true;
+  daoname.value = await Dao_Name(address);
+  daosymbol.value = await Dao_Symbol(address);
+  loading.close();
+  editDlg.value = true;
 }
 defineExpose({
   showdialog
@@ -210,7 +198,7 @@ defineExpose({
   background: #EEEEEE;
   border-radius: 0.33rem;
   font-size: 0.67rem;
-  
+  font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #999999;
   text-align: center;
@@ -220,7 +208,7 @@ defineExpose({
 
 .headtitle {
   font-size: 1.25rem;
-  
+  font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #000000;
   display: inline-block;
@@ -229,7 +217,7 @@ defineExpose({
 .headclose {
   height: 1rem;
   font-size: 0.71rem;
-  
+  font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #F53F3F;
   line-height: 1rem;
@@ -246,7 +234,7 @@ defineExpose({
   width: 10rem;
   height: 2rem;
   display: inline-block;
-  
+  font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   line-height: 2rem;
   text-align: right;
