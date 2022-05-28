@@ -132,7 +132,7 @@ export default function useContractTool() {
     //获取一个DAO中全部勋章的请求、拒绝、通过列表【无法做到分勋章，只能查询全部，然后前端可以按照勋章分页】
     const Bridge_getCliamRequest = (address: string) => {
         return ContractSend(<AbiItem[]>abi_bridge, config.BridgeAddress, 'getCliamRequest', [address, 0, 999]).then((res) => {
-            return res
+            return JSON.parse(res);
         }).catch((err) => {
             throw Error(err);
         })
