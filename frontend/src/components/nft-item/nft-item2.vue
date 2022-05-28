@@ -77,7 +77,7 @@ const apply = () => {
 
   .applying {
     height: 2rem;
-    background: #999999;
+   background: #99999991;
     position: absolute;
     bottom: 0;
     width: 100%;

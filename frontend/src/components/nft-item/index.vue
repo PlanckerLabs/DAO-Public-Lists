@@ -36,12 +36,13 @@ const applying = toRef(props, 'applying');
   .avatar {
     width: 10.67rem;
     height: 10.67rem;
+    vertical-align: bottom;
     border-radius: 0.33rem;
   }
 
   .applying {
     height: 2rem;
-    background: #999999;
+    background: #99999991;
     border-radius: 0rem 0rem 0.33rem 0.33rem;
     position: absolute;
     bottom: 0;
