@@ -43,14 +43,14 @@ let inidata = async function () {
     }) 
     try
     { 
-        let values = await Bridge_userDetail( store.account ); 
+        let values = await Bridge_userDetail( store.Account ); 
         let alldao =  values.dao;
         mynfts.value = [];
         for( let v in alldao )
         {
             let daoaddress = alldao[v].address;
             let daoinfo = await Bridge_listDAOMedals( daoaddress ); 
-            let daoname = atob(daoinfo.name);
+            let daoname = daoinfo.name;
             let avatar = await await Bridge_getString( daoaddress, 'avatar' );
             if( alldao[v]['medals'] && alldao[v]['medals'].length > 0 )
             { 
@@ -60,8 +60,8 @@ let inidata = async function () {
                     if( daomedals[ dm ].status > 2 )
                     {
                         mynfts.value.push({
-                            image: atob( daomedals[ dm ].uri ),
-                            title: atob( daomedals[ dm ].name ),
+                            image: daomedals[ dm ].uri,
+                            title: daomedals[ dm ].name,
                             approved: daomedals[ dm ].approved,
                             daoavatar: avatar?avatar:defaultavater,
                             daoname: daoname,
