@@ -9,15 +9,15 @@ export const useStore = defineStore('main', {
         account: <string>'',
     }),
     getters: {
-        Account() {
-            // console.log("读取", storage.get('account'))
-            return storage.get('account');
+        Account(state) {
+            return state.account !== '' ? state.account : storage.get('account');
         }
     },
     actions: {
         // 用户登录
         async login() {
             let account = await getAccount();
+            this.account = account;
             storage.set('account', account);
             return connectNetwork(config.Chain)
         },
