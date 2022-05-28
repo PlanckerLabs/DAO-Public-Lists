@@ -49,7 +49,7 @@ const DaoDetail = (address) => {
   Bridge_listDAOMedals(address).then(async (obj) => {
     obj.contract_address = address;
     let avatar = await Bridge_getString(address, 'avatar');
-    obj.avatar = avatar ? avatar : '/img/dapp_dao_tx%402x.png';
+    obj.avatar = avatar ? avatar : '/img/dapp_dao_tx@2x.png';
     obj.approved = 0;
     obj.rejected = 0;
     obj.pending = 0;

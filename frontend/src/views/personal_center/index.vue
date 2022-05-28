@@ -2,12 +2,12 @@
   <div class="position-relative" style="background-color:#352F46;">
     <Header/>
     <div class="return-btn" @click="router.push('/myDao')">
-      <img class="icon" src="/img/dapp_me_return_icon%402x.png">
+      <img class="icon" src="/img/dapp_me_return_icon@2x.png">
       <div class="font">Return</div>
     </div>
     <div class="position-absolute" style="left: 50%;top:3.33rem;transform: translateX(-50%);">
       <img style="width: 41.67rem;height: 39.83rem;"
-           src="/img/dapp_me_bg%402x.png"/>
+           src="/img/dapp_me_bg@2x.png"/>
     </div>
     <div style="padding-top: 3.33rem;background-color:#352F46;"></div>
     <el-tabs v-model="activeName" class="tabs" @tab-click="handleClick">

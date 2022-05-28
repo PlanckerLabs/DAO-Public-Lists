@@ -40,7 +40,7 @@ watch(searchContent, (newV, oV) => {
 const DaoDetail = async (address) => {
   let values = await Bridge_getStrings(address, ['avatar', 'comdiscord', 'comtelegram']);
   if (!values.avatar) {
-    values.avatar = '/img/dapp_dao_tx%402x.png';
+    values.avatar = '/img/dapp_dao_tx@2x.png';
   }
   return values;
 }
