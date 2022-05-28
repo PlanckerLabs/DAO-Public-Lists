@@ -32,7 +32,7 @@
       </div>
       <div class="row">
         <span class="label">Avater</span>
-        <el-input class="dlginput" v-model="info.avatar"></el-input>
+        <el-input class="dlginput" v-model="info.avatar"  placeholder="Image URL, starts with https:// or ipfs://"></el-input>
       </div>
       <div class="row">
         <span class="label">Description</span>
