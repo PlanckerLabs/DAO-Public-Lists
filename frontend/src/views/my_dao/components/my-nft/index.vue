@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="item" :class="activeName==='first'? 'active':''" @click="handleClick('first')">All</div>
-    <div class="item" :class="activeName==='second'? 'active':''" @click="handleClick('second')">Currently Applying
+    <div class="item" :class="activeName==='second'? 'active':''" @click="handleClick('second')">Pending
     </div>
   </div>
   <div style="margin-top: 0.04rem;"></div>
