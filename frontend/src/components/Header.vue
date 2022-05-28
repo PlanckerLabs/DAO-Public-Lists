@@ -3,7 +3,7 @@
     <div class="flex header-home">
       <img class="logo" :src="logo" @click="pushRouter('/')" style="cursor: pointer;"/>
       <div class="flex align-center" style="float:right;position:absolute;right:0;height: 100%">
-        <el-button @click="enterApp()" color="#6E3FF5" class="connect_btn">Enter DAPP
+        <el-button @click="enterApp" color="#6E3FF5" class="connect_btn">Enter DAPP
         </el-button>
       </div>
     </div>
@@ -44,7 +44,7 @@
         <div class="item">Personal Center</div>
       </div>
       <div class="menu">
-        <div class="item" @click="pushRouter('/')">
+        <div class="item" @click="exit">
           Exit
         </div>
       </div>
@@ -55,10 +55,8 @@
 
 <script lang="ts" setup>
 import {useRoute, useRouter} from "vue-router";
-//import useWeb3 from "../utils/useWeb3";
 import {onMounted, ref, unref} from "vue";
 import {ClickOutside as vClickOutside} from 'element-plus'
-// import Settings from "./Setting.vue";
 
 import CreateDao from "./CreateDao.vue";
 import Settings from './Setting.vue';
@@ -108,13 +106,18 @@ const pushRouter = (path: string) => {
     path
   })
 }
-// 进入DAPP
+// 进入DAPP 登录
 const enterApp = () => {
   store.login().then((res) => {
     pushRouter('/myDao');
   }).catch(() => {
     console.log("err");
   })
+}
+// 退出登录
+const exit=()=>{
+  store.loginOut();
+  pushRouter('/');
 }
 </script>
 
@@ -128,7 +131,7 @@ const enterApp = () => {
   .item {
     padding: 0.67rem 0 0.67rem 1.33rem;
     font-size: 0.83rem;
-    
+
     font-weight: 400;
     color: #000000;
     line-height: 1.17rem;
@@ -173,7 +176,7 @@ const enterApp = () => {
 
     height: 0.92rem;
     font-size: 0.67rem;
-    
+
     font-weight: 500;
     color: #FFFFFF;
     line-height: 0.92rem;

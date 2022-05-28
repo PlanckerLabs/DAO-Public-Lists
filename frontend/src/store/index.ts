@@ -10,6 +10,7 @@ export const useStore = defineStore('main', {
     }),
     getters: {
         Account() {
+            // console.log("读取", storage.get('account'))
             return storage.get('account');
         }
     },

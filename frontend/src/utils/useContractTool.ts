@@ -5,6 +5,7 @@ import {useStore} from '@/store';
 import {config} from "@/config";
 import {AbiItem} from "web3-utils";
 import bytecode from '@/assets/bytecode/soulBoundMedal.json';
+import {escape} from "lodash";
 
 export default function useContractTool() {
     const store = useStore();
@@ -155,7 +156,22 @@ export default function useContractTool() {
     // 列出所有Dao
     const Bridge_listDAO = () => {
         return ContractCall(<AbiItem[]>abi_bridge, config.BridgeAddress, 'listDAO', [0, 999, 0, 999]).then((res) => {
-            return JSON.parse(res);
+            let ret = JSON.parse(res);
+            ret.medals.forEach((medal: any) => {
+                medal.name=atob_(medal.name);
+                medal.medals.forEach((medal_: any) => {
+                    medal_.name=atob_(medal_.name);
+                    medal_.uri=atob_(medal_.uri);
+                })
+            })
+            // // NFT name 解码
+            // ret.name = atob_(ret.name);
+            // ret.medals.forEach((medal: any) => {
+            //     medal.name = atob_(medal.name);
+            //     medal.uri = atob_(medal.uri);
+            // })
+            // // console.log(ret);
+            return ret;
         }).catch((err) => {
             throw Error(err);
         })
