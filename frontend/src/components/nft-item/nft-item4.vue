@@ -23,8 +23,8 @@ import {reactive, toRefs, ref, onMounted, watch } from "vue";
 import useWeb3 from "/src/utils/useWeb3";
 import abi from '/src/assets/abi/soulBoundBridge.json';
 import {ElLoading} from 'element-plus';
-let defaultavater = 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_user_tx%402x.png'; 
-let nonft = ref('https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_nonft_img.png');
+let defaultavater = '/img/dapp_user_tx%402x.png'; 
+let nonft = ref('/img/dapp_nonft_img.png');
 const {account, web3, ContractCall, bridge} = useWeb3();
 const mynfts = ref([]);
 const read = async ( methodname, argsarr ) => {  

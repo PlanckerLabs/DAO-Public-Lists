@@ -15,10 +15,10 @@
 import {reactive} from 'vue';
 
 const info = reactive({
-  image: 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/demo/80f2a5ae1d0a01a3083dea14bf84b01.jpg',
+  image: '/img/demo/80f2a5ae1d0a01a3083dea14bf84b01.jpg',
   title: 'Kyle Medal of Honour',
   des: 'holdings：2191223104',
-  avatar: 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/demo/d9a0e1c7ba235ce4f3be9d416c3f15c.jpg',
+  avatar: '/img/demo/d9a0e1c7ba235ce4f3be9d416c3f15c.jpg',
   name: 'Kyle Dao'
 });
 

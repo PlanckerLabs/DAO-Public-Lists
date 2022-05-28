@@ -2,7 +2,7 @@
   <div class="bg">
     <div class="flex box justify-center">
       <div class="flex flex-column align-center">
-        <el-image src="https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_nodao_img.png"></el-image>
+        <el-image src="/img/dapp_nodao_img.png"></el-image>
         <div class="des">No Dao</div>
       </div>
     </div>

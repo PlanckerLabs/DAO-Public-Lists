@@ -52,7 +52,7 @@ import useWeb3 from "/src/utils/useWeb3";
 import abi from '/src/assets/abi/soulBoundBridge.json';
 import {ElLoading} from 'element-plus';
 import Tools from '/src/utils/tools';
-let defaultavater = 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_user_tx%402x.png';
+let defaultavater = '/img/dapp_user_tx%402x.png';
 const {account, web3, ContractCall, bridge} = useWeb3();
  
 const uinfo = reactive({
