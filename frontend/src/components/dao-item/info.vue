@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-between personal_info align-center">
     <div class="flex">
-      <el-image class="avatar" :src="info.avatar"></el-image>
+      <el-image class="avatar" :src="Tools.imgURL(info.avatar)"></el-image>
       <div class="flex flex-column des">
         <div class="name">{{ info.name }}</div>
         <div class="normal">Discord: {{ info.comdiscord ? info.comdiscord:'--' }}</div>
@@ -40,6 +40,7 @@
 import {toRef, unref} from "vue";
 import PersonalDataPop from '/src/components/PersonalDatapop.vue';
 
+import Tools from '/src/utils/tools';
 const props = defineProps({
   info: {
     type: Object,

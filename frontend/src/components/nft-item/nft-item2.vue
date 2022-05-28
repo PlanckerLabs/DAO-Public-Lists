@@ -1,7 +1,7 @@
 <template>
   <div class="card" @click="emit('nftDetail')">
     <div class="position-relative">
-      <el-image class="avatar" fit="cover" :src="info.uri"></el-image>
+      <el-image class="avatar" fit="cover" :src="Tools.imgURL(info.uri)"></el-image>
       <div v-if="info.applying" class="applying flex align-center justify-center">
         <div class="applying-des">Pending</div>
       </div>
@@ -25,7 +25,9 @@
 
 <script setup>
 import {toRef, ref, unref} from 'vue'; 
-import useContractTool from '@/utils/useContractTool';  
+import useContractTool from '@/utils/useContractTool'; 
+
+import Tools from '/src/utils/tools'; 
 const {Dao_cliamRequest} = useContractTool(); 
 const emit = defineEmits(['nftDetail']);
 const props = defineProps({
