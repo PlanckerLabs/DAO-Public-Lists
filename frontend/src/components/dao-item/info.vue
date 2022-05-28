@@ -45,9 +45,9 @@ const props = defineProps({
     type: Object,
     default: {
       avatar: 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/demo/a4765b6b6f385375f0fd09b3bb7059d.jpg',
-      name: 'Kyle Dao',
-      email: '88766@qq.com',
-      url: 'www.baidu.com',
+      name: '',
+      email: '',
+      url: '',
       alreadyApplied: 5,
       passed: 4
     }
