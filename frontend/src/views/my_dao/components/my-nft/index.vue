@@ -126,7 +126,7 @@ onMounted(async () => {
   .item {
     cursor: pointer;
     font-size: 0.5rem;
-    font-family: PingFangSC-Medium, PingFang SC;
+    
     font-weight: 500;
     color: #999999;
     height: 2.5rem;

@@ -128,7 +128,7 @@ const enterApp = () => {
   .item {
     padding: 0.67rem 0 0.67rem 1.33rem;
     font-size: 0.83rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    
     font-weight: 400;
     color: #000000;
     line-height: 1.17rem;
@@ -173,7 +173,7 @@ const enterApp = () => {
 
     height: 0.92rem;
     font-size: 0.67rem;
-    font-family: PingFangSC-Medium, PingFang SC;
+    
     font-weight: 500;
     color: #FFFFFF;
     line-height: 0.92rem;
@@ -187,7 +187,6 @@ const enterApp = () => {
   border-radius: 0.17rem;
   margin-right: 3.33rem;
   font-size: 0.67rem;
-  font-family: Gilroy-Regular, Gilroy;
   font-weight: 400;
   color: #FFFFFF;
   line-height: 0.79rem;
@@ -222,7 +221,6 @@ const enterApp = () => {
     width: 4.38rem;
     height: 0.88rem;
     font-size: 0.67rem;
-    font-family: Roboto-Medium, Roboto;
     font-weight: 500;
     color: #FFFFFF;
     line-height: 0.88rem;

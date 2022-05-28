@@ -198,7 +198,7 @@ defineExpose({
   background: #EEEEEE;
   border-radius: 0.33rem;
   font-size: 0.67rem;
-  font-family: PingFangSC-Medium, PingFang SC;
+  
   font-weight: 500;
   color: #999999;
   text-align: center;
@@ -208,7 +208,7 @@ defineExpose({
 
 .headtitle {
   font-size: 1.25rem;
-  font-family: PingFangSC-Regular, PingFang SC;
+  
   font-weight: 400;
   color: #000000;
   display: inline-block;
@@ -217,7 +217,7 @@ defineExpose({
 .headclose {
   height: 1rem;
   font-size: 0.71rem;
-  font-family: PingFangSC-Regular, PingFang SC;
+  
   font-weight: 400;
   color: #F53F3F;
   line-height: 1rem;
@@ -234,7 +234,7 @@ defineExpose({
   width: 10rem;
   height: 2rem;
   display: inline-block;
-  font-family: PingFangSC-Regular, PingFang SC;
+  
   font-weight: 400;
   line-height: 2rem;
   text-align: right;

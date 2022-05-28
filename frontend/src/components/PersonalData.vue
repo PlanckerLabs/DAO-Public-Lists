@@ -138,7 +138,7 @@ defineExpose({
 .datal {
   text-align: right;
   font-size: 1.23rem;
-  font-family: PingFangSC-Regular, PingFang SC;
+  
   font-weight: 400;
   color: RGBA(151, 147, 161, 1);
 }

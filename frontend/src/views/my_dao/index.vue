@@ -64,7 +64,7 @@ $tabs-header-color: #FFF;
   .el-tabs__item.is-active {
     width: 10rem !important;
     font-size: 0.67rem !important;
-    font-family: PingFangSC-Medium, PingFang SC;
+    
     font-weight: 500 !important;
     color: $tab-font-active;
   }
@@ -74,7 +74,7 @@ $tabs-header-color: #FFF;
     font-size: 0.67rem;
     line-height: 2.5rem;
     height: 2.5rem;
-    font-family: PingFangSC-Medium, PingFang SC;
+    
     font-weight: 500;
     color: $tab-font;
   }

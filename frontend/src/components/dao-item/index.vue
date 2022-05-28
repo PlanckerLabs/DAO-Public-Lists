@@ -73,7 +73,7 @@ const emit = defineEmits(['edit', 'add'])
 </script>
 
 <style lang="scss" scoped>
-$font-family: PingFangSC-Medium, PingFang SC;
+$font-family: Tomorrow,sans-serif;
 .dao-item {
   margin: 0 10rem;
   padding: 1.67em 0;
@@ -135,7 +135,7 @@ $font-family: PingFangSC-Medium, PingFang SC;
     width: 1.92rem;
     height: 0.92rem;
     font-size: 0.67rem;
-    font-family: PingFangSC-Medium, PingFang SC;
+    
     font-weight: 500;
     color: #000000;
     line-height: 0.92rem;
@@ -152,7 +152,7 @@ $font-family: PingFangSC-Medium, PingFang SC;
     width: 1.25rem;
     height: 0.92rem;
     font-size: 0.67rem;
-    font-family: PingFangSC-Medium, PingFang SC;
+    
     font-weight: 500;
     color: #FFFFFF;
     line-height: 0.92rem;

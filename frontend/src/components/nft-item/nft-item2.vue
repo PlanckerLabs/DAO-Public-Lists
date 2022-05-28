@@ -87,7 +87,7 @@ const apply = () => {
 
     .applying-des {
       font-size: 0.67rem;
-      font-family: PingFangSC-Medium, PingFang SC;
+      
       font-weight: 500;
       color: #FFFFFF;
     }
@@ -106,7 +106,7 @@ const apply = () => {
     .name {
       height: 0.92rem;
       font-size: 0.67rem;
-      font-family: PingFangSC-Medium, PingFang SC;
+      
       font-weight: 500;
       color: #000000;
       line-height: 0.92rem;
@@ -117,7 +117,7 @@ const apply = () => {
       margin-top: 0.17rem;
       height: 0.71rem;
       font-size: 0.5rem;
-      font-family: PingFangSC-Regular, PingFang SC;
+      
       font-weight: 400;
       color: #999999;
       line-height: 0.71rem;

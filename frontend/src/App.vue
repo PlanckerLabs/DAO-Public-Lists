@@ -21,6 +21,7 @@ rem();
 </script>
 <style lang="scss">
 @import "style/free.scss";
+@import "style/font.scss";
 
 html {
   margin: 0;
