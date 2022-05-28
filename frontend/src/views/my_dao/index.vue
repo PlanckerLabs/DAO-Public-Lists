@@ -8,10 +8,10 @@
         <MyDAo/>
       </el-tab-pane>
       <el-tab-pane :label="tabs[1]" name="second">
-        <MyNFT/>
+        <MyNFT/> 
       </el-tab-pane>
       <el-tab-pane :label="tabs[2]" name="third">
-        <!--        <DaoSquare/>-->
+               <DaoSquare/>
       </el-tab-pane>
     </el-tabs>
   </div>
