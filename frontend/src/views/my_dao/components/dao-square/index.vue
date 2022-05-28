@@ -38,7 +38,7 @@ watch(searchContent, (newV, oV) => {
   // btnDisable.value = !store.web3.utils.isAddress(newV);
 })
 const DaoDetail = async (address) => {
-  let values = await Bridge_getStrings(address, ['avatar', 'email', 'comgithub']);
+  let values = await Bridge_getStrings(address, ['avatar', 'comdiscord', 'comtelegram']);
   if (!values.avatar) {
     values.avatar = '/img/dapp_dao_tx%402x.png';
   }
@@ -155,8 +155,8 @@ onMounted(async () => {
     let _dao_address = oneDAO.address;
     let _dao_detail = await DaoDetail(_dao_address);
     oneDAO.detail.avatar = _dao_detail.avatar;
-    oneDAO.detail.email = _dao_detail.email;
-    oneDAO.detail.comgithub = _dao_detail.comgithub;
+    oneDAO.detail.comdiscord = _dao_detail.comdiscord;
+    oneDAO.detail.comtelegram = _dao_detail.comtelegram;
   }
 
   // ret.address.forEach(async (address, index) => {
