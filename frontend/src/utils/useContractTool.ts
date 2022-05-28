@@ -4,8 +4,6 @@ import abi_dao from '@/assets/abi/soulBoundMedal.json';
 import {useStore} from '@/store';
 import {config} from "@/config";
 import {AbiItem} from "web3-utils";
-import abi_nft from "@/assets/abi/soulBoundMedal.json";
-
 
 export default function useContractTool() {
     const store = useStore();
