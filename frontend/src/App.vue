@@ -1,3 +1,11 @@
+<!--
+ * @Description: 
+ * @Version: 1.0
+ * @Autor: z.cejay@gmail.com
+ * @Date: 2022-05-28 21:06:56
+ * @LastEditors: cejay
+ * @LastEditTime: 2022-05-28 21:09:32
+-->
 <template>
   <router-view/>
 </template>
@@ -16,6 +24,7 @@ rem();
 </script>
 <style lang="scss">
 @import "style/free.scss";
+@import "style/font.scss";
 html {
   margin: 0;
   background-color: #000000;

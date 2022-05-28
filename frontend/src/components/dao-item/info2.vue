@@ -89,7 +89,7 @@ const info = toRef(props, 'personal_info');
     .name {
       height: 0.92rem;
       font-size: 0.67rem;
-      font-family: PingFangSC-Medium, PingFang SC;
+      //font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 500;
       color: #000000;
       line-height: 0.92rem;
@@ -99,7 +99,7 @@ const info = toRef(props, 'personal_info');
       display: flex;
       height: 0.71rem;
       font-size: 0.5rem;
-      font-family: PingFangSC-Medium, PingFang SC;
+      //font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 500;
       color: #999999;
       line-height: 0.71rem;

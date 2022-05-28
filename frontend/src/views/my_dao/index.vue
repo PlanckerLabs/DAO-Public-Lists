@@ -1,3 +1,11 @@
+<!--
+ * @Description: 
+ * @Version: 1.0
+ * @Autor: z.cejay@gmail.com
+ * @Date: 2022-05-28 21:06:56
+ * @LastEditors: cejay
+ * @LastEditTime: 2022-05-28 21:27:31
+-->
 <template>
   <Header/>
   <div class="header_">
@@ -28,7 +36,7 @@ import {ref} from 'vue'
 import type {TabsPaneContext} from 'element-plus'
 
 const activeName = ref('first')
-const tabs = ['My Dao', 'My NFT', 'Dao Square'];
+const tabs = ['MY DAO', 'MY NFT', 'DAO SQUARE'];
 
 
 const handleClick = (tab: TabsPaneContext, event: Event) => {
@@ -60,7 +68,7 @@ $tabs-header-color: #FFF;
   .el-tabs__item.is-active {
     width: 10rem !important;
     font-size: 0.67rem !important;
-    font-family: PingFangSC-Medium, PingFang SC;
+    //font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500 !important;
     color: $tab-font-active;
   }
@@ -70,7 +78,7 @@ $tabs-header-color: #FFF;
     font-size: 0.67rem;
     line-height: 2.5rem;
     height: 2.5rem;
-    font-family: PingFangSC-Medium, PingFang SC;
+    //font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: $tab-font;
   }
