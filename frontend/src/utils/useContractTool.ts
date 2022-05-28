@@ -154,7 +154,7 @@ export default function useContractTool() {
     }
     //
     const Bridge_listDAO = () => {
-        return ContractCall(<AbiItem[]>abi_bridge, config.BridgeAddress, 'listDAO', [0, 9999, 0, 9999]).then((res) => {
+        return ContractCall(<AbiItem[]>abi_bridge, config.BridgeAddress, 'listDAO', [0, 999, 0, 999]).then((res) => {
             return JSON.parse(res);
         }).catch((err) => {
             throw Error(err);
