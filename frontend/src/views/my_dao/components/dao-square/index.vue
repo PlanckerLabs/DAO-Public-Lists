@@ -2,26 +2,26 @@
   <div class="top">
     <div class="search">
       <el-input :input-style="searchInputStyle" v-model="searchContent" placeholder="Please enter address search"
-        maxlength="50"></el-input>
+                maxlength="50"></el-input>
       <el-button color="#6E3FF5" class="search-btn" @click="onHandleSearch" :disabled="btnDisable" :loading="loading">
         Search
       </el-button>
     </div>
     <div style="margin-top: 0.04rem;"></div>
   </div>
-  <Dao :list="DaoList" />
+  <Dao :list="DaoList"/>
 </template>
 
 <script setup>
-import { onMounted, reactive, ref, watch } from "vue";
+import {onMounted, reactive, ref, watch} from "vue";
 import Dao from "./componets/Dao/index.vue";
 import User from "./componets/User/index.vue";
 import useContractTool from '@/utils/useContractTool';
-import { useStore } from "/src/store";
+import {useStore} from "/src/store";
 import _ from 'lodash';
 
 const store = useStore();
-const { Bridge_getStrings, Bridge_listDAO, Bridge_userDetail } = useContractTool();
+const {Bridge_getStrings, Bridge_listDAO, Bridge_userDetail} = useContractTool();
 const DaoList = reactive([]);
 // const {ContractCall, bridge} = useWeb3();
 const searchInputStyle = {
@@ -136,7 +136,8 @@ onMounted(async () => {
       medals: v.medals
     });
     //DaoList.push(_.cloneDeep({ detail: { name: atob(v.name) }, medals: v.medals }))
-  };
+  }
+  ;
   // desc by nft holder
   DaoList.sort((a, b) => {
     //sum a.medals.request+a.medals.approved
