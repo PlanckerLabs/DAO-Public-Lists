@@ -2,7 +2,7 @@
   <div class="bg">
     <div class="flex box justify-center">
       <div class="flex flex-column align-center">
-        <el-image src="/img/dapp_nonft_img.png"></el-image>
+        <el-image :src="nonft"></el-image>
         <div class="des">No NFT</div>
       </div>
     </div>
@@ -11,6 +11,7 @@
 
 <script setup>
 
+import nonft from '/img/dapp_nonft_img.png';
 </script>
 
 <style lang="scss" scoped>

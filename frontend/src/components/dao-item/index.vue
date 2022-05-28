@@ -27,7 +27,7 @@
         <el-button color="#EEEEEE" class="edit-btn" @click="emit('edit',daoInfo.contract_address)">Editor</el-button>
         <el-button color="#6E3FF5" class="add-btn" @click="emit('add',daoInfo.contract_address)">
           <img class="add-btn-icon"
-               src="/img/dapp_add2_2x.png"/>
+               :src="dapp_add2"/>
           Add
         </el-button>
       </div>
@@ -39,8 +39,10 @@
 <script setup>
 import {toRef} from "vue";
 import useWeb3 from '/src/utils/useWeb3';
+import dapp_add2 from '/img/dapp_add2_2x.png';
 
 import Tools from '/src/utils/tools';
+import dappavatar from '/img/dapp_dao_tx_2x.png';
 
 
 const {ContractCall, bridge, mounted} = useWeb3();
@@ -49,7 +51,7 @@ const props = defineProps({
   daoInfo: {
     type: Object,
     default: {
-      avatar: '/img/dapp_dao_tx_2x.png',
+      avatar: dappavatar,
       name: '',
       owner: '',
       contract_address: ''

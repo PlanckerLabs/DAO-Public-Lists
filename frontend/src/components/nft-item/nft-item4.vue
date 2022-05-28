@@ -23,12 +23,12 @@ import {ref} from "vue";
 import {ElLoading} from 'element-plus';
 import useContractTool from '@/utils/useContractTool';
 import {useStore} from "@/store";
+import defaultavater from '/img/dapp_user_tx_2x.png';
+import nonft from '/img/dapp_nonft_img.png';
 
 import Tools from '/src/utils/tools'; 
 
-const {Bridge_userDetail, Bridge_listDAOMedals, Bridge_getString} = useContractTool();
-let defaultavater = '/img/dapp_user_tx_2x.png';
-let nonft = ref('/img/dapp_nonft_img.png');
+const {Bridge_userDetail, Bridge_listDAOMedals, Bridge_getString} = useContractTool(); 
 const store = useStore();
 const mynfts = ref([]);
 
