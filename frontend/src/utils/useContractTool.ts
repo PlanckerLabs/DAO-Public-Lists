@@ -27,8 +27,8 @@ export default function useContractTool() {
             }
         }
     }
-    const deployContract = (params: any) => {
-        return deployContract_(<AbiItem[]>abi_dao, bytecode.code, params)
+    const deployContract = (params: any[]) => {
+        return deployContract_(<AbiItem[]>abi_dao, bytecode.code, [...params, config.BridgeAddress])
     }
     // 获取用户信息
     const Bridge_userDetail = (address?: string) => {
@@ -138,20 +138,17 @@ export default function useContractTool() {
             throw Error(err);
         })
     }
-
-    const Dao_cliamApproved=(address:string,nftIndex:number)=>{
-        return ContractSend(<AbiItem[]>abi_dao, address, 'cliamApproved', [nftIndex]).then((res) => {
-            return res
-        }).catch((err) => {
-            throw Error(err);
-        })
+    // 勋章同意
+    const Dao_cliamApproved = (address: string, nftIndex: number) => {
+        return ContractSend(<AbiItem[]>abi_dao, address, 'cliamApproved', [nftIndex]);
     }
-    const Dao_cliamRejected=(address:string,nftIndex:number)=>{
-        return ContractSend(<AbiItem[]>abi_dao, address, 'cliamRejected', [nftIndex]).then((res) => {
-            return res
-        }).catch((err) => {
-            throw Error(err);
-        })
+    // 勋章拒绝
+    const Dao_cliamRejected = (address: string, nftIndex: number) => {
+        return ContractSend(<AbiItem[]>abi_dao, address, 'cliamRejected', [nftIndex]);
+    }
+    // 合约注册
+    const Bridge_register = (address: string) => {
+        return ContractSend(<AbiItem[]>abi_bridge, config.BridgeAddress, 'register', [address]);
     }
     return {
         deployContract,
@@ -166,6 +163,7 @@ export default function useContractTool() {
         Bridge_saveStrings,
         Dao_addMedals,
         Dao_cliamApproved,
-        Dao_cliamRejected
+        Dao_cliamRejected,
+        Bridge_register
     }
 }

@@ -29,20 +29,23 @@
 </template>
 <script setup>
 import {reactive, ref, toRefs} from "vue";
-import useWeb3 from "/src/utils/useWeb3";
+// import useWeb3 from "/src/utils/useWeb3";
 import abi from '/src/assets/abi/soulBoundMedal.json';
 import bytecode from '/src/assets/bytecode/soulBoundMedal.json';
 import {ElNotification} from 'element-plus';
 import {ElMessage, ElMessageBox} from 'element-plus'
 import {watch} from 'vue';
 import abi_bridge from '/src/assets/abi/soulBoundBridge.json'
+import useContractTool from '@/utils/useContractTool';
 
+
+const {deployContract, Bridge_register} = useContractTool();
 const nftdao = reactive({
   'name': '',
   'symol': ''
 });
 const showDlg = ref(false);
-const {deployContract, ContractSend, bridge} = useWeb3();
+// const {deployContract, ContractSend, bridge} = useWeb3();
 const loading = ref(false);
 const btnDisable = ref(true);
 
@@ -51,11 +54,11 @@ watch(nftdao, (newV, preV) => {
 })
 const createDao = () => {
   loading.value = true;
-  deployContract(abi, bytecode.code, [
+
+  deployContract([
     nftdao.name,
     nftdao.symol,
-    [], [],
-    bridge,
+    [], []
   ]).then((newContractInstance) => {
     // console.log("部署成功", newContractInstance.options.address) // instance with the new contract address
     loading.value = false;
@@ -72,7 +75,7 @@ const createDao = () => {
         }
     )
         .then(() => {
-          ContractSend(abi_bridge, bridge, 'register', [newContractInstance.options.address]).then((res) => {
+          Bridge_register(newContractInstance.options.address).then((res) => {
             // console.log("注册成功",res)
             ElNotification({
               title: 'Success',
@@ -148,16 +151,16 @@ defineExpose({
 }
 </style>
 <style lang="scss" scoped>
-.tipmsg
-{
+.tipmsg {
   font-size: 0.67rem;
 
   font-weight: 400;
   color: #F53F3F;
   margin-left: 11.7rem;
 }
+
 .rowbt {
-  margin-top:0.84rem;
+  margin-top: 0.84rem;
   margin-bottom: 7.83rem;
   text-align: right;
   width: 47rem;
