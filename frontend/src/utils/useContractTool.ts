@@ -4,11 +4,11 @@ import abi_dao from '@/assets/abi/soulBoundMedal.json';
 import {useStore} from '@/store';
 import {config} from "@/config";
 import {AbiItem} from "web3-utils";
-import abi from "@/assets/abi/soulBoundMedal.json";
+import bytecode from '@/assets/bytecode/soulBoundMedal.json';
 
 export default function useContractTool() {
     const store = useStore();
-    const {ContractCall, ContractSend, getWeb3} = useWeb3(store.Account);
+    const {ContractCall, ContractSend, getWeb3, deployContract: deployContract_} = useWeb3(store.Account);
     // 解码
     const atob_: (base64: string) => string = (base64: string): string => {
         return decodeURIComponent(encodeURI(window.atob(base64)));
@@ -26,6 +26,9 @@ export default function useContractTool() {
                 })
             }
         }
+    }
+    const deployContract = (params: any) => {
+        return deployContract_(<AbiItem[]>abi_dao, bytecode.code, params)
     }
     // 获取用户信息
     const Bridge_userDetail = (address?: string) => {
@@ -126,11 +129,21 @@ export default function useContractTool() {
             throw Error(err);
         })
     }
+    //获取一个DAO中全部勋章的请求、拒绝、通过列表【无法做到分勋章，只能查询全部，然后前端可以按照勋章分页】
+    const Bridge_getCliamRequest = (address: string) => {
+        return ContractSend(<AbiItem[]>abi_bridge, config.BridgeAddress, 'getCliamRequest', [address, 0, 999]).then((res) => {
+            return JSON.parse(res);
+        }).catch((err) => {
+            throw Error(err);
+        })
+    }
     return {
+        deployContract,
         Bridge_userDetail,
         Bridge_listDAOMedals,
         Bridge_getString,
         Bridge_getStrings,
+        Bridge_getCliamRequest,
         Dao_Name,
         Dao_Symbol,
         Dao_saveStrings,
