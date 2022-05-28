@@ -62,10 +62,11 @@ import CreateDao from "./CreateDao.vue";
 import Settings from './Setting.vue';
 import {useStore} from "@/store";
 
-import logo from '/img/dapp_logo_2x.png'; 
+import logo from '/img/dapp_logo_2x.png';
 import tx from '/img/dapp_tx.png';
-import importsettings from '/img/dapp_tx.png';
-import importadd from '/img/dapp_tx.png';
+import importsettings from '/img/dapp_settings.png';
+import importadd from '/img/dapp_add.png';
+
 const buttonRef = ref()
 const createDaoDlg = ref();
 const settingsDlg = ref();
@@ -90,7 +91,7 @@ const onHandleCreateDao = () => {
   unref(createDaoDlg).showdialog();
 }
 
-const route_path = ref('');  
+const route_path = ref('');
 const icon = {
   settings: importsettings,
   add: importadd
