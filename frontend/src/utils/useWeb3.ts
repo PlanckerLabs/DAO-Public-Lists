@@ -16,7 +16,7 @@ const provider = ref();
 const account = ref<string>('');
 //DEMO:0xc413bffB3e567cFd871F6B7fB13F5EbbA9bDBc18
 //DEV:0x4E3ba0edcE8df1b20eE19FfF11fC32447933bf4c
-const bridge: string = '0x4E3ba0edcE8df1b20eE19FfF11fC32447933bf4c';
+const bridge: string = '0xc413bffB3e567cFd871F6B7fB13F5EbbA9bDBc18';
 const web3 = ref();
 
 interface Options {
