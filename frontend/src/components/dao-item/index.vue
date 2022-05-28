@@ -10,15 +10,15 @@
           <div class="flex normal">
             <div class="flex">
               <div>Approved:</div>
-              <div class="value">0</div>
+              <div class="value">{{ daoInfo.approved }}</div>
             </div>
             <div class="flex" style="margin-left: 0.83rem;">
               <div>Rejected:</div>
-              <div class="value">0</div>
+              <div class="value">{{ daoInfo.rejected }}</div>
             </div>
             <div class="flex" style="margin-left: 0.83rem;">
               <div>Pending:</div>
-              <div class="value">0</div>
+              <div class="value">{{ daoInfo.pending }}</div>
             </div>
           </div>
         </div>
@@ -47,7 +47,7 @@ const props = defineProps({
   daoInfo: {
     type: Object,
     default: {
-      avatar:'/img/dapp_dao_tx%402x.png',
+      avatar: '/img/dapp_dao_tx%402x.png',
       name: '',
       owner: '',
       contract_address: ''
@@ -73,7 +73,7 @@ const emit = defineEmits(['edit', 'add'])
 </script>
 
 <style lang="scss" scoped>
-$font-family: Tomorrow,sans-serif;
+$font-family: Tomorrow, sans-serif;
 .dao-item {
   margin: 0 10rem;
   padding: 1.67em 0;
@@ -135,7 +135,7 @@ $font-family: Tomorrow,sans-serif;
     width: 1.92rem;
     height: 0.92rem;
     font-size: 0.67rem;
-    
+
     font-weight: 500;
     color: #000000;
     line-height: 0.92rem;
@@ -152,7 +152,7 @@ $font-family: Tomorrow,sans-serif;
     width: 1.25rem;
     height: 0.92rem;
     font-size: 0.67rem;
-    
+
     font-weight: 500;
     color: #FFFFFF;
     line-height: 0.92rem;

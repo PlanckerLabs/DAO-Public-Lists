@@ -50,7 +50,15 @@ const DaoDetail = (address) => {
     obj.contract_address = address;
     let avatar = await Bridge_getString(address, 'avatar');
     obj.avatar = avatar ? avatar : '/img/dapp_dao_tx%402x.png';
-    // obj.name = atob(obj.name);
+    obj.approved = 0;
+    obj.rejected = 0;
+    obj.pending = 0;
+    // console.log(obj);
+    obj.medals.forEach((medal) => {
+      obj.pending += medal.request;
+      obj.approved += medal.approved;
+      obj.rejected += medal.rejected;
+    })
     DaoList.push(obj);
   })
 }
