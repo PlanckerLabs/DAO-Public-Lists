@@ -1,11 +1,3 @@
-<!--
- * @Description: 
- * @Version: 1.0
- * @Autor: z.cejay@gmail.com
- * @Date: 2022-05-28 21:06:56
- * @LastEditors: cejay
- * @LastEditTime: 2022-05-28 21:27:31
--->
 <template>
   <Header/>
   <div class="header_">
@@ -16,10 +8,10 @@
         <MyDAo/>
       </el-tab-pane>
       <el-tab-pane :label="tabs[1]" name="second">
-        <MyNFT/>
+        <MyNFT/> 
       </el-tab-pane>
       <el-tab-pane :label="tabs[2]" name="third">
-        <DaoSquare/>
+               <DaoSquare/>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -27,13 +19,15 @@
 </template>
 
 <script lang="ts" setup>
+
 import Header from "../../components/Header.vue";
 import MyDAo from "./components/my-dao/index.vue";
 import MyNFT from './components/my-nft/index.vue';
 import DaoSquare from './components/dao-square/index.vue';
 
-import {ref} from 'vue'
+import {onMounted, ref} from 'vue'
 import type {TabsPaneContext} from 'element-plus'
+
 
 const activeName = ref('first')
 const tabs = ['MY DAO', 'MY NFT', 'DAO SQUARE'];
@@ -42,7 +36,9 @@ const tabs = ['MY DAO', 'MY NFT', 'DAO SQUARE'];
 const handleClick = (tab: TabsPaneContext, event: Event) => {
   console.log(tab.paneName)
 }
+onMounted(() => {
 
+})
 
 </script>
 
@@ -54,7 +50,7 @@ $tabs-header-color: #FFF;
 
 .header_ {
   height: 16.67rem;
-  background: url("https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_top_bg%402x.png") no-repeat;
+  background: url("/img/dapp_top_bg%402x.png") no-repeat;
   background-size: cover;
 }
 
@@ -68,7 +64,7 @@ $tabs-header-color: #FFF;
   .el-tabs__item.is-active {
     width: 10rem !important;
     font-size: 0.67rem !important;
-    
+
     font-weight: 500 !important;
     color: $tab-font-active;
   }
@@ -78,7 +74,7 @@ $tabs-header-color: #FFF;
     font-size: 0.67rem;
     line-height: 2.5rem;
     height: 2.5rem;
-    
+
     font-weight: 500;
     color: $tab-font;
   }

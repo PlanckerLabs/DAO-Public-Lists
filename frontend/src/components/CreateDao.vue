@@ -29,21 +29,25 @@
 </template>
 <script setup>
 import {reactive, ref, toRefs} from "vue";
-import useWeb3 from "/src/utils/useWeb3";
+// import useWeb3 from "/src/utils/useWeb3";
 import abi from '/src/assets/abi/soulBoundMedal.json';
 import bytecode from '/src/assets/bytecode/soulBoundMedal.json';
-import {ElNotification} from 'element-plus';
+import {ElLoading, ElNotification} from 'element-plus';
 import {ElMessage, ElMessageBox} from 'element-plus'
 import {watch} from 'vue';
 import abi_bridge from '/src/assets/abi/soulBoundBridge.json'
+import useContractTool from '@/utils/useContractTool';
 
+
+const {deployContract, Bridge_register} = useContractTool();
 const nftdao = reactive({
   'name': '',
   'symol': ''
 });
 const showDlg = ref(false);
-const {deployContract, ContractSend, bridge} = useWeb3();
+// const {deployContract, ContractSend, bridge} = useWeb3();
 const loading = ref(false);
+const loading_register = ref(false);
 const btnDisable = ref(true);
 
 watch(nftdao, (newV, preV) => {
@@ -51,11 +55,11 @@ watch(nftdao, (newV, preV) => {
 })
 const createDao = () => {
   loading.value = true;
-  deployContract(abi, bytecode.code, [
+
+  deployContract([
     nftdao.name,
     nftdao.symol,
-    [], [],
-    bridge,
+    [], []
   ]).then((newContractInstance) => {
     // console.log("部署成功", newContractInstance.options.address) // instance with the new contract address
     loading.value = false;
@@ -66,28 +70,36 @@ const createDao = () => {
         'Whether to register to the Dao Square?',
         'Prompt',
         {
+          showCancelButton: false,
           confirmButtonText: 'Yes',
-          cancelButtonText: 'No',
           type: 'info',
         }
     )
         .then(() => {
-          ContractSend(abi_bridge, bridge, 'register', [newContractInstance.options.address]).then((res) => {
+          const loading_register = ElLoading.service({
+            lock: true,
+            text: 'Loading',
+            background: 'rgba(0, 0, 0, 0.7)',
+          })
+          Bridge_register(newContractInstance.options.address).then((res) => {
             // console.log("注册成功",res)
+            loading_register.close();
+            // 可以考虑注册完成刷新页面
             ElNotification({
               title: 'Success',
               message: 'Register',
               type: 'success',
               duration: 3000
-            })
+            });
+          }).catch(() => {
+            loading_register.close();
           })
-        })
-        .catch(() => {
-          ElMessage({
-            type: 'info',
-            message: 'Register Fail',
-          })
-        })
+        }).catch(() => {
+      ElMessage({
+        type: 'info',
+        message: 'Register Fail',
+      })
+    })
   }).catch(() => {
     // console.log("err");
     loading.value = false;
@@ -148,16 +160,16 @@ defineExpose({
 }
 </style>
 <style lang="scss" scoped>
-.tipmsg
-{
-    font-size: 0.67rem;
-    
-    font-weight: 400;
-    color: #F53F3F; 
-    margin-left: 11.7rem;
+.tipmsg {
+  font-size: 0.67rem;
+
+  font-weight: 400;
+  color: #F53F3F;
+  margin-left: 11.7rem;
 }
-.rowbt { 
-    margin-top:0.84rem;
+
+.rowbt {
+  margin-top: 0.84rem;
   margin-bottom: 7.83rem;
   text-align: right;
   width: 47rem;
@@ -170,7 +182,7 @@ defineExpose({
 
 .headtitle {
   font-size: 1.25rem;
-  
+
   font-weight: 400;
   color: #000000;
   display: inline-block;
@@ -179,7 +191,7 @@ defineExpose({
 .headclose {
   height: 1rem;
   font-size: 0.71rem;
-  
+
   font-weight: 400;
   color: #F53F3F;
   line-height: 1rem;
@@ -196,7 +208,7 @@ defineExpose({
   width: 10rem;
   height: 2rem;
   display: inline-block;
-  
+
   font-weight: 400;
   line-height: 2rem;
   text-align: right;

@@ -1,11 +1,11 @@
 <template>
   <div class="flex justify-between personal_info align-center">
     <div class="flex">
-      <el-image class="avatar" :src="info.avatar"></el-image>
+      <el-image class="avatar" :src="Tools.imgURL(info.avatar)"></el-image>
       <div class="flex flex-column des">
         <div class="name">{{ info.name }}</div>
-        <div class="normal">Email: {{ info.email }}</div>
-        <div class="normal">Url: {{ info.comgithub }}</div>
+        <div class="normal">Discord: {{ info.comdiscord ? info.comdiscord:'--' }}</div>
+        <div class="normal">Telegram: {{ info.comtelegram?info.comtelegram:'--'  }}</div>
         <div class="flex">
           <!--          <div class="normal">Already Applied:-->
           <!--            <div class="value">-->
@@ -40,11 +40,12 @@
 import {toRef, unref} from "vue";
 import PersonalDataPop from '/src/components/PersonalDatapop.vue';
 
+import Tools from '/src/utils/tools';
 const props = defineProps({
   info: {
     type: Object,
     default: {
-      avatar: 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/demo/a4765b6b6f385375f0fd09b3bb7059d.jpg',
+      avatar: '/img/demo/a4765b6b6f385375f0fd09b3bb7059d.jpg',
       name: '',
       email: '',
       url: '',

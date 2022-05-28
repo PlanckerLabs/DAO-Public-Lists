@@ -64,13 +64,21 @@
   </el-drawer>
 </template>
 <script setup>
-import {onMounted, reactive, ref, toRefs, watch} from "vue";
-import useWeb3 from "/src/utils/useWeb3";
-import abi from '/src/assets/abi/soulBoundBridge.json';
+import {reactive, ref, toRefs} from "vue";
 import {ElLoading, ElNotification} from 'element-plus';
 
-const {account, web3, ContractCall, ContractSend, bridge} = useWeb3();  
-const btn2_loading = ref(false);  
+import useContractTool from '@/utils/useContractTool';
+import {useStore} from '@/store';
+
+const store = useStore();
+
+const {Bridge_getStrings, Bridge_saveStrings} = useContractTool();
+const btn1_loading = ref(false);
+const btn1_disable = ref(true);
+
+const btn2_loading = ref(false);
+const btn2_disable = ref(true);
+
 const showDlg = ref(false);
 
 
@@ -88,33 +96,21 @@ const info = reactive({
 });
 let oldinfo = {};
 
-
-// 编码参数
-const encodeParam = () => {
-    let params = [];
-    Object.keys(toRefs(info)).forEach((k) => {
-        // params[k] = ;
-        params.push(web3.eth.abi.encodeFunctionSignature(k));
-    })
-    return params;
-}
-function fieldsdiffarr()
-{ 
-    let fieldarr = [];
-    let valarr = [];
-    Object.keys(toRefs(info)).forEach((k) => {
-        if( info[ k ] != oldinfo[ k ] )
-        {
-            fieldarr.push( web3.eth.abi.encodeFunctionSignature(k) );
-            valarr.push( info[ k ] );
-        } 
-    }) 
-    if( !fieldarr || fieldarr.length == 0 )
-    {
-        return false;
+function fieldsDiffArr() {
+  let fieldarr = [];
+  let valarr = [];
+  Object.keys(toRefs(info)).forEach((k) => {
+    if (info[k] !== oldinfo[k]) {
+      fieldarr.push(k);
+      valarr.push(info[k]);
     }
-    return [ fieldarr, valarr ];
+  })
+  if (!fieldarr || fieldarr.length === 0) {
+    return false;
+  }
+  return [fieldarr, valarr];
 }
+
 // 读取用户信息
 const read = async () => {
   const loading = ElLoading.service({
@@ -122,7 +118,7 @@ const read = async () => {
     text: 'Loading',
     background: 'rgba(0, 0, 0, 0.7)',
   })
-  return await ContractCall(abi, bridge, 'getStrings', [account.value, encodeParam()]).then((res) => {
+  return Bridge_getStrings(store.Account, Object.keys(toRefs(info))).then((res) => {
     loading.close();
     return res;
   }).catch(() => {
@@ -131,44 +127,41 @@ const read = async () => {
 }
 // 保存用户信息
 const save = () => {
-    btn2_loading.value = true;
-    let key_arr = encodeParam();
-    let value_arr = [];
-    Object.keys(toRefs(info)).forEach((k) => {
-        value_arr.push(info[k])
-    });
-    let savearr = fieldsdiffarr();
-    if( !savearr )
-    {
-        showDlg.value = false;
-        return;
-    }
-    ContractSend(abi, bridge, 'saveStrings', savearr ).then((res) => {
-        // console.log(res);
-        showDlg.value = false;
-        btn2_loading.value = false;
-        ElNotification({
-        title: 'Success',
-        message: 'blockHash:' + res.blockHash,
-        type: 'success',
-        duration: 3000
-        })
-    }).catch(() => {
-        btn2_loading.value = false;
+  btn2_loading.value = true;
+  let value_arr = [];
+  Object.keys(toRefs(info)).forEach((k) => {
+    value_arr.push(info[k])
+  });
+  let saveArr = fieldsDiffArr();
+  if (!saveArr) {
+    btn2_loading.value = false;
+    showDlg.value = false;
+    return;
+  }
+  Bridge_saveStrings(...saveArr).then((res) => {
+    showDlg.value = false;
+    btn2_loading.value = false;
+    ElNotification({
+      title: 'Success',
+      message: 'blockHash:' + res.blockHash,
+      type: 'success',
+      duration: 3000
     })
+  }).catch(() => {
+    btn2_loading.value = false;
+  })
 }
 
 
 // 显示dialog
 const showdrawer = async () => {
-    // init
-    btn2_loading.value = false;
-    let values = await read(); 
-    Object.keys(toRefs(info)).forEach((k, v) => {
-        info[k] = values[v];
-        oldinfo[ k ] = values[ v ]; 
-    })
-    showDlg.value = true;
+  // init
+  let values = await read();
+  Object.keys(toRefs(info)).forEach((k) => {
+    info[k] = values[k];
+    oldinfo[k] = values[k];
+  })
+  showDlg.value = true;
 }
 defineExpose({
   showdrawer
@@ -192,11 +185,11 @@ defineExpose({
   overflow-y: auto;
 }
 
-.settingdrawer  .el-textarea__inner
-{
-    background: #F5F5F5;
-    box-shadow: none;
+.settingdrawer .el-textarea__inner {
+  background: #F5F5F5;
+  box-shadow: none;
 }
+
 .row .dlginput .el-input__wrapper {
   background: #F5F5F5;
   box-shadow: none;
@@ -221,7 +214,7 @@ defineExpose({
   height: 2rem;
   line-height: 2rem;
   font-size: 0.83rem;
-  
+
   font-weight: 400;
   color: #999999;
   text-align: right;
@@ -242,7 +235,7 @@ defineExpose({
   border-radius: 0.33rem;
   line-height: 2rem;
   font-size: 0.67rem;
-  
+
   font-weight: 500;
   color: #999999;
   margin-left: 1.67rem;
@@ -258,7 +251,7 @@ defineExpose({
 .headrow {
   margin: 3.33rem 0 1.33rem 21rem;
   font-size: 1.25rem;
-  
+
   font-weight: 400;
   color: #000000;
 }
@@ -272,7 +265,7 @@ defineExpose({
 .headclose {
   height: 1rem;
   font-size: 0.71rem;
-  
+
   font-weight: 400;
   color: #F53F3F;
   margin: 1.67rem 1.67rem 0 0;

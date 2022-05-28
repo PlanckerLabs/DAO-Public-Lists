@@ -2,7 +2,7 @@
   <div style="background-color: #FFF">
     <div class="flex dao-item justify-between align-center">
       <div class="flex">
-        <el-image :src="daoInfo.avatar" class="avatar"></el-image>
+        <el-image :src="Tools.imgURL(daoInfo.avatar)" class="avatar"></el-image>
         <div class="right-panel">
           <div class="name">{{ daoInfo.name }}</div>
           <div class="normal">{{ daoInfo.contract_address }}</div>
@@ -10,15 +10,15 @@
           <div class="flex normal">
             <div class="flex">
               <div>Approved:</div>
-              <div class="value">0</div>
+              <div class="value">{{ daoInfo.approved }}</div>
             </div>
             <div class="flex" style="margin-left: 0.83rem;">
               <div>Rejected:</div>
-              <div class="value">0</div>
+              <div class="value">{{ daoInfo.rejected }}</div>
             </div>
             <div class="flex" style="margin-left: 0.83rem;">
               <div>Pending:</div>
-              <div class="value">0</div>
+              <div class="value">{{ daoInfo.pending }}</div>
             </div>
           </div>
         </div>
@@ -27,7 +27,7 @@
         <el-button color="#EEEEEE" class="edit-btn" @click="emit('edit',daoInfo.contract_address)">Editor</el-button>
         <el-button color="#6E3FF5" class="add-btn" @click="emit('add',daoInfo.contract_address)">
           <img class="add-btn-icon"
-               src="https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_add2%402x.png"/>
+               src="/img/dapp_add2%402x.png"/>
           Add
         </el-button>
       </div>
@@ -37,8 +37,10 @@
 </template>
 
 <script setup>
-import {toRef, ref, onBeforeUpdate} from "vue";
+import {toRef} from "vue";
 import useWeb3 from '/src/utils/useWeb3';
+
+import Tools from '/src/utils/tools';
 
 
 const {ContractCall, bridge, mounted} = useWeb3();
@@ -47,14 +49,14 @@ const props = defineProps({
   daoInfo: {
     type: Object,
     default: {
-      avatar:'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_dao_tx%402x.png',
+      avatar: '/img/dapp_dao_tx%402x.png',
       name: '',
       owner: '',
       contract_address: ''
     }
   }
 })
-const daoInfo = toRef(props, 'daoInfo'); 
+const daoInfo = toRef(props, 'daoInfo');
 
 const emit = defineEmits(['edit', 'add'])
 
@@ -73,7 +75,7 @@ const emit = defineEmits(['edit', 'add'])
 </script>
 
 <style lang="scss" scoped>
-$font-family: Tomorrow,sans-serif;
+$font-family: Tomorrow, sans-serif;
 .dao-item {
   margin: 0 10rem;
   padding: 1.67em 0;
@@ -135,7 +137,7 @@ $font-family: Tomorrow,sans-serif;
     width: 1.92rem;
     height: 0.92rem;
     font-size: 0.67rem;
-    
+
     font-weight: 500;
     color: #000000;
     line-height: 0.92rem;
@@ -152,7 +154,7 @@ $font-family: Tomorrow,sans-serif;
     width: 1.25rem;
     height: 0.92rem;
     font-size: 0.67rem;
-    
+
     font-weight: 500;
     color: #FFFFFF;
     line-height: 0.92rem;

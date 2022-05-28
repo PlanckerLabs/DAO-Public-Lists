@@ -11,7 +11,7 @@
         <template v-else>
           <div class="flex flex-1 box justify-center" style="margin-top: 1rem;margin-bottom: 3rem;">
             <div class="flex flex-column align-center">
-              <el-image src="https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_nonft_img.png"></el-image>
+              <el-image src="/img/dapp_nonft_img.png"></el-image>
               <div class="des">No NFT</div>
             </div>
           </div>
@@ -28,60 +28,51 @@
 </template>
 
 <script setup>
-import {onMounted, reactive, ref, watch} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import AddNFT from '/src/components/AddNft.vue';
 import EditDao from '/src/components/EditDao.vue';
 import NFTItem from '/src/components/nft-item/nft-item2.vue';
 import DaoItem from '/src/components/dao-item/index.vue';
 import EmptyDao from '/src/components/empty-dao/index.vue';
 import NFTDetail from '/src/components/NftDetail.vue';
-import useWeb3 from "/src/utils/useWeb3";
-import abi_bridge from '/src/assets/abi/soulBoundBridge.json';
+import useContractTool from "@/utils/useContractTool";
 
 
 const addNftDlg = ref(null);
 const editDaoDlg = ref(null);
-const {ContractCall, bridge, account, web3} = useWeb3();
 const DaoList = reactive([]);
 const nftDetailDlg = ref(null);
 
+const {Bridge_userDetail, Bridge_listDAOMedals, Bridge_getString} = useContractTool();
 
 const DaoDetail = (address) => {
-  ContractCall(abi_bridge, bridge, 'listDAOMedals', [address, 0, 999]).then(async (res) => {
-    let obj = JSON.parse(res);
-    // NFT name 解码
-    obj.medals.forEach((medal) => {
-      medal.name = atob(medal.name);
-      medal.uri = atob(medal.uri);
-    })
+  Bridge_listDAOMedals(address).then(async (obj) => {
     obj.contract_address = address;
-    let avatar = await ContractCall(abi_bridge, bridge, 'getString', [address, web3.eth.abi.encodeFunctionSignature('avatar')]);
-    obj.avatar = avatar ? avatar : 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_dao_tx%402x.png';
-    obj.name = atob(obj.name);
+    let avatar = await Bridge_getString(address, 'avatar');
+    obj.avatar = avatar ? avatar : '/img/dapp_dao_tx%402x.png';
+    obj.approved = 0;
+    obj.rejected = 0;
+    obj.pending = 0;
+    // console.log(obj);
+    obj.medals.forEach((medal) => {
+      obj.pending += medal.request;
+      obj.approved += medal.approved;
+      obj.rejected += medal.rejected;
+    })
     DaoList.push(obj);
   })
 }
 
 onMounted(() => {
-  if (account.value !== '') {
-    ContractCall(abi_bridge, bridge, 'userDetail', [account.value]).then((res) => {
-      const addr_arr = JSON.parse(res).owned
-      addr_arr.forEach((v) => {
-        DaoDetail(v)
-      })
+  Bridge_userDetail().then((res) => {
+    // console.log("userDetail", res);
+    const addr_arr = res.owned;   //拥有的dao 地址数组
+    addr_arr.forEach((v) => {
+      DaoDetail(v)
     })
-  }
+  })
 })
-watch(account, (newV, oV) => {
-  if (account.value !== '') {
-    ContractCall(abi_bridge, bridge, 'userDetail', [account.value]).then((res) => {
-      const addr_arr = JSON.parse(res).owned
-      addr_arr.forEach((v) => {
-        DaoDetail(v)
-      })
-    })
-  }
-})
+
 // 编辑dao信息
 const onHandleEdit = (contract_address) => {
   editDaoDlg.value.showdialog(contract_address);

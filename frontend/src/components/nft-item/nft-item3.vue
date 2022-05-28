@@ -1,11 +1,19 @@
+<!--
+ * @Description: 
+ * @Version: 1.0
+ * @Autor: z.cejay@gmail.com
+ * @Date: 2022-05-29 00:04:31
+ * @LastEditors: cejay
+ * @LastEditTime: 2022-05-29 02:56:43
+-->
 <template>
   <div class="nft">
-    <el-image class="image" :src="info.image"></el-image>
+    <el-image class="image" :src="Tools.imgURL(info.image)"></el-image>
     <div class="title">{{ info.title }}</div>
     <div class="des">{{ info.des }}</div>
     <div class="divider"></div>
     <div class="flex align-center" style="height: 2.5rem">
-      <el-image class="avatar" :src="info.avatar"></el-image>
+      <el-image class="avatar" :src="Tools.imgURL(info.avatar)"></el-image>
       <div class="name">{{ info.name }}</div>
     </div>
   </div>
@@ -13,12 +21,13 @@
 
 <script setup>
 import {reactive} from 'vue';
+import Tools from '/src/utils/tools'; 
 
 const info = reactive({
-  image: 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/demo/80f2a5ae1d0a01a3083dea14bf84b01.jpg',
+  image: '/img/demo/80f2a5ae1d0a01a3083dea14bf84b01.jpg',
   title: 'Kyle Medal of Honour',
   des: 'holdings：2191223104',
-  avatar: 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/demo/d9a0e1c7ba235ce4f3be9d416c3f15c.jpg',
+  avatar: '/img/demo/d9a0e1c7ba235ce4f3be9d416c3f15c.jpg',
   name: 'Kyle Dao'
 });
 

@@ -2,7 +2,7 @@
   <div class="bg">
     <div class="flex box justify-center">
       <div class="flex flex-column align-center">
-        <el-image src="https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_nonft_img.png"></el-image>
+        <el-image src="/img/dapp_nonft_img.png"></el-image>
         <div class="des">No NFT</div>
       </div>
     </div>

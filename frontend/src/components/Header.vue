@@ -3,7 +3,7 @@
     <div class="flex header-home">
       <img class="logo" :src="logo" @click="pushRouter('/')" style="cursor: pointer;"/>
       <div class="flex align-center" style="float:right;position:absolute;right:0;height: 100%">
-        <el-button @click="enterApp()" color="#6E3FF5" class="connect_btn">Enter DAPP
+        <el-button @click="enterApp" color="#6E3FF5" class="connect_btn">Enter DAPP
         </el-button>
       </div>
     </div>
@@ -25,7 +25,7 @@
         <div class="header-my" ref="buttonRef" v-click-outside="onClickOutside">
           <img class="tx" :src="tx"/>
           <div class="divider"></div>
-          <div class="font_ text-ellipsis">{{ account }}</div>
+          <div class="font_ text-ellipsis">{{ store.Account }}</div>
         </div>
       </div>
     </div>
@@ -44,7 +44,7 @@
         <div class="item">Personal Center</div>
       </div>
       <div class="menu">
-        <div class="item" @click="pushRouter('/')">
+        <div class="item" @click="exit">
           Exit
         </div>
       </div>
@@ -55,19 +55,18 @@
 
 <script lang="ts" setup>
 import {useRoute, useRouter} from "vue-router";
-import useWeb3 from "../utils/useWeb3";
 import {onMounted, ref, unref} from "vue";
 import {ClickOutside as vClickOutside} from 'element-plus'
-// import Settings from "./Setting.vue";
 
 import CreateDao from "./CreateDao.vue";
 import Settings from './Setting.vue';
+import {useStore} from "@/store";
 
 const buttonRef = ref()
 const createDaoDlg = ref();
 const settingsDlg = ref();
 const popoverRef = ref()
-
+const store = useStore();
 const onClickOutside = () => {
   unref(popoverRef).popperRef?.delayHide?.();
 }
@@ -88,43 +87,37 @@ const onHandleCreateDao = () => {
 }
 
 const route_path = ref('');
-const logo = 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_logo%20%402x.png';
-const tx = 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_tx.png';
+const logo = '/img/dapp_logo%20%402x.png';
+const tx = '/img/dapp_tx.png';
 const icon = {
-  settings: 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_Settings.png',
-  add: 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_add.png'
+  settings: '/img/dapp_Settings.png',
+  add: '/img/dapp_add.png'
 }
 const router = useRouter()
 const route = useRoute()
-const {account, mounted, connectNetwork} = useWeb3();
+
 
 onMounted(() => {
   route_path.value = route.path;
-  // console.log(route_path.value)
-  mounted();
 })
-// 连接网络
-const connect_network = async () => {
-  let chainId: number = 80001;
-  return await connectNetwork({
-    chainId: '0x' + chainId.toString(16),
-    chainName: 'Mumbai',
-    rpcUrl: 'https://matic-mumbai.chainstacklabs.com'
-  })
-}
 // 跳转路由
 const pushRouter = (path: string) => {
   router.push({
     path
   })
 }
-// 进入DAPP
+// 进入DAPP 登录
 const enterApp = () => {
-  connect_network().then((res) => {
+  store.login().then((res) => {
     pushRouter('/myDao');
   }).catch(() => {
     console.log("err");
   })
+}
+// 退出登录
+const exit=()=>{
+  store.loginOut();
+  pushRouter('/');
 }
 </script>
 
@@ -138,7 +131,7 @@ const enterApp = () => {
   .item {
     padding: 0.67rem 0 0.67rem 1.33rem;
     font-size: 0.83rem;
-    
+
     font-weight: 400;
     color: #000000;
     line-height: 1.17rem;
@@ -183,7 +176,7 @@ const enterApp = () => {
 
     height: 0.92rem;
     font-size: 0.67rem;
-    
+
     font-weight: 500;
     color: #FFFFFF;
     line-height: 0.92rem;

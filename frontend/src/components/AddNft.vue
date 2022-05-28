@@ -38,12 +38,11 @@
   </el-dialog>
 </template>
 <script setup>
-import {reactive, ref, watch} from "vue";
+import {reactive, ref, watch} from "vue"; 
+import useContractTool from '@/utils/useContractTool';
 import Tools from '/src/utils/tools';
-import useWeb3 from '/src/utils/useWeb3';
-import abi from '/src/assets/abi/soulBoundMedal.json';
-let removeimg = 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/addnft_delete.png';
-const {ContractCall, ContractSend, bridge} = useWeb3();
+let removeimg = '/img/addnft_delete.png'; 
+const {Dao_addMedals} = useContractTool();
 const nftinfo = reactive({
   'name': '',
   'uri': ''
@@ -81,7 +80,7 @@ function createNFT() {
     uri_arr.push(v.uri)
   })
   // console.log(name_arr, uri_arr);
-  ContractSend(abi, contract_address.value, 'addMedals', [name_arr, uri_arr]).then((res) => {
+  Dao_addMedals( contract_address.value, [name_arr, uri_arr]).then((res) => {
     console.log(res);
     loading.value = false;
     dialogaddnft.value = false;

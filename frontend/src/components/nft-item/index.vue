@@ -1,15 +1,7 @@
-<!--
- * @Description: 
- * @Version: 1.0
- * @Autor: z.cejay@gmail.com
- * @Date: 2022-05-28 21:06:56
- * @LastEditors: cejay
- * @LastEditTime: 2022-05-28 22:24:38
--->
 <template>
   <div class="flex flex-column align-center nft_item">
     <div class="position-relative">
-      <el-image class="avatar" fit="cover" :src="item.uri"></el-image>
+      <el-image class="avatar" fit="cover" :src="Tools.imgURL(item.uri)"></el-image>
       <div v-if="applying" class="applying flex align-center justify-center">
         <div class="applying-des">Pending</div>
       </div>
@@ -21,12 +13,13 @@
 <script setup>
 // 我的NFT item
 import {toRef} from "vue";
+import Tools from '/src/utils/tools';
 
 const props = defineProps({
   item: {
     type: Object,
     default: {
-      name: 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/demo/5aeef77b3fc25beb79f5d188fac90a0.jpg',
+      name: '/img/demo/5aeef77b3fc25beb79f5d188fac90a0.jpg',
       uri: 'Kyle Medal of Honour'
     }
   },
@@ -44,12 +37,13 @@ const applying = toRef(props, 'applying');
   .avatar {
     width: 10.67rem;
     height: 10.67rem;
+    vertical-align: bottom;
     border-radius: 0.33rem;
   }
 
   .applying {
     height: 2rem;
-    background: #999999;
+    background: #99999991;
     border-radius: 0rem 0rem 0.33rem 0.33rem;
     position: absolute;
     bottom: 0;

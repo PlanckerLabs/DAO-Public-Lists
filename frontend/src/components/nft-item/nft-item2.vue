@@ -1,7 +1,7 @@
 <template>
   <div class="card" @click="emit('nftDetail')">
     <div class="position-relative">
-      <el-image class="avatar" fit="cover" :src="info.uri"></el-image>
+      <el-image class="avatar" fit="cover" :src="Tools.imgURL(info.uri)"></el-image>
       <div v-if="info.applying" class="applying flex align-center justify-center">
         <div class="applying-des">Pending</div>
       </div>
@@ -24,12 +24,11 @@
 </template>
 
 <script setup>
-import {toRef, ref, unref} from 'vue';
-import useWeb3 from "/src/utils/useWeb3";
-import abi_dao from '/src/assets/abi/soulBoundMedal.json';
+import {toRef, ref, unref} from 'vue'; 
+import useContractTool from '@/utils/useContractTool'; 
 
-const {ContractSend} = useWeb3();
-
+import Tools from '/src/utils/tools'; 
+const {Dao_cliamRequest} = useContractTool(); 
 const emit = defineEmits(['nftDetail']);
 const props = defineProps({
   info: {
@@ -37,7 +36,7 @@ const props = defineProps({
     default: {
       index: 0,
       contract_address: '',
-      uri: 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/demo/2063481ac4d0df1f44243100bce0ed8.jpg',
+      uri: '/img/demo/2063481ac4d0df1f44243100bce0ed8.jpg',
       name: 'kyle Medal of Honour',
       approved: 30,
       request: 40,
@@ -53,7 +52,7 @@ const loading = ref(false);
 const apply = () => {
   let info_ = unref(info);
   loading.value = true;
-  ContractSend(abi_dao, info_.contract_address, 'cliamRequest', [info_.index]).then((res) => {
+  Dao_cliamRequest( info_.contract_address, info_.index ).then((res) => {
     loading.value = false;
   }).catch(() => {
     loading.value = false;
@@ -80,7 +79,7 @@ const apply = () => {
 
   .applying {
     height: 2rem;
-    background: #999999;
+   background: #99999991;
     position: absolute;
     bottom: 0;
     width: 100%;

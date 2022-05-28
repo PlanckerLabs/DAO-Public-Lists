@@ -47,14 +47,14 @@
 </template>
 
 <script setup>
-import {reactive, toRefs, onMounted, watch } from "vue";
-import useWeb3 from "/src/utils/useWeb3";
-import abi from '/src/assets/abi/soulBoundBridge.json';
+import {reactive, toRefs } from "vue"; 
 import {ElLoading} from 'element-plus';
 import Tools from '/src/utils/tools';
-let defaultavater = 'https://muyu-pub.oss-cn-beijing.aliyuncs.com/dao2dao/dapp_user_tx%402x.png';
-const {account, web3, ContractCall, bridge} = useWeb3();
- 
+import useContractTool from '@/utils/useContractTool';
+import {useStore} from "@/store";
+let defaultavater = '/img/dapp_user_tx%402x.png';   
+const {Bridge_getStrings} = useContractTool(); 
+const store = useStore(); 
 const uinfo = reactive({
     ethaddress: '',
     // name: '',
@@ -68,44 +68,28 @@ const uinfo = reactive({
     comtelegram: ''
 });
  
-const read = async () => {
-  let arr = []; 
-  Object.keys(toRefs(uinfo)).forEach((k) => {
-    arr.push( web3.eth.abi.encodeFunctionSignature(k));
-  }) 
+const read = async () => { 
   const loading = ElLoading.service({
     lock: true,
     text: 'Loading',
     background: 'rgba(0, 0, 0, 0.7)',
   }) 
-  return await ContractCall(abi, bridge, 'getStrings', [account.value, arr]).then((res) => {
+  return await Bridge_getStrings( store.Account, Object.keys(toRefs(uinfo)) ).then((res) => {
     loading.close();
     return res;
   }).catch(() => {
     loading.close();
   })
 } 
-let inidata = async function () {  
+let inidata = async function () {   
     let values = await read();
     Object.keys(toRefs(uinfo)).forEach((k, v) => {
-        uinfo[k] = values[v];
+        uinfo[k] = values[k];
     });
-    uinfo[ 'ethaddress' ] = account.value;
+    uinfo[ 'ethaddress' ] = store.Account;
     uinfo[ 'avater' ] =  uinfo[ 'avater' ]? uinfo[ 'avater' ]: defaultavater;
-}
-let inistatus = false;
-watch(account, (account, prevaccount) => {
-    if( account && !prevaccount && !inistatus )
-    {
-        inidata();
-        inistatus = true;
-    }
-})
-if( account.value && !inistatus )
-{
-    inidata();
-    inistatus = true;
-}
+} 
+inidata();
 defineExpose({
   inidata
 })
