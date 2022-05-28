@@ -80,8 +80,6 @@ onMounted(async () => {
 
     for (let a in v.medals) {
       let medal = v.medals[a];
-      medal.name = medal.name;
-      medal.uri = medal.uri;
       medal.applying = false;
       medal.canApply = true;
       medal.rejected = false;
