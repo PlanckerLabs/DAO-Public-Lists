@@ -10,7 +10,7 @@ export const useStore = defineStore('main', {
     }),
     getters: {
         Account(state) {
-            console.log("账号", storage.get('account'));
+            // console.log("账号", storage.get('account'));
             return state.account !== '' ? state.account : storage.get('account');
         }
     },
