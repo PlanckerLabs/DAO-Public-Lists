@@ -37,7 +37,8 @@ import {useStore} from "/src/store";
 
 
 import useContractTool from '@/utils/useContractTool';
-const {  Bridge_userDetail,Bridge_listDAOMedals ,Bridge_getStrings} = useContractTool();
+
+const {Bridge_userDetail, Bridge_listDAOMedals, Bridge_getStrings} = useContractTool();
 
 const activeName = ref('first')
 const allList = reactive([]); //全部列表
@@ -65,19 +66,14 @@ onMounted(async () => {
 //  read('userDetail', [store.account]).then(async (res) => {
   Bridge_userDetail(store.Account).then(async (values) => {
     let daos = values.dao
-    // console.log(daos);
     for (let index in daos) {
-      // read('listDAOMedals',[])
       let daoInfo = {};
-      //let listDAOMedals = JSON.parse(await read('listDAOMedals', [daos[index].address, 0, 9999]));
-      let listDAOMedals = JSON.parse(await Bridge_listDAOMedals(daos[index].address));
-
-      //let info = await read('getStrings', [daos[index].address, encodeParam()]);
-      let info = await  Bridge_getStrings([daos[index].address, encodeParam()]);
-      daoInfo.name = atob(listDAOMedals.name);
-      daoInfo.avatar = info[0];
-      daoInfo.email = info[1];
-      daoInfo.url = info[2];
+      let listDAOMedals = await Bridge_listDAOMedals(daos[index].address);
+      let info = await Bridge_getStrings(daos[index].address, ['avatar', 'email', 'url']);
+      daoInfo.name = listDAOMedals.name;
+      daoInfo.avatar = info.avatar;
+      daoInfo.email = info.email;
+      daoInfo.url = info.url;
       // 全部列表
       let medals = [];
       daos[index].medals.forEach((v) => {

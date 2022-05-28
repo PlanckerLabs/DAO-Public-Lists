@@ -152,13 +152,17 @@ export default function useContractTool() {
     const Bridge_register = (address: string) => {
         return ContractSend(<AbiItem[]>abi_bridge, config.BridgeAddress, 'register', [address]);
     }
-    //
+    // 列出所有Dao
     const Bridge_listDAO = () => {
         return ContractCall(<AbiItem[]>abi_bridge, config.BridgeAddress, 'listDAO', [0, 999, 0, 999]).then((res) => {
             return JSON.parse(res);
         }).catch((err) => {
             throw Error(err);
         })
+    }
+    //
+    const Dao_cliamRequest = (address: string, nftIndex: number) => {
+        return ContractSend(<AbiItem[]>abi_dao, address, 'cliamRequest', [nftIndex])
     }
     return {
         deployContract,
@@ -175,6 +179,7 @@ export default function useContractTool() {
         Dao_cliamApproved,
         Dao_cliamRejected,
         Bridge_register,
-        Bridge_listDAO
+        Bridge_listDAO,
+        Dao_cliamRequest
     }
 }
