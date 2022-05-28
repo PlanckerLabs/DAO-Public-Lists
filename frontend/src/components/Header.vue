@@ -55,7 +55,7 @@
 
 <script lang="ts" setup>
 import {useRoute, useRouter} from "vue-router";
-import useWeb3 from "../utils/useWeb3";
+//import useWeb3 from "../utils/useWeb3";
 import {onMounted, ref, unref} from "vue";
 import {ClickOutside as vClickOutside} from 'element-plus'
 // import Settings from "./Setting.vue";

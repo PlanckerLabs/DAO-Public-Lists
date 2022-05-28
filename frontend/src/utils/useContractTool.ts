@@ -51,10 +51,12 @@ export default function useContractTool() {
         return ContractCall(<AbiItem[]>abi_bridge, config.BridgeAddress, 'listDAOMedals', [address, 0, 999]).then((res) => {
             let ret = JSON.parse(res);
             // NFT name 解码
+            ret.name = atob_(ret.name);
             ret.medals.forEach((medal: any) => {
                 medal.name = atob_(medal.name);
                 medal.uri = atob_(medal.uri);
             })
+            // console.log(ret);
             return ret;
         }).catch((err) => {
             throw Error(err);
@@ -150,6 +152,14 @@ export default function useContractTool() {
     const Bridge_register = (address: string) => {
         return ContractSend(<AbiItem[]>abi_bridge, config.BridgeAddress, 'register', [address]);
     }
+    //
+    const Bridge_listDAO = () => {
+        return ContractCall(<AbiItem[]>abi_bridge, config.BridgeAddress, 'listDAO', [0, 999, 0, 999]).then((res) => {
+            return JSON.parse(res);
+        }).catch((err) => {
+            throw Error(err);
+        })
+    }
     return {
         deployContract,
         Bridge_userDetail,
@@ -164,6 +174,7 @@ export default function useContractTool() {
         Dao_addMedals,
         Dao_cliamApproved,
         Dao_cliamRejected,
-        Bridge_register
+        Bridge_register,
+        Bridge_listDAO
     }
 }
