@@ -84,7 +84,7 @@ const read = async () => {
 let inidata = async function () {   
     let values = await read();
     Object.keys(toRefs(uinfo)).forEach((k, v) => {
-        uinfo[k] = values[v];
+        uinfo[k] = values[k];
     });
     uinfo[ 'ethaddress' ] = store.Account;
     uinfo[ 'avater' ] =  uinfo[ 'avater' ]? uinfo[ 'avater' ]: defaultavater;
