@@ -1,9 +1,9 @@
 <template>
   <div class="card" @click="emit('nftDetail')">
     <div class="position-relative">
-      <el-image class="avatar" fit="fill" :src="info.uri"></el-image>
+      <el-image class="avatar" fit="cover" :src="info.uri"></el-image>
       <div v-if="info.applying" class="applying flex align-center justify-center">
-        <div class="applying-des">Currently Applying</div>
+        <div class="applying-des">Pending</div>
       </div>
       <div v-if="info.canApply" class="apply-btn">
         <el-button color="#6E3FF5" @click="apply" :loading="loading">Apply</el-button>
@@ -11,10 +11,10 @@
     </div>
     <div class="des">
       <div class="name">{{ info.name }}</div>
-      <div class="normal">Holdings:
+      <div class="normal">Holder:
         <div class="value">{{ info.approved }}</div>
       </div>
-      <div class="normal">Pending Applications:
+      <div class="normal">Pending:
         <div class="value"> {{ info.request }}</div>
       </div>
     </div>
