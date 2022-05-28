@@ -27,7 +27,7 @@ import {useStore} from "@/store";
 import Tools from '/src/utils/tools'; 
 
 const {Bridge_userDetail, Bridge_listDAOMedals, Bridge_getString} = useContractTool();
-let defaultavater = '/img/dapp_user_tx%402x.png';
+let defaultavater = '/img/dapp_user_tx@2x.png';
 let nonft = ref('/img/dapp_nonft_img.png');
 const store = useStore();
 const mynfts = ref([]);
