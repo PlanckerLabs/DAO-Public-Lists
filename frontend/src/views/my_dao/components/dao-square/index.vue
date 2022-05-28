@@ -62,7 +62,10 @@ onMounted(async () => {
     for(let index in ret.medals )
     {
         let v = ret.medals[ index ];
-        
+        // remove item if it is empty
+        if(v.medals.length===0){
+          continue;
+        }
         for(let a in v.medals)
         {
             let medal = v.medals[a];
@@ -107,7 +110,20 @@ onMounted(async () => {
       DaoList[index].detail.avatar = detail[0];
       DaoList[index].detail.email = detail[1];
       DaoList[index].detail.comgithub = detail[2];
-    }) 
+    });
+    // desc by nft holder
+    DaoList.sort((a, b) => {
+      //sum a.medals.request+a.medals.approved
+      let a_sum = 0;
+      let b_sum = 0;
+      a.medals.forEach((v) => {
+        a_sum += v.request + v.approved;
+      });
+      b.medals.forEach((v) => {
+        b_sum += v.request + v.approved;
+      });
+      return b_sum - a_sum;
+    })
 })
 
 
