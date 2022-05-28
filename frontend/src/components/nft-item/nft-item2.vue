@@ -24,12 +24,9 @@
 </template>
 
 <script setup>
-import {toRef, ref, unref} from 'vue';
-import useWeb3 from "/src/utils/useWeb3";
-import abi_dao from '/src/assets/abi/soulBoundMedal.json';
-
-const {ContractSend} = useWeb3();
-
+import {toRef, ref, unref} from 'vue'; 
+import useContractTool from '@/utils/useContractTool';  
+const {Dao_cliamRequest} = useContractTool(); 
 const emit = defineEmits(['nftDetail']);
 const props = defineProps({
   info: {
@@ -53,7 +50,7 @@ const loading = ref(false);
 const apply = () => {
   let info_ = unref(info);
   loading.value = true;
-  ContractSend(abi_dao, info_.contract_address, 'cliamRequest', [info_.index]).then((res) => {
+  Dao_cliamRequest( info_.contract_address, info_.index ).then((res) => {
     loading.value = false;
   }).catch(() => {
     loading.value = false;
