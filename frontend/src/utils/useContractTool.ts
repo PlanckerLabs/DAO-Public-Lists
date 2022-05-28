@@ -5,7 +5,7 @@ import {useStore} from '@/store';
 import {config} from "@/config";
 import {AbiItem} from "web3-utils";
 import bytecode from '@/assets/bytecode/soulBoundMedal.json';
-import {escape} from "lodash";
+
 
 export default function useContractTool() {
     const store = useStore();
