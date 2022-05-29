@@ -51,7 +51,7 @@ $tabs-header-color: #FFF;
 
 .header_ {
   height: 16.67rem;
-  background: url("/src/assets/img/dapp_top_bg_2x.png") no-repeat;
+  background: url("@/assets/img/dapp_top_bg_2x.png") no-repeat;
   background-size: cover;
 }
 

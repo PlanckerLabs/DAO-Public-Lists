@@ -31,7 +31,7 @@ import Header from '@/components/Header.vue';
 
 <style lang="scss" scoped>
 .bg {
-  background: url("/src/assets/img/home_bg.png") 100% no-repeat;
+  background: url("@/assets/img/home_bg.png") 100% no-repeat;
 }
 
 .tip {
