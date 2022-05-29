@@ -30,9 +30,10 @@ import Header from '@/components/Header.vue';
 </script>
 
 <style lang="scss" scoped>
-.bg{
-  background:url("./img/home_bg.png") 100% no-repeat;
+.bg {
+  background: url("/src/assets/img/home_bg.png") 100% no-repeat;
 }
+
 .tip {
   width: 31rem;
   height: 5.92rem;
