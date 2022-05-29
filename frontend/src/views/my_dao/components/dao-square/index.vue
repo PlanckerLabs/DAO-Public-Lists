@@ -18,7 +18,9 @@ import Dao from "./componets/Dao/index.vue";
 import User from "./componets/User/index.vue";
 import useContractTool from '@/utils/useContractTool';
 import {useStore} from "/src/store";
+import dapp_dao_tx from '@/assets/img/dapp_dao_tx_2x.png';
 import _ from 'lodash';
+
 
 const store = useStore();
 const {Bridge_getStrings, Bridge_listDAO, Bridge_userDetail} = useContractTool();
@@ -40,7 +42,7 @@ watch(searchContent, (newV, oV) => {
 const DaoDetail = async (address) => {
   let values = await Bridge_getStrings(address, ['avatar', 'comdiscord', 'comtelegram']);
   if (!values.avatar) {
-    values.avatar = '/src/assets/img/dapp_dao_tx_2x.png';
+    values.avatar = dapp_dao_tx;
   }
   return values;
 }

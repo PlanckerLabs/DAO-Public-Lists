@@ -11,7 +11,7 @@
 
 <script setup>
 
-import nonft from '/src/assets/img/dapp_nonft_img.png';
+import nonft from '@/assets/img/dapp_nonft_img.png';
 </script>
 
 <style lang="scss" scoped>

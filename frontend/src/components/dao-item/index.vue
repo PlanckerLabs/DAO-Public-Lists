@@ -38,11 +38,10 @@
 
 <script setup>
 import {toRef} from "vue";
-import useWeb3 from '/src/utils/useWeb3';
-import dapp_add2 from '/src/assets/img/dapp_add2_2x.png';
+import dapp_add2 from '@/assets/img/dapp_add2_2x.png';
 
-import Tools from '/src/utils/tools';
-import dappavatar from '/src/assets/img/dapp_dao_tx_2x.png';
+import Tools from '@/utils/tools';
+import dappavatar from '@/assets/img/dapp_dao_tx_2x.png';
 
 const props = defineProps({
   daoInfo: {

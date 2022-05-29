@@ -2,12 +2,12 @@
   <div class="position-relative" style="background-color:#352F46;">
     <Header/>
     <div class="return-btn" @click="router.push('/myDao')">
-      <img class="icon" src="/src/assets/img/dapp_me_return_icon_2x.png">
+      <img class="icon" :src="return_icon">
       <div class="font">Return</div>
     </div>
     <div class="position-absolute" style="left: 50%;top:3.33rem;transform: translateX(-50%);">
       <img style="width: 41.67rem;height: 39.83rem;"
-           src="/src/assets/img/dapp_me_bg_2x.png"/>
+           :src="dapp_me_bg"/>
     </div>
     <div style="padding-top: 3.33rem;background-color:#352F46;"></div>
     <el-tabs v-model="activeName" class="tabs" @tab-click="handleClick">
@@ -32,7 +32,10 @@ import {ref} from "vue";
 import {TabsPaneContext} from "element-plus";
 import NFTItem from '/src/components/nft-item/nft-item4.vue';
 import PersonalData from '/src/components/PersonalData.vue';
+import return_icon from '@/assets/img/dapp_me_return_icon_2x.png';
+import dapp_me_bg from '@/assets/img/dapp_me_bg_2x.png';
 import {useRouter} from "vue-router";
+
 
 const activeName = ref('first')
 const tabs = ['My NFT', 'Personal Data'];

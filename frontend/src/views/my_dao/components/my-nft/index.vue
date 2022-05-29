@@ -33,7 +33,7 @@ import NFTCollection from './nft/index.vue';
 import EmptyNFT from '/src/components/empty-nft/index.vue';
 import {useStore} from "/src/store";
 import useContractTool from '@/utils/useContractTool';
-
+import dapp_dao_tx from '@/assets/img/dapp_dao_tx_2x.png';
 
 const {Bridge_userDetail, Bridge_listDAOMedals, Bridge_getStrings} = useContractTool();
 const activeName = ref('first')
@@ -53,7 +53,7 @@ onMounted(async () => {
       let listDAOMedals = await Bridge_listDAOMedals(daos[index].address);
       let info = await Bridge_getStrings(daos[index].address, ['avatar', 'email', 'url']);
       daoInfo.name = listDAOMedals.name;
-      daoInfo.avatar = info.avatar === '' ? '/src/assets/img/dapp_dao_tx_2x.png' : info.avatar;
+      daoInfo.avatar = info.avatar === '' ? dapp_dao_tx : info.avatar;
       daoInfo.email = info.email;
       daoInfo.url = info.url;
       // 全部列表

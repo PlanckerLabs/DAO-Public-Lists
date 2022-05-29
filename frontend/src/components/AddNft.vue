@@ -40,8 +40,8 @@
 <script setup>
 import {reactive, ref, watch} from "vue";
 import useContractTool from '@/utils/useContractTool';
-import Tools from '/src/utils/tools';
-import removeimg from '/src/assets/img/addnft_delete.png';
+import Tools from '@/utils/tools';
+import removeimg from '@/assets/img/addnft_delete.png';
 const {Dao_addMedals} = useContractTool();
 const nftinfo = reactive({
   'name': '',

@@ -1,6 +1,6 @@
 <template>
   <Header/>
-  <div class="header_">
+  <div :class="header_">
   </div>
   <div class="my_dao">
     <el-tabs v-model="activeName" class="tabs" @tab-click="handleClick">
@@ -11,7 +11,7 @@
         <MyNFT/>
       </el-tab-pane>
       <el-tab-pane :label="tabs[2]" name="third">
-               <DaoSquare/>
+        <DaoSquare/>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -27,6 +27,7 @@ import DaoSquare from './components/dao-square/index.vue';
 
 import {onMounted, ref} from 'vue'
 import type {TabsPaneContext} from 'element-plus'
+import dapp_top_bg_2x from "@/assets/img/dapp_top_bg_2x.png";
 
 
 const activeName = ref('first')
@@ -39,7 +40,12 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
 onMounted(() => {
 
 })
-
+const header_ = {
+  height: '16.67rem',
+  backgroundImage: dapp_top_bg_2x,
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'cover'
+}
 </script>
 
 <style lang="scss">
@@ -48,11 +54,11 @@ $tab-font: #999999;
 $tabs-header-color: #FFF;
 
 
-.header_ {
-  height: 16.67rem;
-  background: url("/src/assets/img/dapp_top_bg_2x.png") no-repeat;
-  background-size: cover;
-}
+//.header_ {
+//  height: 16.67rem;
+//  background: url("./src/assets/img/dapp_top_bg_2x.png") no-repeat;
+//  background-size: cover;
+//}
 
 .my_dao .tabs {
   background-color: $tabs-header-color;

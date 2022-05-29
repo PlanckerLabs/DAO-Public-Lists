@@ -62,10 +62,10 @@ import CreateDao from "./CreateDao.vue";
 import Settings from './Setting.vue';
 import {useStore} from "@/store";
 
-import logo from '/src/assets/img/dapp_logo_2x.png';
-import tx from '/src/assets/img/dapp_tx.png';
-import importsettings from '/src/assets/img/dapp_Settings.png';
-import importadd from '/src/assets/img/dapp_add.png';
+import logo from '@/assets/img/dapp_logo_2x.png';
+import tx from '@/assets/img/dapp_tx.png';
+import importsettings from '@/assets/img/dapp_Settings.png';
+import importadd from '@/assets/img/dapp_add.png';
 
 const buttonRef = ref()
 const createDaoDlg = ref();
@@ -117,6 +117,7 @@ const pushRouter = (path: string) => {
 // 进入DAPP 登录
 const enterApp = () => {
   store.login().then((res) => {
+    // console.log("账号", store.Account);
     pushRouter('/myDao');
   }).catch(() => {
     console.log("err");

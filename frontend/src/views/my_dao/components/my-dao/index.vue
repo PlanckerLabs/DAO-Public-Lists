@@ -11,7 +11,7 @@
         <template v-else>
           <div class="flex flex-1 box justify-center" style="margin-top: 1rem;margin-bottom: 3rem;">
             <div class="flex flex-column align-center">
-              <el-image src="/src/assets/img/dapp_nonft_img.png"></el-image>
+              <el-image :src="nonft"></el-image>
               <div class="des">No NFT</div>
             </div>
           </div>
@@ -30,11 +30,13 @@
 <script setup>
 import {onMounted, reactive, ref} from "vue";
 import AddNFT from '/src/components/AddNft.vue';
+import nonft from '@/assets/img/dapp_nonft_img.png';
 import EditDao from '/src/components/EditDao.vue';
 import NFTItem from '/src/components/nft-item/nft-item2.vue';
 import DaoItem from '/src/components/dao-item/index.vue';
 import EmptyDao from '/src/components/empty-dao/index.vue';
 import NFTDetail from '/src/components/NftDetail.vue';
+import dapp_dao_tx from '@/assets/img/dapp_dao_tx_2x.png';
 import useContractTool from "@/utils/useContractTool";
 
 
@@ -49,7 +51,7 @@ const DaoDetail = (address) => {
   Bridge_listDAOMedals(address).then(async (obj) => {
     obj.contract_address = address;
     let avatar = await Bridge_getString(address, 'avatar');
-    obj.avatar = avatar ? avatar : '/src/assets/img/dapp_dao_tx_2x.png';
+    obj.avatar = avatar ? avatar : dapp_dao_tx;
     obj.approved = 0;
     obj.rejected = 0;
     obj.pending = 0;

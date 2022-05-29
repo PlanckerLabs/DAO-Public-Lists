@@ -26,9 +26,10 @@
 
 <script setup>
 import Header from '@/components/Header.vue';
+import home_bg from '@/assets/img/home_bg_2x.png';
 
 const bg_style = {
-  backgroundImage: 'url(/src/assets/img/home_bg_2x.png)',
+  backgroundImage: home_bg,
   backgroundRepeat: 'no-repeat',
   backgroundSize: '100%'
 }

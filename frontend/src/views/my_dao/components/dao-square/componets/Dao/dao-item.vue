@@ -10,7 +10,7 @@
       <template v-else>
         <div class="flex flex-1 box justify-center" style="margin-top: 1rem;margin-bottom: 3rem;">
           <div class="flex flex-column align-center">
-            <el-image src="/src/assets/img/dapp_nonft_img.png"></el-image>
+            <el-image :src="nonft"></el-image>
             <div class="des">No NFT</div>
           </div>
         </div>
@@ -22,6 +22,7 @@
 <script setup>
 import NFTItem from '/src/components/nft-item/nft-item2.vue';
 import DaoInfo from '/src/components/dao-item/info.vue';
+import nonft from '@/assets/img/dapp_nonft_img.png';
 import {toRef} from "vue";
 
 const props = defineProps({

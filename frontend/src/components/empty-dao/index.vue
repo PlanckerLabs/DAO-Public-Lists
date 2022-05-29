@@ -11,7 +11,7 @@
 
 <script setup>
 
-import nodao from '/src/assets/img/dapp_nodao_img.png';
+import nodao from '@/assets/img/dapp_nodao_img.png';
 </script>
 
 <style lang="scss" scoped>
