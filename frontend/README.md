@@ -1,5 +1,5 @@
 #### [DEMO]
-- [demo](https://planckerlabs.github.io/DAOSquare/)
+- [demo](https://planckerlabs.github.io/DAOPublicLists/)
 
 
 #### [开发/DEV]
