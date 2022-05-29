@@ -1,5 +1,5 @@
 <template>
-  <div :style="bg_style">
+  <div class="bg">
     <Header/>
     <div class="flex justify-center" style="margin-top: 88px;">
       <div class="flex flex-column align-center">
@@ -26,16 +26,13 @@
 
 <script setup>
 import Header from '@/components/Header.vue';
-import home_bg from '@/assets/img/home_bg_2x.png';
 
-const bg_style = {
-  backgroundImage: home_bg,
-  backgroundRepeat: 'no-repeat',
-  backgroundSize: '100%'
-}
 </script>
 
 <style lang="scss" scoped>
+.bg{
+  background:url("./img/home_bg.png") 100% no-repeat;
+}
 .tip {
   width: 31rem;
   height: 5.92rem;
