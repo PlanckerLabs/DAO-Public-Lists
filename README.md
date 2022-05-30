@@ -1,5 +1,5 @@
 # *Anyone can create a DAO here and join a DAO here*
-### SoulBound DAPP DEMO
+#### We developed a tool to decentralize the deployment of NFT contracts, allowing DAOs to implement on-chain management of members, on-chain log Dao events on the chain, and issue on-chain medals
 
 ---
 
