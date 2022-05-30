@@ -20,6 +20,7 @@ import useContractTool from '@/utils/useContractTool';
 import {useStore} from "/src/store";
 import dapp_dao_tx from '@/assets/img/dapp_dao_tx_2x.png';
 import _ from 'lodash';
+import {ElMessage} from "element-plus";
 
 
 const store = useStore();

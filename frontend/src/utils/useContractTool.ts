@@ -28,11 +28,13 @@ export default function useContractTool() {
             }
         }
     }
+    // 部署合约
     const deployContract = (params: any[]) => {
         return deployContract_(<AbiItem[]>abi_dao, bytecode.code, [...params, config.BridgeAddress])
     }
     // 获取用户信息
     const Bridge_userDetail = (address?: string) => {
+        // console.log("userDetail", store.Account);
         address = address == null ? store.Account : address;
         return ContractCall(<AbiItem[]>abi_bridge, config.BridgeAddress, 'userDetail', [address]).then((res) => {
             let ret = JSON.parse(res);
@@ -158,10 +160,10 @@ export default function useContractTool() {
         return ContractCall(<AbiItem[]>abi_bridge, config.BridgeAddress, 'listDAO', [0, 999, 0, 999]).then((res) => {
             let ret = JSON.parse(res);
             ret.medals.forEach((medal: any) => {
-                medal.name=atob_(medal.name);
+                medal.name = atob_(medal.name);
                 medal.medals.forEach((medal_: any) => {
-                    medal_.name=atob_(medal_.name);
-                    medal_.uri=atob_(medal_.uri);
+                    medal_.name = atob_(medal_.name);
+                    medal_.uri = atob_(medal_.uri);
                 })
             })
             return ret;

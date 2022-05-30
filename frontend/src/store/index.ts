@@ -10,7 +10,7 @@ export const useStore = defineStore('main', {
     }),
     getters: {
         Account(state) {
-            // // console.log("账号", storage.get('account'));
+            // console.log("账号", state.account, storage.get('account'));
             // return storage.get('account')
             return state.account !== '' ? state.account : storage.get('account');
         }
@@ -19,8 +19,8 @@ export const useStore = defineStore('main', {
         // 用户登录
         async login() {
             this.account = await getAccount();
-            // console.log("登录账号", this.account);
             storage.set('account', this.account);
+            // console.log("登录账号", this.account, storage.get('account'));
             return connectNetwork(config.Chain)
         },
         // 用户退出登录
