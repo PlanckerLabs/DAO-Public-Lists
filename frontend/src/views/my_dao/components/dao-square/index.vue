@@ -156,6 +156,7 @@ onMounted(async () => {
   for (const oneDAO of DaoList) {
     let _dao_address = oneDAO.address;
     let _dao_detail = await DaoDetail(_dao_address);
+    oneDAO.detail.address = _dao_address;
     oneDAO.detail.avatar = _dao_detail.avatar;
     oneDAO.detail.comdiscord = _dao_detail.comdiscord;
     oneDAO.detail.comtelegram = _dao_detail.comtelegram;

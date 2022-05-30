@@ -51,11 +51,12 @@ onMounted(async () => {
     for (let index in daos) {
       let daoInfo = {};
       let listDAOMedals = await Bridge_listDAOMedals(daos[index].address);
-      let info = await Bridge_getStrings(daos[index].address, ['avatar', 'email', 'url']);
+      let info = await Bridge_getStrings(daos[index].address, ['avatar', 'comdiscord', 'comtelegram']);
       daoInfo.name = listDAOMedals.name;
+      daoInfo.address = daos[index].address;
       daoInfo.avatar = info.avatar === '' ? dapp_dao_tx : info.avatar;
-      daoInfo.email = info.email;
-      daoInfo.url = info.url;
+      daoInfo.comdiscord = info.comdiscord;
+      daoInfo.comtelegram = info.comtelegram;
       // 全部列表
       let medals = [];
       daos[index].medals.forEach((v) => {

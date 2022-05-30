@@ -1,7 +1,15 @@
+<!--
+ * @Description: 
+ * @Version: 1.0
+ * @Autor: z.cejay@gmail.com
+ * @Date: 2022-05-29 02:39:57
+ * @LastEditors: cejay
+ * @LastEditTime: 2022-05-30 10:39:03
+-->
 <template>
   <div class="flex flex-wrap bg">
     <template v-for="(item,index) in collection.medals" :key="index">
-      <NFTItem :item="item" :applying="item.status===1" class="nft_item"/>
+      <NFTItem :item="item" :contractAddress="collection.daoInfo.address" :applying="item.status===1" class="nft_item"/>
     </template>
   </div>
   <div style="margin-top: 0.04rem;"></div>
@@ -22,7 +30,8 @@ const props = defineProps({
     default: {}
   }
 })
-const collection = toRef(props, 'collection');
+const collection = toRef(props, 'collection'); 
+
 </script>
 
 <style lang="scss" scoped>

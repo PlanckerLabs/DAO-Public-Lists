@@ -4,6 +4,8 @@
       <el-image class="avatar" :src="Tools.imgURL(info.avatar)"></el-image>
       <div class="flex flex-column des">
         <div class="name">{{ info.name }}</div>
+        <!-- link -->
+        <a class="normal" :href="Tools.blockchainScanUrl_address(info.address)" target="_blank">{{ info.address }}</a>
         <div class="normal">Discord: {{ info.comdiscord ? info.comdiscord : '--' }}</div>
         <div class="normal">Telegram: {{ info.comtelegram ? info.comtelegram : '--' }}</div>
         <div class="flex">
@@ -37,7 +39,7 @@
 
 <script setup>
 
-import {toRef, unref} from "vue";
+import { toRef, unref } from "vue";
 import PersonalDataPop from '/src/components/PersonalDatapop.vue';
 
 import Tools from '/src/utils/tools';

@@ -1,33 +1,32 @@
 // replace nft
 <template>
-  <el-dialog v-model="dialogaddnft"
-             custom-class="addnftdlg" width="60rem;"
-             :show-close="false"
-             :close-on-click-modal="false"
-             destroy-on-close>
-    <template #header="{ close  }">
+  <el-dialog v-model="dialogaddnft" custom-class="addnftdlg" width="60rem;" :show-close="false"
+    :close-on-click-modal="false" destroy-on-close>
+    <template #header="{ close }">
       <div class="dlgheadbox">
-        <span class="headtitle">Add NFT</span>
+        <span class="headtitle">Add NFT Template</span>
         <span class="headclose" @click="close">close</span>
       </div>
     </template>
     <div class="row">
       <span class="label">NFT Name</span>
-      <el-input class="dlginput" v-model="nftinfo.name" placeholder="No more than 50 characters"
-                maxlength="50"></el-input>
+      <el-input class="dlginput" v-model="nftinfo.name" placeholder="No more than 50 characters" maxlength="50">
+      </el-input>
     </div>
     <div class="row">
       <span class="label">NFT Image URL</span>
-      <el-input class="dlginput" v-model="nftinfo.uri" placeholder="Image URL, starts with https:// or ipfs://"></el-input>
+      <el-input class="dlginput" v-model="nftinfo.uri" placeholder="Image URL, starts with https:// or ipfs://">
+      </el-input>
       <span class="addnftbt" @click="addnewnft()">+ Add</span>
     </div>
     <div class="nftrow">
       <div class="nftbox" v-for="(item, index) in nftinfolist">
-        <el-image class="nftimg" :src="Tools.imgURL(item.uri)" fit="cover"/>
+        <el-image class="nftimg" :src="Tools.imgURL(item.uri)" fit="cover" />
         <div class="nfttext">{{ item.name }}</div>
         <span class="nftremove" @click="removenft(index)">
-            <el-image class="nftremoveimg" :src="removeimg" fit="fill"/>
-        Delete</span>
+          <el-image class="nftremoveimg" :src="removeimg" fit="fill" />
+          Delete
+        </span>
       </div>
 
     </div>
@@ -38,11 +37,12 @@
   </el-dialog>
 </template>
 <script setup>
-import {reactive, ref, watch} from "vue";
+import { reactive, ref, watch } from "vue";
 import useContractTool from '@/utils/useContractTool';
 import Tools from '@/utils/tools';
 import removeimg from '@/assets/img/addnft_delete.png';
-const {Dao_addMedals} = useContractTool();
+import {ElNotification} from 'element-plus';
+const { Dao_addMedals } = useContractTool();
 const nftinfo = reactive({
   'name': '',
   'uri': ''
@@ -60,10 +60,43 @@ watch(nftinfolist, (newV, oV) => {
 
 
 function addnewnft() {
+  if (nftinfo.name.length <= 0) {
+    ElNotification({
+      title: 'Error',
+      message: 'please input NFT name',
+      type: 'error',
+      duration: 2000
+    });
+
+    return;
+  }
+  if (nftinfo.uri.length <= 0) {
+    ElNotification({
+      title: 'Error',
+      message: 'Please enter the image URL of the NFT',
+      type: 'error',
+      duration: 2000
+    });
+    return;
+  }
+  let lowerURL = nftinfo.uri.toLowerCase();
+  if (!lowerURL.startsWith('https://') && !lowerURL.startsWith('ipfs://')) {
+    ElNotification({
+      title: 'Error',
+      message: 'Image URL must start with https:// or ipfs://',
+      type: 'error',
+      duration: 2000
+    });
+    return;
+  }
   nftinfolist.push({
     'name': nftinfo.name,
     'uri': nftinfo.uri
   });
+  nftinfo.name = '';
+  nftinfo.uri = '';
+  // foucs input
+  
 }
 
 function removenft(index) {
@@ -80,7 +113,7 @@ function createNFT() {
     uri_arr.push(v.uri)
   })
   // console.log(name_arr, uri_arr);
-  Dao_addMedals( contract_address.value, [name_arr, uri_arr]).then((res) => {
+  Dao_addMedals(contract_address.value, [name_arr, uri_arr]).then((res) => {
     console.log(res);
     loading.value = false;
     dialogaddnft.value = false;
@@ -127,30 +160,30 @@ defineExpose({
 }
 </style>
 <style lang="scss" scoped>
-.nftremove
-{
-    width: 3.69rem;
-    height: 1.67rem;
-    background: #F53F3F;
-    box-shadow: 0rem 0.08rem 0.17rem 0rem rgba(0, 0, 0, 0.4);
-    border-radius: 0.33rem;
-    position: absolute;
-    right:0.32rem;
-    bottom: 1.9rem;
-    color:white;
-    cursor: pointer;
+.nftremove {
+  width: 3.69rem;
+  height: 1.67rem;
+  background: #F53F3F;
+  box-shadow: 0rem 0.08rem 0.17rem 0rem rgba(0, 0, 0, 0.4);
+  border-radius: 0.33rem;
+  position: absolute;
+  right: 0.32rem;
+  bottom: 1.9rem;
+  color: white;
+  cursor: pointer;
 }
-.nftremoveimg
-{
-    width: 1.1rem;
-    height: 1.1rem;
-    margin: 0.25rem -0.2rem 0.4rem 0.32rem;
-    vertical-align: middle;
+
+.nftremoveimg {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0.25rem -0.2rem 0.4rem 0.32rem;
+  vertical-align: middle;
 }
-.nftremoveimg img
-{
-    vertical-align:middle;
+
+.nftremoveimg img {
+  vertical-align: middle;
 }
+
 .nftrow {
   margin: 1.67rem 0 2.3rem 11.63rem;
 }
@@ -160,7 +193,7 @@ defineExpose({
   margin-right: 1.67rem;
   margin-bottom: 1rem;
   display: inline-block;
-  position:relative;
+  position: relative;
 }
 
 .nftimg {

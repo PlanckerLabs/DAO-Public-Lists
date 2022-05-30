@@ -1,7 +1,18 @@
+<!--
+ * @Description: 
+ * @Version: 1.0
+ * @Autor: z.cejay@gmail.com
+ * @Date: 2022-05-29 13:01:32
+ * @LastEditors: cejay
+ * @LastEditTime: 2022-05-30 10:41:13
+-->
 <template>
   <div class="flex flex-column align-center nft_item">
     <div class="position-relative">
-      <el-image class="avatar" fit="cover" :src="Tools.imgURL(item.uri)"></el-image>
+      <el-image v-if="item.status <= 2" class="avatar" fit="cover" :src="Tools.imgURL(item.uri)"></el-image>
+      <el-image v-if="item.status > 2" class="avatar" style="cursor: pointer;" fit="cover" :src="Tools.imgURL(item.uri)" @click="viewNft(item)">
+      </el-image>
+
       <div v-if="applying" class="applying flex align-center justify-center">
         <div class="applying-des">Pending</div>
       </div>
@@ -12,7 +23,7 @@
 
 <script setup>
 // 我的NFT item
-import {toRef} from "vue";
+import { toRef } from "vue";
 import Tools from '/src/utils/tools';
 
 const props = defineProps({
@@ -26,10 +37,21 @@ const props = defineProps({
   applying: {
     type: Boolean,
     default: false
+  },
+  contractAddress: {
+    type: String,
+    default: ''
   }
 })
 const item = toRef(props, 'item');
 const applying = toRef(props, 'applying');
+const contractAddress = props.contractAddress;//toRef(props, 'contractAddress');
+ 
+const viewNft = (item) => {
+  //console.log(item);
+  // open new page
+  window.open(Tools.blockchainScanUrl_tokenId(contractAddress, item.status), "_blank");
+}
 </script>
 <!--//padding-right: 1.67rem;-->
 <style lang="scss" scoped>
