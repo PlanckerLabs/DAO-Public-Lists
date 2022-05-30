@@ -28,8 +28,8 @@ Node >= v12
 - link: [contracts/](contracts/)
 - contract/合约源码: [contracts/build/](contracts/build/)
 
-   1. [soulBoundBridge.sol](contracts/build/soulBoundBridge.sol)
-   2. [soulBoundMedal.sol](contracts/build/soulBoundMedal.sol)
+   1. [soulBoundBridge.sol](contracts/build/soulBoundBridge.sol) [0x7257fDd92DD8C97CF556c58275d68EE3607c3Dfa](https://mumbai.polygonscan.com/address/0x7257fdd92dd8c97cf556c58275d68ee3607c3dfa#code)
+   2. [soulBoundMedal.sol](contracts/build/soulBoundMedal.sol) [0x12fB03d24b8B71F87e4CF7cDD6DefFb87c35F3af](https://mumbai.polygonscan.com/address/0x12fb03d24b8b71f87e4cf7cdd6deffb87c35f3af#code)
 
 #### [开发/DEV]
 
